@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 
 export class MessagingPanel {
+  public _context: vscode.ExtensionContext;
+  private readonly _extensionUri: vscode.Uri;
 	public static currentPanel: MessagingPanel | undefined;
 	private readonly _panel: vscode.WebviewPanel;
 	private _disposables: vscode.Disposable[] = [];
@@ -27,18 +29,20 @@ export class MessagingPanel {
 		MessagingPanel.currentPanel = new MessagingPanel(panel, context);
 	}
 
-	private constructor(panel: vscode.WebviewPanel, context: vscode.ExtensionContext) {
-		this._panel = panel;
+	private constructor(webviewPanel: vscode.WebviewPanel, context: vscode.ExtensionContext) {
+		this._panel = webviewPanel;
+    this._context = context;
+    this._extensionUri = context.extensionUri;
     const webview = this._panel.webview;
     this._panel.title = 'MessagingPanel';
 		this._panel.webview.html = this._getHtmlForWebview(webview);
 		this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
-    this.messagesFromWebviewAndVSCode(this._panel, context);
+    this.messagesFromVSCode(this._panel);
+    this.messagesFromWebview(this._panel, context);
 	}
 
-  public messagesFromWebviewAndVSCode = (webviewPanel:vscode.WebviewPanel,context:vscode.ExtensionContext) => {
-
-    context.subscriptions.push(
+  public messagesFromVSCode = (webviewPanel:vscode.WebviewPanel) => {
+    this._context.subscriptions.push(
       vscode.window.onDidChangeActiveColorTheme((e) => {
         console.log(e);
         console.log("mjg changeActiveColorSubscription");
@@ -48,6 +52,9 @@ export class MessagingPanel {
         });
       })
     );
+  };
+
+  public messagesFromWebview = (webviewPanel:vscode.WebviewPanel,context:vscode.ExtensionContext) => {
 
     webviewPanel.webview.onDidReceiveMessage((message) => {
       console.log(message);

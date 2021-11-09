@@ -31,8 +31,46 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     webviewPanel.webview.options = { enableScripts: true, enableCommandUris: true, };
     var s = this.doPropsJSON(document.getText());
     webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview, JSON.stringify(s));
+    this.messagesFromExtension(webviewPanel);
     this.messagesFromWebview(webviewPanel);
   }
+
+  public messagesFromExtension = (webviewPanel:vscode.WebviewPanel) => {
+    //const changeDocumentSubscription =
+    this._context.subscriptions.push(
+      vscode.workspace.onDidSaveTextDocument(
+        (e) => {
+          console.log("onDidSaveTextDocument in the extension");
+          if (e.uri.toString() === this._document.uri.toString()) {
+            console.log("post update message to webview");
+            //console.log("*** this text");
+            //console.log(e.document.getText());
+            //console.log("*** this text");
+            //console.log(webviewPanel.webview);
+            //console.log(e.getText());
+            var s = this.doPropsJSON(e.getText());
+            webviewPanel.webview.postMessage({
+              type: "documentchange",
+              code: e.getText(),
+              s: s
+            });
+          }
+
+
+          // if (e.contentChanges.length > 0) {
+          //   console.log('post update message - didChange')
+          //   console.log(e.contentChanges[0].text)
+          //   webviewPanel.webview.postMessage({
+          //     type: "update",
+          //     text: e.contentChanges[0].text
+          //   });
+          // }
+
+
+        }
+      )
+    );
+  };
 
   public messagesFromWebview = (webviewPanel:vscode.WebviewPanel) => {
     webviewPanel.webview.onDidReceiveMessage((message) => {
@@ -103,6 +141,9 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       if (prop.value.type === 'Literal') {
         val = prop.value.value;
       }
+      else {
+        console.log(prop)
+      }
       o.id = i;
       o.name = prop.key.name;
       o.value = val;
@@ -112,7 +153,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   }
 
   private getHtmlForWebview(webview: vscode.Webview, s: any ): string {
-    const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-modern-all.js')).with({ 'scheme': 'vscode-resource' });
+    const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-modern-all-debug.js')).with({ 'scheme': 'vscode-resource' });
     const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_1.css')).with({ 'scheme': 'vscode-resource' });
     const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_2.css')).with({ 'scheme': 'vscode-resource' });
     const nonce = Utilities.getNonce();
@@ -214,12 +255,12 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     }
 
     window.addEventListener('message', event => {
-      console.log('we have a new message',event)
+      console.log('we have a new message from the extension',event)
       const message = event.data;
       console.log(message)
       switch (message.type) {
         case 'documentchange':
-          console.log('in the case: documentchange from the extension')
+          //console.log('in the case: documentchange from the extension')
           Ext.getCmp('dataview').setData(message.s)
           Ext.undefine('${this._namespace}')
           var head = document.getElementsByTagName('head')[0];
@@ -241,8 +282,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
 
 
 
-//https://astexplorer.net/
-//https://code.visualstudio.com/docs/getstarted/userinterface#_side-by-side-editing
+    //https://astexplorer.net/
 
     //https://code.visualstudio.com/api/references/commands
     //https://code.visualstudio.com/api/references/vscode-api

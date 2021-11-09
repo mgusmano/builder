@@ -31,6 +31,10 @@
       {
         "command": "builder.BasicPanel",
         "title": "Basic Panel"
+      },
+      {
+        "command": "builder.cmd",
+        "title": "Run CMD"
       }
     ]
   },

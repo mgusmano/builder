@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+    <html style="width:100%;height:100%;margin:0;padding:0;overflow:hidden;">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, user-scalable=yes">
+      <title>ExtJSPanel</title>
+      <script src="media/ext-modern-all-debug.js"></script>
+      <link href="media/buildertheme-all-debug_1.css" rel="stylesheet">
+      <link href="media/buildertheme-all-debug_2.css" rel="stylesheet">
+      <style>
+      .x-panelheader-accordion {
+        background-color: var(--vscode-editor-background);
+      }
+      </style>
+    </head>
+    <body id='extbody'></body>
+    <script>
+    Ext.onReady(function() {
+
+      Ext.define('MyController', {
+        extend: 'Ext.app.ViewController',
+        alias: 'controller.mycontroller',
+
+        onSubmit: function () {
+            var form = this.getView();
+            console.log(form)
+            console.log(form.validate());
+            console.log(form.getValues());
+
+            if (form.validate() === true) {
+              var theme = form.getValues().theme;
+
+              vscode.postMessage({
+                command: 'runcmd',
+                toolkit: form.getValues().toolkit,
+                theme: form.getValues().theme,
+                applicationName: form.getValues().applicationName,
+                homeDir: form.getValues().homeDir
+              })
+            }
+        }
+      });
+
+      Ext.application({
+        name: 'MyApp',
+        launch: function() {
+          console.log(document.getElementById('extbody'))
+          Ext.Viewport.add(
+            {
+              xtype: 'formpanel',
+              title: 'Sencha Builder',
+              style: "borderLeft:1px solid lightgray;borderTop:1px solid lightgray;borderRight:21px solid lightgray;borderBottom:1px solid lightgray;",
+              border: true,
+              padding: 20,
+              //layout: {type: 'vbox',pack: 'top', align: 'middle'},
+              controller: 'mycontroller',
+              buttons: {
+                submit: 'onSubmit'
+              },
+              items: [
+                //
+    {
+      xtype: 'image',
+      height: 90,
+      width: 280,
+      alt: 'sencha-logo-image',
+      src: 'vscode-resource:/Volumes/BOOTCAMP/%40/builder/media/SenchaLogoLg.svg'
+    },
+    {
+      xtype: 'component',
+      width: 280,
+      html: 'Create a New Application',
+      style: {
+          'font-size': '24px',
+          'text-align': 'center',
+          'margin': 'auto'
+      }
+    },
+    {
+      xtype: 'component',
+      width: 280,
+      html: 'Enter your email address and well' + '<br>' + 'send you a new password',
+      style: {
+          'font-size': '16px',
+          'text-align': 'center',
+          'line-height': '1.75',
+          'letter-spacing': '0.5px',
+          'margin': 'auto'
+      }
+    },
+
+                //{xtype:'component',html:'/Users/marcgusmano/SenchaApps'},
+                //{xtype:'component',html:'sencha generate app --ext -modern --theme-name theme-material myapp /Users/marcgusmano/SenchaApps/myapp'},
+                {
+                  xtype: 'fieldset',
+                  layout: 'vbox',
+                  xtitle: 'Compose',
+                  defaults: {labelAlign: 'top'},
+                  items: [
+                    // {
+                    //   xtype: 'combobox',
+                    //   label: 'Toolkit',
+                    //   name: 'toolkit',
+                    //   required: true,
+                    //   valueField: 'name',
+                    //   displayField: 'name',
+                    //   forceSelection: true,
+                    //   value: 'modern',
+                    //   queryMode: 'local',
+                    //   clearable: true,
+                    //   placeholder: 'Select a toolkit...',
+                    //   store: {
+                    //     data: [
+                    //       {name: 'modern'},
+                    //       {name: 'classic'},
+                    //     ]
+                    //   }
+                    // },
+                    // {
+                    //   xtype: 'combobox',
+                    //   label: 'Theme',
+                    //   name: 'theme',
+                    //   required: true,
+                    //   valueField: 'name',
+                    //   displayField: 'name',
+                    //   forceSelection: true,
+                    //   value: 'material',
+                    //   queryMode: 'local',
+                    //   clearable: true,
+                    //   placeholder: 'Select a theme...',
+                    //   store: {
+                    //     data: [
+                    //       {name: 'material'},
+                    //       {name: 'ios'},
+                    //       {name: 'triton'},
+                    //     ]
+                    //   }
+                    // },
+                    // {
+                    //   xtype: 'textfield',
+                    //   label: 'Application Name',
+                    //   name: 'applicationName',
+                    //   value:'myapp',
+                    //   allowBlank: false,
+                    //   readOnly: false,
+                    //   required: true,
+                    //   placeholder: 'Application Name',
+                    //   errorTarget: 'qtip',
+                    //   width: 280,
+                    //   //style: {'margin': 'auto'}
+                    // },
+                    // {
+                    //   xtype: 'textfield',
+                    //   label: 'Application Path',
+                    //   name: 'applicationPath',
+                    //   value:'/Users/marcgusmano/SenchaApps',
+                    //   required: true
+                    // },
+                  ]
+                }
+              ]
+            }
+          )
+        }
+      });
+
+    });
+    </script>
+
+    <script>
+    const vscode = acquireVsCodeApi();
+    //var b = document.getElementById('result');
+
+    function clickFunction() {
+      console.log('clickFunction')
+      var a = Ext.getCmp('appname').getValue()
+      vscode.postMessage({command: 'runcmd', app: a})
+    }
+
+    function changeTitle() {
+      var val = document.getElementById('2').value;
+      vscode.postMessage({command: 'changeTitle', value: val})
+    }
+
+    function showCode() {
+      console.log('showCode')
+      vscode.postMessage({command: 'showCode'})
+    }
+
+    window.addEventListener('message', event => {
+      console.log('we have a new message from the extension',event)
+      const message = event.data;
+      console.log(message)
+      switch (message.type) {
+        case 'documentchange':
+
+          break;
+      }
+    });
+    </script>
+
+    </html>
