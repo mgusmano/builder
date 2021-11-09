@@ -24,7 +24,7 @@ import { StatusBarEWCPanel } from './statusbar/StatusBarEWCPanel';
 import { ThemePanel } from './panel/ThemePanel';
 import { StatusBarThemePanel } from './statusbar/StatusBarThemePanel';
 
-import { StatusBarOpenWith } from './statusbar/StatusBarOpenWith';
+//import { StatusBarOpenWith } from './statusbar/StatusBarOpenWith';
 
 export function activate(context: vscode.ExtensionContext) {
   Logger.channel = vscode.window.createOutputChannel("Sencha Builder");
@@ -116,15 +116,15 @@ export function activate(context: vscode.ExtensionContext) {
 	);
   context.subscriptions.push(StatusBarThemePanel.register(context));
 
-  context.subscriptions.push(
-		vscode.commands.registerCommand('builder.OpenWith', () => {
-      let uri = vscode.Uri.file('/Volumes/BOOTCAMP/@/BasicTextEditor/BasicTextEditor.jsb');
-      //let success = await
-      vscode.commands.executeCommand('vscode.openWith', uri, 'default');
-			//ThemePanel.createOrShow(context);
-		})
-	);
-  context.subscriptions.push(StatusBarOpenWith.register(context));
+  // context.subscriptions.push(
+	// 	vscode.commands.registerCommand('builder.OpenWith', () => {
+  //     let uri = vscode.Uri.file('/Volumes/BOOTCAMP/@/BasicTextEditor/BasicTextEditor.jsb');
+  //     //let success = await
+  //     vscode.commands.executeCommand('vscode.openWith', uri, 'default');
+	// 		//ThemePanel.createOrShow(context);
+	// 	})
+	// );
+  // context.subscriptions.push(StatusBarOpenWith.register(context));
 
 
   console.log('Congratulations, your extension "builder" is now registered!');

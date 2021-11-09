@@ -50,16 +50,16 @@ export class SenchaCmdPanel {
 	}
 
   public messagesFromVSCode = (webviewPanel:vscode.WebviewPanel) => {
-    this._context.subscriptions.push(
-      vscode.window.onDidChangeActiveColorTheme((e) => {
-        console.log(e);
-        console.log("mjg changeActiveColorSubscription");
-        webviewPanel.webview.postMessage({
-          type: "extjsdesignerthemechange",
-          text: '',
-        });
-      })
-    );
+    // this._context.subscriptions.push(
+    //   vscode.window.onDidChangeActiveColorTheme((e) => {
+    //     console.log(e);
+    //     console.log("mjg changeActiveColorSubscription");
+    //     webviewPanel.webview.postMessage({
+    //       type: "extjsdesignerthemechange",
+    //       text: '',
+    //     });
+    //   })
+    // );
   };
 
   public messagesFromWebview = (webviewPanel:vscode.WebviewPanel,context:vscode.ExtensionContext) => {
@@ -72,6 +72,11 @@ export class SenchaCmdPanel {
           vscode.commands.executeCommand('vscode.openFolder', uri);
           break;
         case "runcmd":
+          const dirExists = fs.existsSync(`${message.applicationPath}/${message.applicationName}`);
+          if (dirExists === true) {
+            vscode.window.showErrorMessage(`Directory exists: ${message.applicationPath}/${message.applicationName}`);
+            return;
+          }
           const term = vscode.window.createTerminal(`Sencha Builder`);
           term.show();
           term.sendText(`chdir ${os.homedir()}/SenchaApps`);
@@ -116,7 +121,14 @@ export class SenchaCmdPanel {
       <link href="${themeAll1}" rel="stylesheet">
       <link href="${themeAll2}" rel="stylesheet">
       <style>
-      .x-panelheader-accordion {
+      .x-panelheader {
+        background-color: var(--vscode-editor-background);
+        color: var(--vscode-editor-foreground);
+      }
+      .x-paneltitle {
+        color: var(--vscode-editor-foreground);
+      }
+      .x-panel-body-el {
         background-color: var(--vscode-editor-background);
       }
       </style>
@@ -186,9 +198,11 @@ export class SenchaCmdPanel {
                 ${SenchaCmdPanelHTML.getImage(sencha)}
                 {
                   xtype: 'fieldset',
-                  layout: 'vbox',
-                  xtitle: 'Compose',
-                  defaults: {labelAlign: 'top'},
+                  layout: {type: 'vbox',pack: 'top', align: 'middle'},
+                  defaults: {
+                    labelAlign: 'top',
+                    width: '70%'
+                  },
                   items: [
                     {
                       xtype: 'combobox',
