@@ -36,9 +36,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       { xtype: 'datecolumn',     type: 'grid',   icon: 'table'},
       { xtype: 'numbercolumn',   type: 'grid',   icon: 'table'},
       { xtype: 'treecolumn',     type: 'grid',   icon: 'table'},
-
       { xtype: 'button',         type: 'button', icon: 'cog'},
-
       { xtype: 'textfield',      type: 'form',   icon: 'th-list'},
       { xtype: 'colorfield',     type: 'form',   icon: 'th-list'},
       { xtype: 'checkboxfield',  type: 'form',   icon: 'th-list'},
@@ -49,12 +47,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       { xtype: 'inputfield',     type: 'form',   icon: 'th-list'},
       { xtype: 'numberfield',    type: 'form',   icon: 'th-list'},
       { xtype: 'passwordfield',  type: 'form',   icon: 'th-list'},
-
-
     ];
-
-
-
 
     webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview, JSON.stringify(s), JSON.stringify(c));
     this.messagesFromExtension(webviewPanel);
@@ -184,8 +177,6 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_2.css')).with({ 'scheme': 'vscode-resource' });
     const nonce = Utilities.getNonce();
 
-    console.log(c)
-
 		return `<!DOCTYPE html>
     <html style="width:100%;height:100%;margin:0;padding:0;overflow:hidden;">
     <head>
@@ -228,7 +219,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
                 docked:'bottom',height:30,bodyStyle:'background:whitesmoke;',
                 resizable: {split:true,edges:'north'},
                 items: [
-                  {xtype:'component',html:'v20211107(a)',style:'marginTop:6px;marginLeft:15px;fontStyle:italic;'}
+                  {xtype:'component',html:'v20211110(a)',style:'marginTop:6px;marginLeft:15px;fontStyle:italic;'}
                 ]
               },
               {
@@ -248,9 +239,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
                       '</div>'
                   },
                   {xtype: 'button', style:'marginLeft:10px;', text: 'Change Title',ui: 'action',handler:changeTitle},
-
                   {xtype: 'container', html: 'draggable components',margin: '30 10 0 0', padding: 10},
-
                   {
                     xtype: 'dataview',id: 'dataviewdrag',padding: 10,margin: '0 0 0 0',
                     store: {data: ${c}},
@@ -260,8 +249,6 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
                       '<div type="{type}" style="flex:1">{xtype}</div>' +
                     '</div>'
                   },
-
-
                 ],
               },
               {
@@ -284,7 +271,6 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
 
     <script>
     const vscode = acquireVsCodeApi();
-    //var b = document.getElementById('result');
 
     function changeTitle() {
       var val = document.getElementById('2').value;
@@ -299,7 +285,6 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     window.addEventListener('message', event => {
       console.log('we have a new message from the extension',event)
       const message = event.data;
-      console.log(message)
       switch (message.type) {
         case 'documentchange':
           //console.log('in the case: documentchange from the extension')
