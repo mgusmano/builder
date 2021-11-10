@@ -1,7 +1,8 @@
 # builder README
 
-This is the README for your extension "builder". After writing up a brief description, we recommend including the following sections.
+After writing up a brief description, we recommend including the following sections.
 
+This is where we can provide more details...
 ## Features
 
 Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
@@ -38,14 +39,17 @@ Users appreciate release notes as you update your extension.
 ### 1.0.0
 
 Initial release of ...
+This is where we can provide more details...
 
 ### 1.0.1
 
 Fixed issue #.
+This is where we can provide more details...
 
 ### 1.1.0
 
 Added features X, Y, and Z.
+This is where we can provide more details...
 
 -----------------------------------------------------------------------------------------------------------
 ## Following extension guidelines

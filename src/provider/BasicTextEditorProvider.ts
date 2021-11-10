@@ -55,13 +55,12 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   }
 
   public messagesFromExtension = (webviewPanel:vscode.WebviewPanel) => {
-    //const changeDocumentSubscription =
     this._context.subscriptions.push(
       vscode.workspace.onDidSaveTextDocument(
         (e) => {
-          console.log("onDidSaveTextDocument in the extension");
+          //console.log("onDidSaveTextDocument in the extension");
           if (e.uri.toString() === this._document.uri.toString()) {
-            console.log("post update message to webview");
+            //console.log("post update message to webview");
             //console.log("*** this text");
             //console.log(e.document.getText());
             //console.log("*** this text");
@@ -74,18 +73,6 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
               s: s
             });
           }
-
-
-          // if (e.contentChanges.length > 0) {
-          //   console.log('post update message - didChange')
-          //   console.log(e.contentChanges[0].text)
-          //   webviewPanel.webview.postMessage({
-          //     type: "update",
-          //     text: e.contentChanges[0].text
-          //   });
-          // }
-
-
         }
       )
     );
@@ -93,7 +80,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
 
   public messagesFromWebview = (webviewPanel:vscode.WebviewPanel) => {
     webviewPanel.webview.onDidReceiveMessage((message) => {
-      console.log(message);
+      //console.log(message);
       switch (message.command) {
         case "changeTitle":
           this._props[2].value.value = message.value;
@@ -161,7 +148,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
         val = prop.value.value;
       }
       else {
-        console.log(prop)
+        //console.log(prop)
       }
       o.id = i;
       o.name = prop.key.name;
@@ -244,10 +231,10 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
                     xtype: 'dataview',id: 'dataviewdrag',padding: 10,margin: '0 0 0 0',
                     store: {data: ${c}},
                     itemTpl:
-                    '<div class="dragcomp" style="padding:3px;width:130px;display:flex;flex-direction:row;" type="{type}" xtype="{xtype}" draggable="true">' +
-                      '<div style="width:30px;" class="fa fa-{icon}"></div>' +
-                      '<div type="{type}" style="flex:1">{xtype}</div>' +
-                    '</div>'
+                      '<div class="dragcomp" style="padding:3px;width:130px;display:flex;flex-direction:row;" type="{type}" xtype="{xtype}" draggable="true">' +
+                        '<div style="width:30px;" class="fa fa-{icon}"></div>' +
+                        '<div type="{type}" style="flex:1">{xtype}</div>' +
+                      '</div>'
                   },
                 ],
               },

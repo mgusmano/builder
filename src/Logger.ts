@@ -5,9 +5,9 @@ export class Logger {
   static channel: vscode.OutputChannel;
   static log(message: any) {
     console.log(`${message}`);
-    console.log(this.channel);
+    //console.log(this.channel);
     if (this.channel) {
-      console.log('here');
+      //console.log('here');
       this.channel.appendLine(`${message}`);
     }
   }
