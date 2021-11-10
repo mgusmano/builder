@@ -68,7 +68,26 @@ export class ExtJSPanel {
         <link href="${themeAll2}" rel="stylesheet">
         <style>
         .x-panelheader-accordion {
+          background-color: var(--vscode-activityBar-activeBackground);
+        }
+        .x-panelheader {
           background-color: var(--vscode-editor-background);
+          color: var(--vscode-editor-foreground);
+        }
+        .x-paneltitle {
+          color: var(--vscode-editor-foreground);
+        }
+        .x-panel-body-el {
+          background-color: var(--vscode-editor-background);
+        }
+        .toolbar {
+          background-color: var(--vscode-sideBar-background);
+        }
+        .x-toolbar {
+            background-color: var(--vscode-sideBar-background);
+        }
+        .data {
+          color: var(--vscode-editor-foreground);
         }
         </style>
 			</head>
@@ -82,7 +101,7 @@ export class ExtJSPanel {
             Ext.Viewport.add({
               xtype: 'panel',
               title: 'hi',
-              style: "borderLeft:1px solid red;borderTop:1px solid red;borderRight:21px solid red;borderBottom:1px solid red;",
+              style: "borderLeft:1px solid lightgray;borderTop:1px solid lightgray;borderRight:21px solid lightgray;borderBottom:1px solid lightgray;",
               border: true,
               layout: {
                 type: 'vbox',
@@ -92,9 +111,8 @@ export class ExtJSPanel {
 
               items: [
                 {
-                  //html: 'Dock Top',
                   docked: 'top',
-                  bodyStyle: {background: 'gray', color: 'white'},
+                  xbodyStyle: {background: 'gray', color: 'white'},
                   height: 30,
                   resizable: {
                       split: true,
@@ -179,7 +197,7 @@ export class ExtJSPanel {
                 },
 
                 {
-                  html: 'Unresizable region',
+                  html: '<div class="data">Unresizable region</div>',
                   flex: 1
                 }
               ]

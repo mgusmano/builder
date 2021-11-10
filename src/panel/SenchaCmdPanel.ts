@@ -131,6 +131,12 @@ export class SenchaCmdPanel {
       .x-panel-body-el {
         background-color: var(--vscode-editor-background);
       }
+      .toolbar {
+        background-color: var(--vscode-sideBar-background);
+      }
+      .x-toolbar {
+          background-color: var(--vscode-sideBar-background);
+      }
       </style>
     </head>
     <body id='extbody'></body>
@@ -190,6 +196,7 @@ export class SenchaCmdPanel {
               items: [
                 {
                   docked:'top',height:45,bodyStyle:'background:whitesmoke;',
+                  cls: 'toolbar',
                   resizable: {split:true,edges:'south'},
                   items: [
                     {xtype:'button',text:'Open New ExtJS Folder',style:'marginTop:6px;marginLeft:15px;fontStyle:italic;',handler:'onOpen'}

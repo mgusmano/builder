@@ -31,31 +31,31 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(Logger.channel);
   Logger.log('Sencha Builder extension is now active!');
 
-	context.subscriptions.push(
-		vscode.commands.registerCommand('builder.cmd', () => {
+	// context.subscriptions.push(
+	// 	vscode.commands.registerCommand('builder.cmd', () => {
 
-    //   async function createTermAndRunCommand (name, theme, ctx, cmd) {
-    //     this.termStack = [];
+  //   //   async function createTermAndRunCommand (name, theme, ctx, cmd) {
+  //   //     this.termStack = [];
 
-    //     function createTerm () {
-    //         const term = window.createTerminal(`OpenArch`);
-    //         this.termStack.push();
-    //         return term
-    //     }
+  //   //     function createTerm () {
+  //   //         const term = window.createTerminal(`OpenArch`);
+  //   //         this.termStack.push();
+  //   //         return term
+  //   //     }
 
-    //     this.cmd = cmd;
-    //     const term = createTerm();
-    //     await term.sendText(`sencha generate app --ext -${theme} ${name} ./`);
-    //     term.show();
-    // }
+  //   //     this.cmd = cmd;
+  //   //     const term = createTerm();
+  //   //     await term.sendText(`sencha generate app --ext -${theme} ${name} ./`);
+  //   //     term.show();
+  //   // }
 
-			const term = vscode.window.createTerminal(`OpenArch`);
-      var theme = 'theme-material';
-      var name = 'myapp';
-      term.show();
-      term.sendText(`sencha generate app --ext -modern --theme-name theme-material myapp ./myapp`);
-		})
-	);
+	// 		const term = vscode.window.createTerminal(`OpenArch`);
+  //     var theme = 'theme-material';
+  //     var name = 'myapp';
+  //     term.show();
+  //     term.sendText(`sencha generate app --ext -modern --theme-name theme-material myapp ./myapp`);
+	// 	})
+	// );
 
 
   context.subscriptions.push(BasicTextEditorProvider.register(context));

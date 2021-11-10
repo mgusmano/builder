@@ -30,7 +30,33 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     this._document = document;
     webviewPanel.webview.options = { enableScripts: true, enableCommandUris: true, };
     var s = this.doPropsJSON(document.getText());
-    webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview, JSON.stringify(s));
+
+    var c = [
+      { xtype: 'column',         type: 'grid',   icon: 'table'},
+      { xtype: 'datecolumn',     type: 'grid',   icon: 'table'},
+      { xtype: 'numbercolumn',   type: 'grid',   icon: 'table'},
+      { xtype: 'treecolumn',     type: 'grid',   icon: 'table'},
+
+      { xtype: 'button',         type: 'button', icon: 'cog'},
+
+      { xtype: 'textfield',      type: 'form',   icon: 'th-list'},
+      { xtype: 'colorfield',     type: 'form',   icon: 'th-list'},
+      { xtype: 'checkboxfield',  type: 'form',   icon: 'th-list'},
+      { xtype: 'comboboxfield',  type: 'form',   icon: 'th-list'},
+      { xtype: 'containerfield', type: 'form',   icon: 'th-list'},
+      { xtype: 'datefield',      type: 'form',   icon: 'th-list'},
+      { xtype: 'emailfield',     type: 'form',   icon: 'th-list'},
+      { xtype: 'inputfield',     type: 'form',   icon: 'th-list'},
+      { xtype: 'numberfield',    type: 'form',   icon: 'th-list'},
+      { xtype: 'passwordfield',  type: 'form',   icon: 'th-list'},
+
+
+    ];
+
+
+
+
+    webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview, JSON.stringify(s), JSON.stringify(c));
     this.messagesFromExtension(webviewPanel);
     this.messagesFromWebview(webviewPanel);
   }
@@ -152,11 +178,13 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     return pArray;
   }
 
-  private getHtmlForWebview(webview: vscode.Webview, s: any ): string {
+  private getHtmlForWebview(webview: vscode.Webview, s: any , c: any): string {
     const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-modern-all-debug.js')).with({ 'scheme': 'vscode-resource' });
     const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_1.css')).with({ 'scheme': 'vscode-resource' });
     const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_2.css')).with({ 'scheme': 'vscode-resource' });
     const nonce = Utilities.getNonce();
+
+    console.log(c)
 
 		return `<!DOCTYPE html>
     <html style="width:100%;height:100%;margin:0;padding:0;overflow:hidden;">
@@ -219,7 +247,21 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
                         '<input id="{id}" type="text" name="name" value="{value}" /></div>' +
                       '</div>'
                   },
-                  {xtype: 'button', style:'marginLeft:10px;', text: 'Change Title',ui: 'action',handler:changeTitle}
+                  {xtype: 'button', style:'marginLeft:10px;', text: 'Change Title',ui: 'action',handler:changeTitle},
+
+                  {xtype: 'container', html: 'draggable components',margin: '30 10 0 0', padding: 10},
+
+                  {
+                    xtype: 'dataview',id: 'dataviewdrag',padding: 10,margin: '0 0 0 0',
+                    store: {data: ${c}},
+                    itemTpl:
+                    '<div class="dragcomp" style="padding:3px;width:130px;display:flex;flex-direction:row;" type="{type}" xtype="{xtype}" draggable="true">' +
+                      '<div style="width:30px;" class="fa fa-{icon}"></div>' +
+                      '<div type="{type}" style="flex:1">{xtype}</div>' +
+                    '</div>'
+                  },
+
+
                 ],
               },
               {
