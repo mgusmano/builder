@@ -1,0 +1,12 @@
+    <script type="text/javascript">
+
+      window.setInterval(function(){ console.log("Hello"); }, 3000);
+
+      // console.log('script')
+      // window.setTimeout(function(){
+      //   console.log('timeout')
+      //   Ext.Viewport.setItems(Ext.create('myapp.view.main.PersonnelView'));
+      //   //alert("Hello");
+      // }, 1000);
+      
+    </script>

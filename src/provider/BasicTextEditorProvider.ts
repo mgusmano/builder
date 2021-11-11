@@ -206,7 +206,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
                 docked:'bottom',height:30,bodyStyle:'background:whitesmoke;',
                 resizable: {split:true,edges:'north'},
                 items: [
-                  {xtype:'component',html:'v20211110(a)',style:'marginTop:6px;marginLeft:15px;fontStyle:italic;'}
+                  {xtype:'component',html:'v20211111(a)',style:'marginTop:6px;marginLeft:15px;fontStyle:italic;'}
                 ]
               },
               {
@@ -226,6 +226,9 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
                       '</div>'
                   },
                   {xtype: 'button', style:'marginLeft:10px;', text: 'Change Title',ui: 'action',handler:changeTitle},
+
+                  //{xtype: 'container', html: '<iframe src="http://localhost:1841" title="description"></iframe>',margin: '30 10 0 0', padding: 10},
+
                   {xtype: 'container', html: 'draggable components',margin: '30 10 0 0', padding: 10},
                   {
                     xtype: 'dataview',id: 'dataviewdrag',padding: 10,margin: '0 0 0 0',
