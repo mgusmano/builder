@@ -1,4 +1,26 @@
 {
+  "skills2": [
+    {
+      "skillID": 1,
+      "groupID": 34751,
+      "skillName": "mjgCore Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 2,
+      "groupID": 34751,
+      "skillName": "Phase Paper Insertion (VW)",
+      "goal": 2
+    },
+    {
+      "skillID": 3,
+      "groupID": 34751,
+      "skillName": "Phase Paper Insertion (UV)",
+      "goal": 3
+    }
+  ],
+
+
   "skills": [
     {
       "skillID": 1,

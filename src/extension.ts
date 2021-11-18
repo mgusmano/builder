@@ -30,8 +30,11 @@ import { StatusBarThemePanel } from './statusbar/StatusBarThemePanel';
 export function activate(context: vscode.ExtensionContext) {
 
   ;(async () => {
-    const todos = await axios.get('https://jsonplaceholder.typicode.com/todos');
-    var d = `<pre>${JSON.stringify(todos, null, 2)}</pre>`;
+    // const todos = await axios.get('https://jsonplaceholder.typicode.com/todos');
+    // console.log(todos);
+    const localRoot = 'https://my-json-server.typicode.com/mgusmano/builder';
+    const skillsResult = await axios(`${localRoot}/skills`);
+    console.log(skillsResult);
   })();
 
 

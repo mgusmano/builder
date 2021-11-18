@@ -57,8 +57,8 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     webviewPanel.webview.options = { enableScripts: true, enableCommandUris: true, };
     var s = this.doPropsJSON(document.getText());
 
-    var data = await this.getData(34750);
-    console.log(data);
+    //var data = await this.getData(34750);
+    //console.log(data);
 
 
     var c = [
