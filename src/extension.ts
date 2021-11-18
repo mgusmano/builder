@@ -32,8 +32,10 @@ export function activate(context: vscode.ExtensionContext) {
   ;(async () => {
     // const todos = await axios.get('https://jsonplaceholder.typicode.com/todos');
     // console.log(todos);
+    //const localRoot = 'https://my-json-server.typicode.com/mgusmano/toshibaserver';
     const localRoot = 'https://my-json-server.typicode.com/mgusmano/builder';
-    var url = `${localRoot}/skills2`;
+
+    var url = `${localRoot}/skills`;
     console.log(url);
     const skillsResult = await axios(url);
     console.log(skillsResult);
