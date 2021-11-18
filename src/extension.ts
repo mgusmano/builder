@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { Logger } from './Logger';
+import axios from "axios";
 
 import { BasicTextEditorProvider } from './provider/BasicTextEditorProvider';
 
@@ -27,6 +28,14 @@ import { StatusBarThemePanel } from './statusbar/StatusBarThemePanel';
 //import { StatusBarOpenWith } from './statusbar/StatusBarOpenWith';
 
 export function activate(context: vscode.ExtensionContext) {
+
+  ;(async () => {
+    const todos = await axios.get('https://jsonplaceholder.typicode.com/todos');
+    var d = `<pre>${JSON.stringify(todos, null, 2)}</pre>`;
+  })();
+
+
+
   Logger.channel = vscode.window.createOutputChannel("Sencha Builder");
   context.subscriptions.push(Logger.channel);
   Logger.log('Sencha Builder extension is now active!');

@@ -19,7 +19,7 @@ export class SenchaCmdPanelHTML {
     },
     {
       xtype: 'component',
-      html: '<br/>Use this form to create a new Sencha Ext JS Application<br/>When you click the Submit button, a terminal window will start and Sencha Cmd will run.',
+      html: '<br/>Use this form to create a new Sencha Ext JS Application<br/><br/>',
       style: {
         'font-size': '18px',
         'text-align': 'center',

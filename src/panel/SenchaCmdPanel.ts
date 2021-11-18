@@ -208,7 +208,7 @@ export class SenchaCmdPanel {
                   layout: {type: 'vbox',pack: 'top', align: 'middle'},
                   defaults: {
                     labelAlign: 'top',
-                    width: '70%'
+                    width: '350px'
                   },
                   items: [
                     {
@@ -275,7 +275,16 @@ export class SenchaCmdPanel {
                       //style: {'margin': 'auto'}
                     },
                   ]
-                }
+                },
+                {
+                  xtype: 'component',
+                  html: '<br/><br/>When you click the Submit button,<br/>a terminal window will start and Sencha Cmd will run.',
+                  style: {
+                    'font-size': '18px',
+                    'text-align': 'center',
+                    'margin': 'auto'
+                  }
+                },
               ]
             }
           )

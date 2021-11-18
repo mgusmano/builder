@@ -1,0 +1,376 @@
+{
+  "skills": [
+    {
+      "skillID": 1,
+      "groupID": 34751,
+      "skillName": "mjgCore Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 2,
+      "groupID": 34751,
+      "skillName": "Phase Paper Insertion (VW)",
+      "goal": 2
+    },
+    {
+      "skillID": 3,
+      "groupID": 34751,
+      "skillName": "Phase Paper Insertion (UV)",
+      "goal": 3
+    },
+    {
+      "skillID": 4,
+      "groupID": 34751,
+      "skillName": "Lead Wire Setting",
+      "goal": 4
+    },
+    {
+      "skillID": 5,
+      "groupID": 34751,
+      "skillName": "Neutral Tube Insertion",
+      "goal": 5
+    },
+    {
+      "skillID": 6,
+      "groupID": 34751,
+      "skillName": "Neutral Crimp",
+      "goal": 6
+    },
+    {
+      "skillID": 7,
+      "groupID": 34751,
+      "skillName": "Final Forming",
+      "goal": 7
+    },
+    {
+      "skillID": 8,
+      "groupID": 34751,
+      "skillName": "Pre-Lacing",
+      "goal": 8
+    },
+    {
+      "skillID": 9,
+      "groupID": 34751,
+      "skillName": "Lacing & CSV",
+      "goal": 9
+    },
+    {
+      "skillID": 10,
+      "groupID": 34751,
+      "skillName": "Lead Wire Crimp",
+      "goal": 1
+    },
+    {
+      "skillID": 11,
+      "groupID": 34751,
+      "skillName": "Lead Wire Forming",
+      "goal": 2
+    },
+    {
+      "skillID": 12,
+      "groupID": 34751,
+      "skillName": "Tester I",
+      "goal": 3
+    },
+    {
+      "skillID": 13,
+      "groupID": 34751,
+      "skillName": "Varnish In",
+      "goal": 4
+    },
+    {
+      "skillID": 14,
+      "groupID": 34751,
+      "skillName": "Varnish Out 1",
+      "goal": 5
+    },
+    {
+      "skillID": 15,
+      "groupID": 34751,
+      "skillName": "Varnish Out 2",
+      "goal": 6
+    },
+    {
+      "skillID": 16,
+      "groupID": 34751,
+      "skillName": "Visual Inspection",
+      "goal": 7
+    },
+    {
+      "skillID": 17,
+      "groupID": 34751,
+      "skillName": "Tester II",
+      "goal": 8
+    },
+    {
+      "skillID": 18,
+      "groupID": 34751,
+      "skillName": "Packing",
+      "goal": 9
+    },
+    {
+      "skillID": 19,
+      "groupID": 34751,
+      "skillName": "Pre-Assembly",
+      "goal": 1
+    },
+    {
+      "skillID": 20,
+      "groupID": 34751,
+      "skillName": "Inspection & Packing",
+      "goal": 2
+    },
+    {
+      "skillID": 708,
+      "groupID": 34708,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 709,
+      "groupID": 34709,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 710,
+      "groupID": 34710,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 711,
+      "groupID": 34711,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 712,
+      "groupID": 34712,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 713,
+      "groupID": 34713,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 714,
+      "groupID": 34714,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 715,
+      "groupID": 34715,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 720,
+      "groupID": 34720,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 721,
+      "groupID": 34721,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 750,
+      "groupID": 34750,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 7071,
+      "groupID": 34707,
+      "skillName": "Core Loading",
+      "goal": 1
+    },
+    {
+      "skillID": 7072,
+      "groupID": 34707,
+      "skillName": "Phase Paper Insertion (VW)",
+      "goal": 2
+    },
+    {
+      "skillID": 7073,
+      "groupID": 34707,
+      "skillName": "Phase Paper Insertion (UV)",
+      "goal": 3
+    }
+  ],
+  "operators": [
+    {
+      "operatorID": 708,
+      "groupID": 34708,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 709,
+      "groupID": 34709,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 710,
+      "groupID": 34710,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 711,
+      "groupID": 34711,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 712,
+      "groupID": 34712,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 713,
+      "groupID": 34713,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 714,
+      "groupID": 34714,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 715,
+      "groupID": 34715,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "id": 720,
+      "groupID": 34720,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 721,
+      "groupID": 34721,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "id": 750,
+      "groupID": 34750,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 751,
+      "groupID": 34751,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 1,
+      "groupID": 34707,
+      "operatorName": "Aaron Cariaga",
+      "picture": "AaronCariaga.jpg",
+      "goal": 1
+    },
+    {
+      "operatorID": 2,
+      "groupID": 34707,
+      "operatorName": "Ahmed Al Talabani",
+      "picture": "Ahmed Al Talabani.jpg",
+      "goal": 2
+    },
+    {
+      "operatorID": 3,
+      "groupID": 34707,
+      "operatorName": "Baltazar Garcia",
+      "picture": "Baltazar Garcia.jpg",
+      "goal": 3
+    },
+    {
+      "operatorID": 4,
+      "groupID": 34707,
+      "operatorName": "Blaise Chancellor Podehole",
+      "picture": "Blaise Chancellor Podehale.jpg",
+      "goal": 4
+    }
+  ],
+  "certifications": [
+    {
+      "skillID": 1,
+      "operatorID": 284393,
+      "groupID": 34751,
+      "meta": {
+        "type": "solid",
+        "currcertID": 1,
+        "letter": "",
+        "start": "8/3/2021"
+      },
+      "data": [],
+      "id": 284403
+    },
+    {
+      "skillID": 1,
+      "operatorID": 284408,
+      "groupID": 34751,
+      "meta": {
+        "type": "solid",
+        "currcertID": 2,
+        "letter": "",
+        "start": "8/3/2021"
+      },
+      "data": [],
+      "id": 284418
+    },
+    {
+      "skillID": 1,
+      "operatorID": 284404,
+      "groupID": 34751,
+      "meta": {
+        "type": "solid",
+        "currcertID": 1,
+        "letter": "",
+        "start": "8/3/2021"
+      },
+      "data": [],
+      "id": 284414
+    },
+    {
+      "skillID": 1,
+      "operatorID": 284405,
+      "groupID": 34751,
+      "meta": {
+        "type": "solid",
+        "currcertID": 1,
+        "letter": "",
+        "start": "8/3/2021"
+      },
+      "data": [],
+      "id": 284415
+    }
+  ]
+}

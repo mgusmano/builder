@@ -3,6 +3,7 @@ import { Utilities } from "../Utilities";
 import { Logger } from "../Logger";
 import * as esprima from "esprima";
 import * as escodegen from "escodegen";
+import axios from "axios";
 
 export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider {
   public _context: vscode.ExtensionContext;
@@ -26,10 +27,39 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     this._extensionUri = context.extensionUri;
   }
 
+  public getData = async (groupID: any) => {
+    const apiRoot = 'https://skillnetusersapi.azurewebsites.net/api';
+    //const localRoot = 'http://localhost:3005';
+    const localRoot = 'https://my-json-server.typicode.com/mgusmano/toshibaserver';
+    const auth = {auth:{username:'skillnet',password:'demo'}};
+
+    const skills2Url = `${apiRoot}/PortalGroupSkillsOnly?groupid=${groupID}`;
+    //console.log(skills2Url)
+    const skills2Result = await axios(skills2Url,auth);
+    const operators2Result = await axios(`${apiRoot}/PortalGroupOperators?groupid=${groupID}`,auth);
+    const certifications2Result = await axios(`${apiRoot}/PortalCertificationsRating?groupid=${groupID}`,auth);
+
+    // //just for the webAPI data while it is broken
+    const skills3Resultdata = skills2Result.data.slice(0, 19);
+
+    var r = {
+      //skills: skills2Result.data,
+      skills: skills3Resultdata,
+      operators: operators2Result.data,
+      certifications: certifications2Result.data
+    };
+    return r;
+  };
+
+
   public async resolveCustomTextEditor( document: vscode.TextDocument, webviewPanel: vscode.WebviewPanel, _token: vscode.CancellationToken ): Promise<void> {
     this._document = document;
     webviewPanel.webview.options = { enableScripts: true, enableCommandUris: true, };
     var s = this.doPropsJSON(document.getText());
+
+    var data = await this.getData(34750);
+    console.log(data);
+
 
     var c = [
       { xtype: 'column',         type: 'grid',   icon: 'table'},
