@@ -1,4 +1,11 @@
 {
+  "components": [
+    {
+      "componentID": 1,
+      "componentName": "Panel"
+    }
+  ],
+
   "skills": [
     {
       "skillID": 1,
