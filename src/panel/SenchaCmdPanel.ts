@@ -11,6 +11,7 @@ export class SenchaCmdPanel {
   private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
   public _toolkit: any;
+  public _version:any;
   public _theme: any;
   public _applicationName: any;
   public _applicationPath: any;
@@ -76,13 +77,14 @@ export class SenchaCmdPanel {
           const term = vscode.window.createTerminal(`Sencha Builder`);
           term.show();
           term.sendText(`chdir ${os.homedir()}/SenchaApps`);
-          var cmd = `sencha generate app --ext -${message.toolkit} --theme-name theme-${message.theme} ${message.applicationName} ${message.applicationPath}/${message.applicationName}`;
+          var cmd = `sencha generate app --ext@${message.version} -${message.toolkit} --theme-name theme-${message.theme} ${message.applicationName} ${message.applicationPath}/${message.applicationName}`;
           term.sendText(cmd);
 
           this._toolkit = message.toolkit;
           this._theme = message.theme;
           this._applicationName = message.applicationName;
           this._applicationPath = message.applicationPath;
+          this._version = message.version;
           break;
       }
     });
@@ -158,6 +160,7 @@ export class SenchaCmdPanel {
         font-size: 18px;
         text-align: center;
         margin: auto;
+        color: #5f5858;
         margin-bottom: 30px;
       }
       .button {
@@ -170,7 +173,7 @@ export class SenchaCmdPanel {
       .fixed-footer,.fixed-header{
         width: 100%;
         padding: 10px 0;
-        background-color: #f3f3f3; 
+        background-color: var(--vscode-sideBar-background);
       }
       .fixed-header{
         height:70px;
@@ -195,11 +198,13 @@ export class SenchaCmdPanel {
         font-size: 24px;
         text-align: center;
         margin: auto;
+        color: #5f5858;
         margin-bottom: 13px;
       }
       .sub-header{
         font-size: 18px;
         text-align: center;
+        color: #5f5858;
         margin-bottom: 32px;
       }
       .img{
@@ -215,7 +220,7 @@ export class SenchaCmdPanel {
         overflow: hidden;
         margin: auto;
         display: flex;
-        background-color: #ffff;
+        background-color: var(--vscode-sideBar-background);
         height: 5vh;
       }
       .header-topic{
@@ -250,14 +255,14 @@ export class SenchaCmdPanel {
         </div>
         <vscode-button class="ext-folder" onclick="onOpen()">OPEN NEW EXTJS FOLDER</vscode-button>
       </div>
-      <div style="color: black; background-color: white;">
+      <div class="x-panel-body-el">
         <div class="img"></div>
         <div class="header">Create a New Application</div>
         <div class="sub-header">Use this form to create a new Sencha Ext JS Application</div>
         <form name="RegForm" method="post">
           <div class="select-container">
             <p>Toolkit*</p>
-            <vscode-dropdown style="width:350px; color: gray;" name="toolkit" required>
+            <vscode-dropdown style="width:350px; color: gray;" onchange="onToolkitChange();" id="toolkit" required>
             	<vscode-option value="" selected>Select a toolkit...</vscode-option>
             	<vscode-option value="modern">modern</vscode-option>
             	<vscode-option value="classic">classic</vscode-option>
@@ -271,6 +276,11 @@ export class SenchaCmdPanel {
             	<vscode-option value="ios">ios</vscode-option>
               <vscode-option value="triton">triton</vscode-option>
             </vscode-dropdown>
+          </div>
+          <div class="select-container">
+          <p>Version*</p>
+          <vscode-dropdown style="width:350px; color: gray;" onchange="versionSelection();" id="version" required>
+            <vscode-option value="" selected>Select a version...</vscode-option>
           </div>
           <div class="select-container">
             <label class="vscode-text-label">Application Name*</label>
@@ -287,12 +297,40 @@ export class SenchaCmdPanel {
         </form>
       </div>
       <script>
+        var select = document.getElementById("version");
+        var options = ["7.4.0", "7.3.1", "7.3.0", "7.2.0", "7.1.0","7.0.0","7.0.0-CE","6.7.0","6.7.0-CE","6.6.0-CE","6.6.0","6.5.3","6.5.2","6.5.1","6.5.0","6.2.1","6.2.0","6.0.2","6.0.2","6.0.1","6.0.0","5.1.4","5.1.3","5.1.2","5.1.1","5.1.0","5.0.1","5.0.0","4.2.6","4.1.3","4.0.7","3.4.0"];
+
+        function versionSelection(){
+          if(select.value){
+            return true;
+          }
+          return false;
+        }
+
+        function onToolkitChange(){
+          var arr = options.slice(0);
+          if(document.getElementById('toolkit').value == "modern"){
+            arr = options.slice(0,21);
+          } 
+
+          for( var k = 0; k < select.childNodes.length;) {
+            select.removeChild(select.childNodes[k]);
+          }
+          for(var i = 0; i < arr.length; i++) {
+            var opt = arr[i];
+            var el = document.createElement("vscode-option");
+            el.textContent = opt;
+            el.value = opt;
+            select.appendChild(el);
+          }
+        }
         function validateForm(){
          if(document.forms["RegForm"].checkValidity()){
           vscode.postMessage({
             command: 'runcmd',
             toolkit: document.forms["RegForm"]["toolkit"].value,
             theme: document.forms["RegForm"]["theme"].value,
+            version: document.forms["RegForm"]["version"].value,
             applicationName: document.forms["RegForm"]["ApplicationName"].value,
             applicationPath: document.forms["RegForm"]["ApplicationPath"].value
           });
