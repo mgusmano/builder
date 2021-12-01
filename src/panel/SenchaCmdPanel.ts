@@ -142,6 +142,10 @@ export class SenchaCmdPanel {
       .x-toolbar {
           background-color: var(--vscode-sideBar-background);
       }
+      .body-container{
+        background-color: #35284b;
+        background-image: linear-gradient(56deg, #6a3e73 0%, #25193a 73%);
+      }
       label {
         font-size: 1rem;
         padding-right: 10px;
@@ -152,60 +156,45 @@ export class SenchaCmdPanel {
       vscode-dropdown:invalid,vscode-text-field:invalid{
         border: 1px solid red;
       }
-  
       .select-container{
-        margin-bottom: 30px;
+        margin-bottom: 20px;
       }
       .content{
-        font-size: 18px;
-        text-align: center;
+        font-size: 12px;
+        text-align: start;
         margin: auto;
-        color: #5f5858;
-        margin-bottom: 30px;
+        font-weight: 600;
+        color: var(--input-placeholder-foreground);
+        margin-bottom: 15px;
+        margin-left: 12%;
+        width: 80%;
       }
       .button {
-        background-color: #2196f3;
-        padding: 7px 10px 9px;
+        background-color: #1d893e;
         border-radius: 3px;
-        margin: 4px 2px;
-        width: 10%;
+        margin: -3px 2px;
+        width: 72%;
       }
-      .fixed-footer,.fixed-header{
-        width: 100%;
-        padding: 10px 0;
-        background-color: var(--vscode-sideBar-background);
-      }
-      .fixed-header{
-        height:70px;
-      }
-      .fixed-footer{
-        bottom: 0;
-      } 
       p{
         text-align: start;
-        color: gray;
         font-size: 12px;
-        margin-left: 36%;
-      }
-
-      html,body {
-        margin:0;
-        padding:0;
-        height: 100%;
-        overflow: scroll;
+        margin-left: 12%;
+        color: var(--input-placeholder-foreground);
       }
       .header{
-        font-size: 24px;
-        text-align: center;
-        margin: auto;
-        color: #5f5858;
-        margin-bottom: 13px;
+        font-size: 21px;
+        text-align: start;
+        font-weight: 600;
+        color: var(--input-placeholder-foreground);
+        margin-bottom: 7px;
+        margin-left: 11.5%;
       }
       .sub-header{
-        font-size: 18px;
+        font-size: 14px;
         text-align: center;
-        color: #5f5858;
-        margin-bottom: 32px;
+        font-weight: 600;
+        color: var(--input-placeholder-foreground);
+        margin-bottom: 20px;
       }
       .img{
         height: 90px;
@@ -213,88 +202,100 @@ export class SenchaCmdPanel {
         background-repeat: no-repeat;
         position: relative;
         background-position: center;
-        background-size: auto 100%;
-      }
-      .header-content{
-        align-items: center;
-        overflow: hidden;
-        margin: auto;
-        display: flex;
-        background-color: var(--vscode-sideBar-background);
-        height: 5vh;
-      }
-      .header-topic{
-        opacity: 0.81;
-        font-size: 17px;
-        color: #5f5858;
-        margin-left: 10px;
+        background-size: auto 80%;
+        margin-top: 45%;
       }
       .ext-folder{
         font-family: Roboto, sans-serif;
+        background-color: #1d893e;
         border-radius: 3px;
+        margin: 14px 25px;
+        width: 83%;
         display: flex;
-        margin: 9px 2px;
-        width: 16%;
       }
       .vscode-text-label{
         display: flex;
-        justify-content: space-around;
-        margin-right: 19%;
+        justify-content: flex-start;
+        margin-left: 12%;
         cursor: pointer;
         color: var(--input-placeholder-foreground);
-        font-size: var(--type-ramp-base-font-size);
+        font-size: 12px;
         line-height: var(--type-ramp-base-line-height);
         margin-bottom: calc(var(--design-unit) * 2px);
       }
+      .split-left{
+        width: 25%;
+        height: 89.3%;
+        position: fixed;
+        margin: 3.2rem auto 0 auto;
+        background-color: var(--vscode-sideBar-background);
+        left: 19%;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+      .split-right{
+        width: 37%;
+        height: 86%;
+        overflow-y: auto;
+        padding-top: 20px;
+        position: fixed;
+        margin: 3.2rem auto 0 auto;
+        background-color: var(--vscode-editor-background);
+        right: 19%;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
+      ::-webkit-scrollbar {
+        width: 0; 
+        background: transparent;  
+      }
+
       </style>
     </head>
-    <body id='extbody' align="center">
-      <div class="fixed-header">
-        <div class="header-content">
-        <div class="header-topic">Sencha Builder</div>
+    <body id='extbody' class="body-container" align="center">
+      <div>
+        <div class="split-left">
+          <vscode-button class="ext-folder" onclick="onOpen()">OPEN NEW EXTJS FOLDER</vscode-button>
+          <div class="img"></div>
         </div>
-        <vscode-button class="ext-folder" onclick="onOpen()">OPEN NEW EXTJS FOLDER</vscode-button>
-      </div>
-      <div class="x-panel-body-el">
-        <div class="img"></div>
-        <div class="header">Create a New Application</div>
-        <div class="sub-header">Use this form to create a new Sencha Ext JS Application</div>
-        <form name="RegForm" method="post">
-          <div class="select-container">
-            <p>Toolkit*</p>
-            <vscode-dropdown style="width:350px; color: gray;" onchange="onToolkitChange();" id="toolkit" required>
-            	<vscode-option value="" selected>Select a toolkit...</vscode-option>
-            	<vscode-option value="modern">modern</vscode-option>
-            	<vscode-option value="classic">classic</vscode-option>
-            </vscode-dropdown>
-          </div>
-          <div class="select-container">
-            <p>Theme*</p>
-            <vscode-dropdown style="width:350px; color: gray;" name="theme" required>
-              <vscode-option value="" selected>Select a theme...</vscode-option>
-            	<vscode-option value="material">material</vscode-option>
-            	<vscode-option value="ios">ios</vscode-option>
-              <vscode-option value="triton">triton</vscode-option>
-            </vscode-dropdown>
-          </div>
-          <div class="select-container">
-          <p>Version*</p>
-          <vscode-dropdown style="width:350px; color: gray;" onchange="versionSelection();" id="version" required>
-            <vscode-option value="" selected>Select a version...</vscode-option>
-          </div>
-          <div class="select-container">
-            <label class="vscode-text-label">Application Name*</label>
-            <vscode-text-field value="" name="ApplicationName" placeholder="Application Name" required></vscode-text-field>
-          </div>
-          <div class="select-container">
-            <label class="vscode-text-label">Application Path*</label>
-            <vscode-text-field class="select-container value="${os.homedir()}/SenchaApps" name="ApplicationPath" placeholder="Application Path" required></vscode-text-field>
-          </div>
-          <div class="content">When you click the Submit button,<br> a terminal window will start and Sencha Cmd will run.</div>
-          <div class="fixed-footer">
+        <div class="split-right">
+          <div class="header">Create a New Application</div>
+          <div class="sub-header">Use this form to create a new Sencha Ext JS Application</div>
+          <form name="RegForm" method="post">
+            <div class="select-container">
+                <label class="vscode-text-label">Application Name*</label>
+                <vscode-text-field value="" name="ApplicationName" placeholder="Enter Application Name" required></vscode-text-field>
+            </div>
+            <div class="select-container">
+                <label class="vscode-text-label">Application Path*</label>
+                <vscode-text-field value="${os.homedir()}/SenchaApps" name="ApplicationPath" placeholder="Enter Application Path" required></vscode-text-field>
+            </div>
+            <div class="select-container">
+              <p>Toolkit*</p>
+              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" onchange="onToolkitChange();" id="toolkit" required>
+            	  <vscode-option value="" selected>Select a toolkit...</vscode-option>
+            	  <vscode-option value="modern">modern</vscode-option>
+            	  <vscode-option value="classic">classic</vscode-option>
+              </vscode-dropdown>
+            </div>
+            <div class="select-container">
+              <p>Theme*</p>
+              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" name="theme" required>
+                <vscode-option value="" selected>Select a theme...</vscode-option>
+            	  <vscode-option value="material">material</vscode-option>
+            	  <vscode-option value="ios">ios</vscode-option>
+                <vscode-option value="triton">triton</vscode-option>
+              </vscode-dropdown>
+            </div>
+            <div class="select-container">
+              <p>Version*</p>
+              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" onchange="versionSelection();" id="version" required>
+              <vscode-option value="" selected>Select a version...</vscode-option>
+            </div>
+            <div class="content">On click of Submit button a terminal window will start and Sencha Cmd will run.</div>
             <vscode-button class="button" onclick ="validateForm()">SUBMIT</vscode-button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
       <script>
         var select = document.getElementById("version");
