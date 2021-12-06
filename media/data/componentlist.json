@@ -1,0 +1,72 @@
+[
+    {
+      "type": "button",
+      "text": "Button",
+      "compoentChild": [
+        {
+          "text": "Button",
+          "groupField": "button"
+        },
+        {
+          "name": "Cycle Button",
+          "text": "Cycle Button",
+          "groupField": "Grid"
+        },
+        {
+          "name": "Segmented Button",
+          "text": "Segmented Button",
+          "groupField": "Grid"
+        }
+      ]
+    },
+    {
+      "type": "panel",
+      "text": "Panel",
+      "compoentChild": [
+        {
+          "name": "Boolean Fileter",
+          "text": "Boolean Fileter1",
+          "groupField": "stan"
+        },
+        {
+          "text": "Date Filter1",
+          "groupField": "Grid"
+        },
+        {
+          "name": "Boolean Fileter",
+          "text": "Boolean Fileter1",
+          "groupField": "Grid"
+        },
+        {
+          "name": "Date Filter",
+          "text": "Date Filter",
+          "groupField": "Grid"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "text": "Grid",
+      "compoentChild": [
+        {
+          "name": "Column",
+          "text": "Column",
+          "groupField": "stan"
+        },
+        {
+          "text": "Action Column",
+          "groupField": "Grid"
+        },
+        {
+          "name": "Boolean Fileter",
+          "text": "Boolean Filter",
+          "groupField": "Grid"
+        },
+        {
+          "name": "Date Filter",
+          "text": "Date Filter",
+          "groupField": "Grid"
+        }
+      ]
+    }
+  ]

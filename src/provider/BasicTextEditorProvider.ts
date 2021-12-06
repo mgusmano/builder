@@ -4,10 +4,13 @@ import { Logger } from "../Logger";
 import * as esprima from "esprima";
 import * as escodegen from "escodegen";
 import axios from "axios";
-
+import * as fs from 'fs';
+import { getMainViewHtml } from "../webview/html/MainView";
+import {gridTemplate} from '../webview/html/grid'
 export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider {
   public _context: vscode.ExtensionContext;
   private readonly _extensionUri: vscode.Uri;
+  private webviewPanel: any;
   public _ast: any;
   public _props: any;
   public _document: any;
@@ -54,32 +57,15 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
 
   public async resolveCustomTextEditor( document: vscode.TextDocument, webviewPanel: vscode.WebviewPanel, _token: vscode.CancellationToken ): Promise<void> {
     this._document = document;
+    this.webviewPanel = webviewPanel;
     webviewPanel.webview.options = { enableScripts: true, enableCommandUris: true, };
     var s = this.doPropsJSON(document.getText());
+    const componetListUri = (vscode.Uri.joinPath(this._extensionUri, 'media','data','componentlist.json')).with({ 'scheme': 'vscode-resource' });
+    const componentList = fs.readFileSync(`${componetListUri.path}`,{encoding:'utf8', flag:'r'});
+    const componetTargetUri = (vscode.Uri.joinPath(this._extensionUri, 'media','data','componenttargets.json')).with({ 'scheme': 'vscode-resource' });
+    const componetTarget = fs.readFileSync(`${componetTargetUri.path}`,{encoding:'utf8', flag:'r'});
 
-    //var data = await this.getData(34750);
-    //console.log(data);
-
-
-    var c = [
-      { xtype: 'column',         type: 'grid',   icon: 'table'},
-      { xtype: 'datecolumn',     type: 'grid',   icon: 'table'},
-      { xtype: 'numbercolumn',   type: 'grid',   icon: 'table'},
-      { xtype: 'treecolumn',     type: 'grid',   icon: 'table'},
-      { xtype: 'button',         type: 'button', icon: 'cog'},
-      { xtype: 'textfield',      type: 'form',   icon: 'th-list'},
-      { xtype: 'colorfield',     type: 'form',   icon: 'th-list'},
-      { xtype: 'checkboxfield',  type: 'form',   icon: 'th-list'},
-      { xtype: 'comboboxfield',  type: 'form',   icon: 'th-list'},
-      { xtype: 'containerfield', type: 'form',   icon: 'th-list'},
-      { xtype: 'datefield',      type: 'form',   icon: 'th-list'},
-      { xtype: 'emailfield',     type: 'form',   icon: 'th-list'},
-      { xtype: 'inputfield',     type: 'form',   icon: 'th-list'},
-      { xtype: 'numberfield',    type: 'form',   icon: 'th-list'},
-      { xtype: 'passwordfield',  type: 'form',   icon: 'th-list'},
-    ];
-
-    webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview, JSON.stringify(s), JSON.stringify(c));
+    webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview, JSON.stringify(componentList),JSON.stringify(componetTarget));
     this.messagesFromExtension(webviewPanel);
     this.messagesFromWebview(webviewPanel);
   }
@@ -132,9 +118,22 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
           };
           vscode.commands.executeCommand('vscode.openWith', uri, 'default', opts);
           break;
+         case 'showConfig': {
+           this.loadCompoentConfigs(message.payload);
+           break;
+         } 
       }
     });
   };
+  
+  private loadCompoentConfigs(message: any) {
+    const uri = (vscode.Uri.joinPath(this._extensionUri, 'media','data',`${message.type}.json`)).with({ 'scheme': 'vscode-resource' });
+    const data = fs.readFileSync(`${uri.path}`,{encoding:'utf8', flag:'r'});
+    this.webviewPanel.webview.postMessage({
+      type:'loadConfig',
+      payload: data
+    });
+  }
 
   private updateTextDocument(document: vscode.TextDocument, code: any) {
     const edit = new vscode.WorkspaceEdit();
@@ -187,141 +186,199 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     });
     return pArray;
   }
-
-  private getHtmlForWebview(webview: vscode.Webview, s: any , c: any): string {
+  private getHtmlForWebview(webview: vscode.Webview, componentList: any, componentTargets:any): string {
+    const modifiedUrl = vscode.Uri.joinPath(this._extensionUri,'src','webview','js','MainView.js').with({ 'scheme': 'vscode-resource' });
+    const URLS = ['styles/style.css'] as Array<string>;
+    const resourceUrls = this.getResourseUrl(URLS);
+    // Test
     const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-modern-all-debug.js')).with({ 'scheme': 'vscode-resource' });
     const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_1.css')).with({ 'scheme': 'vscode-resource' });
     const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_2.css')).with({ 'scheme': 'vscode-resource' });
     const nonce = Utilities.getNonce();
 
+    
 		return `<!DOCTYPE html>
     <html style="width:100%;height:100%;margin:0;padding:0;overflow:hidden;">
     <head>
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, user-scalable=yes">
-      <title>ExtJSPanel</title>
+      ${resourceUrls}
       <script nonce="${nonce}" src="${extModernAll}"></script>
       <link href="${themeAll1}" rel="stylesheet">
       <link href="${themeAll2}" rel="stylesheet">
-      <style>
-      .x-panelheader-accordion {
-        background-color: var(--vscode-editor-background);
-      }
-      </style>
-    </head>
-    <body id='extbody'></body>
-    <script>
-    Ext.onReady(function() {
-      ${this._document.getText()}
-      Ext.application({
-        name: 'MyApp',
-        launch: function() {
-          console.log(document.getElementById('extbody'))
-          Ext.Viewport.add({
-            xtype: 'panel',
-            style: "borderLeft:1px solid lightgray;borderTop:1px solid lightgray;borderRight:21px solid lightgray;borderBottom:1px solid lightgray;",
-            border: true,
-            layout: {type: 'fit',align: 'stretch'},
-            defaultType: 'panel',
-            items: [
-              {
-                docked:'top',height:30,bodyStyle:'background:whitesmoke;',
-                resizable: {split:true,edges:'south'},
-                items: [
-                  {xtype:'component',html:'Sencha Builder',style:'marginTop:6px;marginLeft:15px;fontStyle:italic;'}
-                ]
-              },
-              {
-                docked:'bottom',height:30,bodyStyle:'background:whitesmoke;',
-                resizable: {split:true,edges:'north'},
-                items: [
-                  {xtype:'component',html:'v20211111(a)',style:'marginTop:6px;marginLeft:15px;fontStyle:italic;'}
-                ]
-              },
-              {
-                docked: 'left',
-                xstyle: 'width:5px;',
-                minWidth: 250,
-                resizable: {split:true,edges:'east'},
-                items: [
-                  {
-                    xtype: 'dataview',id: 'dataview',padding: 10,
-                    store: {data: ${s}},
-                    itemTpl:
-                      '<div style="display:flex;flex-direction:row;">' +
-                        '<div style="width:100px;background:whitesmoke;border:1px solid lightgray;">{name}</div>' +
-                        '<div style="flex:2;border:0px solid lightgray;">' +
-                        '<input id="{id}" type="text" name="name" value="{value}" /></div>' +
-                      '</div>'
-                  },
-                  {xtype: 'button', style:'marginLeft:10px;', text: 'Change Title',ui: 'action',handler:changeTitle},
-
-                  //{xtype: 'container', html: '<iframe src="http://localhost:1841" title="description"></iframe>',margin: '30 10 0 0', padding: 10},
-
-                  {xtype: 'container', html: 'draggable components',margin: '30 10 0 0', padding: 10},
-                  {
-                    xtype: 'dataview',id: 'dataviewdrag',padding: 10,margin: '0 0 0 0',
-                    store: {data: ${c}},
-                    itemTpl:
-                      '<div class="dragcomp" style="padding:3px;width:130px;display:flex;flex-direction:row;" type="{type}" xtype="{xtype}" draggable="true">' +
-                        '<div style="width:30px;" class="fa fa-{icon}"></div>' +
-                        '<div type="{type}" style="flex:1">{xtype}</div>' +
-                      '</div>'
-                  },
-                ],
-              },
-              {
-                id: 'dynamicpanel', height: '100%',
-                bodyStyle: 'background:white; padding:10px;',
-                layout: {type: 'fit',align: 'stretch'},
-                tbar: [
-                  {text: 'Show Code',ui: 'action',handler:showCode}
-                ],
-                items: [
-                  {xtype:'${this._xtype}',shadow:true}
-                ]
-              }
-            ]
-          });
-        }
-      });
-    });
-    </script>
-
-    <script>
-    const vscode = acquireVsCodeApi();
-
-    function changeTitle() {
-      var val = document.getElementById('2').value;
-      vscode.postMessage({command: 'changeTitle', value: val})
-    }
-
-    function showCode() {
-      console.log('showCode')
-      vscode.postMessage({command: 'showCode'})
-    }
-
-    window.addEventListener('message', event => {
-      console.log('we have a new message from the extension',event)
-      const message = event.data;
-      switch (message.type) {
-        case 'documentchange':
-          //console.log('in the case: documentchange from the extension')
-          Ext.getCmp('dataview').setData(message.s)
-          Ext.undefine('${this._namespace}')
-          var head = document.getElementsByTagName('head')[0];
-          var script = document.createElement("SCRIPT");
-          script.text = message.code
-          head.appendChild(script)
-          Ext.getCmp('dynamicpanel').setItems({xtype:'${this._xtype}',shadow:true})
-          break;
-      }
-    });
-    </script>
-
+      <title>ExtJSPanel</title>
+      <body>
+      ${getMainViewHtml()}
+       <script>
+       //document.domain = "localhost:1841";
+       window.localStorage.setItem('componentList',${componentList});
+       window.localStorage.setItem('componentTargets',${componentTargets});
+       const vscode = acquireVsCodeApi();
+       ${gridTemplate()}
+       </script> 
+       <script type="module">
+        import {renderView} from '${modifiedUrl}';
+        renderView(${componentList});
+       </script>
+      </body>
     </html>`;
-	}
+
+  }
+
+  private getResourseUrl(relativeUrl: string[]) :string {
+    
+    const resourceURLS = [];
+    for(let i=0; i< relativeUrl.length; i++) {
+      relativeUrl[i] = `src/webview/${relativeUrl[i]}`;
+      const urlParts = relativeUrl[i].split('/');
+      const modifiedUrl = vscode.Uri.joinPath(this._extensionUri, ...urlParts).with({ 'scheme': 'vscode-resource' });
+      const nonce = Utilities.getNonce();
+      let tag = '';
+      if(urlParts[2]=== 'styles') {
+        tag = `<link rel="stylesheet" href="${modifiedUrl}">`;
+      }
+      else {
+        tag = `<script type="module" nonce="${nonce}"  src="${modifiedUrl}"></script>`
+      }
+      resourceURLS.push(tag);
+    }
+    return resourceURLS.join(' ');
+  }
+  // private getHtmlForWebview(webview: vscode.Webview, s: any , c: any): string {
+  //   const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-modern-all-debug.js')).with({ 'scheme': 'vscode-resource' });
+  //   const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_1.css')).with({ 'scheme': 'vscode-resource' });
+  //   const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_2.css')).with({ 'scheme': 'vscode-resource' });
+  //   const nonce = Utilities.getNonce();
+  //   debugger;
+	// 	return `<!DOCTYPE html>
+  //   <html style="width:100%;height:100%;margin:0;padding:0;overflow:hidden;">
+  //   <head>
+  //     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  //     <meta charset="UTF-8">
+  //     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, user-scalable=yes">
+  //     <title>ExtJSPanel</title>
+  //     <script nonce="${nonce}" src="${extModernAll}"></script>
+  //     <link href="${themeAll1}" rel="stylesheet">
+  //     <link href="${themeAll2}" rel="stylesheet">
+  //     <style>
+  //     .x-panelheader-accordion {
+  //       background-color: var(--vscode-editor-background);
+  //     }
+  //     </style>
+  //   </head>
+  //   <body id='extbody'></body>
+  //   <script>
+  //   Ext.onReady(function() {
+  //     ${this._document.getText()}
+  //     Ext.application({
+  //       name: 'MyApp',
+  //       launch: function() {
+  //         console.log(document.getElementById('extbody'))
+  //         Ext.Viewport.add({
+  //           xtype: 'panel',
+  //           style: "borderLeft:1px solid lightgray;borderTop:1px solid lightgray;borderRight:21px solid lightgray;borderBottom:1px solid lightgray;",
+  //           border: true,
+  //           layout: {type: 'fit',align: 'stretch'},
+  //           defaultType: 'panel',
+  //           items: [
+  //             {
+  //               docked:'top',height:30,bodyStyle:'background:whitesmoke;',
+  //               resizable: {split:true,edges:'south'},
+  //               items: [
+  //                 {xtype:'component',html:'Sencha Builder',style:'marginTop:6px;marginLeft:15px;fontStyle:italic;'}
+  //               ]
+  //             },
+  //             {
+  //               docked:'bottom',height:30,bodyStyle:'background:whitesmoke;',
+  //               resizable: {split:true,edges:'north'},
+  //               items: [
+  //                 {xtype:'component',html:'v20211111(a)',style:'marginTop:6px;marginLeft:15px;fontStyle:italic;'}
+  //               ]
+  //             },
+  //             {
+  //               docked: 'left',
+  //               xstyle: 'width:5px;',
+  //               minWidth: 250,
+  //               resizable: {split:true,edges:'east'},
+  //               items: [
+  //                 {
+  //                   xtype: 'dataview',id: 'dataview',padding: 10,
+  //                   store: {data: ${s}},
+  //                   itemTpl:
+  //                     '<div style="display:flex;flex-direction:row;">' +
+  //                       '<div style="width:100px;background:whitesmoke;border:1px solid lightgray;">{name}</div>' +
+  //                       '<div style="flex:2;border:0px solid lightgray;">' +
+  //                       '<input id="{id}" type="text" name="name" value="{value}" /></div>' +
+  //                     '</div>'
+  //                 },
+  //                 {xtype: 'button', style:'marginLeft:10px;', text: 'Change Title',ui: 'action',handler:changeTitle},
+
+  //                 //{xtype: 'container', html: '<iframe src="http://localhost:1841" title="description"></iframe>',margin: '30 10 0 0', padding: 10},
+
+  //                 {xtype: 'container', html: 'draggable components',margin: '30 10 0 0', padding: 10},
+  //                 {
+  //                   xtype: 'dataview',id: 'dataviewdrag',padding: 10,margin: '0 0 0 0',
+  //                   store: {data: ${c}},
+  //                   itemTpl:
+  //                     '<div class="dragcomp" style="padding:3px;width:130px;display:flex;flex-direction:row;" type="{type}" xtype="{xtype}" draggable="true">' +
+  //                       '<div style="width:30px;" class="fa fa-{icon}"></div>' +
+  //                       '<div type="{type}" style="flex:1">{xtype}</div>' +
+  //                     '</div>'
+  //                 },
+  //               ],
+  //             },
+  //             {
+  //               id: 'dynamicpanel', height: '100%',
+  //               bodyStyle: 'background:white; padding:10px;',
+  //               layout: {type: 'fit',align: 'stretch'},
+  //               tbar: [
+  //                 {text: 'Show Code',ui: 'action',handler:showCode}
+  //               ],
+  //               items: [
+  //                 {xtype:'${this._xtype}',shadow:true}
+  //               ]
+  //             }
+  //           ]
+  //         });
+  //       }
+  //     });
+  //   });
+  //   </script>
+
+  //   <script>
+  //   const vscode = acquireVsCodeApi();
+
+  //   function changeTitle() {
+  //     var val = document.getElementById('2').value;
+  //     vscode.postMessage({command: 'changeTitle', value: val})
+  //   }
+
+  //   function showCode() {
+  //     console.log('showCode')
+  //     vscode.postMessage({command: 'showCode'})
+  //   }
+
+  //   window.addEventListener('message', event => {
+  //     console.log('we have a new message from the extension',event)
+  //     const message = event.data;
+  //     switch (message.type) {
+  //       case 'documentchange':
+  //         //console.log('in the case: documentchange from the extension')
+  //         Ext.getCmp('dataview').setData(message.s)
+  //         Ext.undefine('${this._namespace}')
+  //         var head = document.getElementsByTagName('head')[0];
+  //         var script = document.createElement("SCRIPT");
+  //         script.text = message.code
+  //         head.appendChild(script)
+  //         Ext.getCmp('dynamicpanel').setItems({xtype:'${this._xtype}',shadow:true})
+  //         break;
+  //     }
+  //   });
+  //   </script>
+
+  //   </html>`;
+	// }
 }
 
 

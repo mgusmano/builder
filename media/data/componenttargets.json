@@ -1,0 +1,10 @@
+{   
+    "grid":{
+        "primaryCollection":"columns",
+        "primatyCollectionBaseType":"Ext.grid.column.Column"
+    },
+    "panel":{
+        "primaryCollection":"items",
+        "primatyCollectionBaseType":"Ext.Component"
+    }
+}
