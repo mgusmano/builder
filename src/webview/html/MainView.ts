@@ -10,6 +10,7 @@ export function getMainViewHtml(){
             <table></table></div>
         </div>
         <div id="content-frame">
+            <button id="show-code">Show code</button>
         </div>
        </div>`;
        return str;

@@ -98,6 +98,10 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     webviewPanel.webview.onDidReceiveMessage((message) => {
       //console.log(message);
       switch (message.command) {
+        case "updateCode":{
+          this.updateCode(message.payload);
+          break;
+        }
         case "changeTitle":
           this._props[2].value.value = message.value;
           var code = escodegen.generate(this._ast);
@@ -125,6 +129,20 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       }
     });
   };
+
+  private updateCode(message: any) {
+    const arr = [message.defaultConfig];
+    const configAst = (esprima.parseScript(JSON.stringify(arr)) as any).body[0].expression.elements[0];
+    const ast = esprima.parseScript(this._document.getText())
+    const properties = (ast as any).body[0].expression.arguments[1].properties;
+    properties.forEach((item: any) => {
+      if(item.key.name==='columns'){
+        item.value.elements.push(configAst)
+      }
+    });
+    var code = escodegen.generate(ast);
+    this.updateTextDocument(this._document,code);
+  }
   
   private loadCompoentConfigs(message: any) {
     const uri = (vscode.Uri.joinPath(this._extensionUri, 'media','data',`${message.type}.json`)).with({ 'scheme': 'vscode-resource' });
@@ -149,6 +167,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     this._ast = esprima.parseScript(d);
     this._props = this._ast.body[0].expression.arguments[1].properties;
     this._namespace = this._ast.body[0].expression.arguments[0].value;
+
     //var objectName = this._ast.body[0].expression.callee.object.name;
     //var propertyName = this._ast.body[0].expression.callee.property.name;
     //var p = objectName + '.' + propertyName + ', ' + this._ast.body[0].expression.arguments[0].value;

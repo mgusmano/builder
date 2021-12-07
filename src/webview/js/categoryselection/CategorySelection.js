@@ -5,7 +5,41 @@ export class CategorySelection {
        this.createListView(list);
        this.loadDroptarget();
        this.subscribeTomessage();
+       this.addListeners();
+       this.droppableCls = [
+        'x-grid',
+        'x-gridcolumn'
+      ];
+    }
+    addListeners(){
+      document.getElementById('show-code').addEventListener('click',()=>{
+        vscode.postMessage({command: 'showCode'});
+      });
 
+      document.getElementById('content-frame').addEventListener('click',(event)=>{
+        this.contentFrameClick(event);
+      },false);
+    }
+    contentFrameClick(event){ 
+      event.stopImmediatePropagation();
+
+      if(this.parent) {
+        this.parent.classList.remove('drag-over-allowed');
+        this.parent.classList.remove('drag-over-notallowed');
+      }
+      this.parent = event.target;
+      while(this.parent!==null){
+        if(this.parent.classList.length>0 && this.droppableCls.includes(this.parent.classList[0])){
+          const type = this.parent.classList[0].split('-');
+          if(type.length > 1 && type[1]){
+            this.parent.classList.add('drag-over-allowed');
+            vscode.postMessage({command: 'showConfig', payload: {'type':type[1]}});
+            event.preventDefault();
+          }
+          break;
+        }
+        this.parent = this.parent.parentElement;
+      }
     }
     subscribeTomessage() {
         window.addEventListener('message', event => {
@@ -65,7 +99,6 @@ export class CategorySelection {
   }
     createListView(){
       const d = JSON.parse(window.localStorage.getItem('componentList'));
-      debugger;
       //window.localStorage.setItem('componentTargets',${componentTargets}),
         const unOrderedList = document.createElement('ul');
         unOrderedList.classList.add("component-list");
@@ -74,7 +107,6 @@ export class CategorySelection {
           list.textContent = d[i].text;
           list.onclick = () => {
             this.createCategorySubSction(d[i].compoentChild);
-            vscode.postMessage({command: 'showConfig', payload: d[i]})
           }
           unOrderedList.appendChild(list);
         }
@@ -116,7 +148,9 @@ export class CategorySelection {
       dropZone.addEventListener('dragleave', (event)=>{
         this.dragLeave(event);
       },false);
-      dropZone.addEventListener('drop', this.drop);
+      dropZone.addEventListener('drop', (event)=>{
+        this.drop(event);
+      },false);
       // var iframe = document.getElementById('extFrame');
       // var contentWindow = iframe.contentWindow;
       // iframe.onload = ()=> {
@@ -133,24 +167,77 @@ export class CategorySelection {
       // }
     }
   dragEnter(event){
+    if(this.parent) {
+      this.parent.classList.remove('drag-over-allowed');
+      this.parent.classList.remove('drag-over-notallowed');
+    }
     this.parent = event.target;
     while(this.parent!==null){
-      if(this.parent.classList.contains('x-grid')){
-        this.parent.classList.add('drag-over');
-        this.targetFound = true;
-        //event.target = this.parent;
+      if(this.parent.classList.contains('x-grid-body-el')){
+        this.parent.classList.add('drag-over-notallowed');
+        event.dataTransfer.effectAllowed = "none";
+        break;
+      }
+      
+      if(this.parent.classList.length>0 && this.droppableCls.includes(this.parent.classList[0])){
+        const type = this.parent.classList[0].split('-');
+        const isDropable = this.isDropable(type[1]);
+        if(isDropable){
+          this.parent.classList.add('drag-over-allowed');
+          event.dataTransfer.effectAllowed = "move";
+          event.preventDefault();
+        } else {
+          this.parent.classList.add('drag-over-notallowed');
+          event.dataTransfer.effectAllowed = "";
+        }
         break;
       }
       this.parent = this.parent.parentElement;
     }
-    event.preventDefault();
   }
-  dragLeave(event){
-   
-    if(this.targetFound){
-      this.parent.classList.remove('drag-over');
-      this.targetFound = false;
+  isDropable(type){
+    const targets = JSON.parse(window.localStorage.getItem('componentTargets'));
+    if(targets[type]){
+      const primatyCollectionBaseType = targets[type].primatyCollectionBaseType;
+      return this.dataTobeTrasferd.extendsHirarchy.includes(primatyCollectionBaseType);
     }
+    return false;
+  }
+  createOverLay(){
+    // if(this.overLay){
+    //   this.overLay.remove();
+    // }
+    // debugger;
+    // this.overLay = document.createElement('div');
+    // this.overLay.style.position = 'absolute';
+    // this.overLay.style.backgroundColor = 'blue';
+    // const Offset = this.getOffset(this.parent);
+    // this.overLay.style.top = Offset.top+'px';
+    // this.overLay.style.left = Offset.left+'px';
+    // this.overLay.style.width = this.parent.style.width;
+    // this.overLay.style.height = this.parent.style.height;
+    // document.body.appendChild(this.overLay);
+  }
+  getOffset(el) {
+    const rect = el.getBoundingClientRect();
+    return {
+      left: rect.left + window.scrollX,
+      top: rect.top + window.scrollY,
+    };
+  } 
+  dragLeave(event){
+    // if(this.parent.classList.contains('drag-over-notallowed')){
+    //   this.parent.classList.remove('drag-over-allowed');
+    // }
+    // else {
+    //   this.parent.classList.remove('drag-over-notallowed');
+    // }
+    // this.parent.classList.remove('drag-over-notallowed');
+    // this.parent.classList.remove('drag-over-allowed');
+    // if(this.targetFound && this.parent){
+    //   //this.parent.classList.remove('drag-over');
+    //   this.targetFound = false;
+    // }
     // var parent = event.target;
     // debugger;
     // while(parent!==null){
@@ -163,6 +250,13 @@ export class CategorySelection {
     // }
   }
   drop(event){
+    this.parent.classList.remove('drag-over-allowed');
+    this.parent.classList.remove('drag-over-notallowed');
+    const type = this.parent.classList[0].split('-');
+    const isDropable = this.isDropable(type[1]);
+    if(isDropable){
+      vscode.postMessage({command: 'updateCode', payload: this.dataTobeTrasferd});
+    }
     // for (let type of event.dataTransfer.types) {
     //   console.log(event.dataTransfer.getData(type));
     // }
@@ -173,6 +267,7 @@ export class CategorySelection {
     // }
   }
   dragOver(event){
+    //event.preventDefault();
     // console.log(event.target);
     // if(event.currentTarget.classList.contains('x-panel')){
     //   debugger;

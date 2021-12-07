@@ -5,7 +5,7 @@
       "compoentChild": [
         {
           "text": "Button",
-          "groupField": "button"
+          "groupField": "Standard"
         },
         {
           "name": "Cycle Button",
@@ -51,21 +51,26 @@
         {
           "name": "Column",
           "text": "Column",
-          "groupField": "stan"
+          "groupField": "stan",
+          "extendsHirarchy":["Ext.grid.column.Column"],
+          "defaultConfig":{"text":"column1"}
         },
         {
           "text": "Action Column",
-          "groupField": "Grid"
+          "groupField": "Grid",
+          "extendsHirarchy":["Ext.grid.column.Column"]
         },
         {
           "name": "Boolean Fileter",
           "text": "Boolean Filter",
-          "groupField": "Grid"
+          "groupField": "Grid",
+          "extendsHirarchy":[]
         },
         {
           "name": "Date Filter",
           "text": "Date Filter",
-          "groupField": "Grid"
+          "groupField": "Grid",
+          "extendsHirarchy":[]
         }
       ]
     }
