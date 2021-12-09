@@ -21,7 +21,7 @@ export class CategorySelection {
       },false);
     }
     contentFrameClick(event){ 
-      event.stopImmediatePropagation();
+     // event.stopImmediatePropagation();
 
       if(this.parent) {
         this.parent.classList.remove('drag-over-allowed');
@@ -29,9 +29,9 @@ export class CategorySelection {
       }
       this.parent = event.target;
       while(this.parent!==null){
-        if(this.parent.classList.length>0 && this.droppableCls.includes(this.parent.classList[0])){
-          const type = this.parent.classList[0].split('-');
-          if(type.length > 1 && type[1]){
+        if(this.parent.classList.length>0 && this.isClassPresent()){
+          const type = this.parentCls.split('-');
+          if(type.length > 1 && type[1]) {
             this.parent.classList.add('drag-over-allowed');
             vscode.postMessage({command: 'showConfig', payload: {'type':type[1]}});
             event.preventDefault();
@@ -53,6 +53,9 @@ export class CategorySelection {
     }
     createConfigList(configs) {
       const configSection = document.querySelector('#config-section table');
+      const filterEl = document.getElementById("filter-field");
+      filterEl.style.display = '';
+      this.addFilterEvents(filterEl);
       if(configSection.hasChildNodes()){
           while (configSection.firstChild) {
             configSection.removeChild(configSection.firstChild);
@@ -71,31 +74,69 @@ export class CategorySelection {
         } 
   }
   createFields(td2, config){
-      const inputEl = document.createElement('input');
-      inputEl.style.width = '90%';
+      let inputEl;
+      let typeValue = '';
       switch(config.type){
         case 'String/Object':
         case 'String':
-          inputEl.type = 'text';
+          inputEl = document.createElement('vscode-text-field');
           inputEl.value = config.defaultValue || '';
           td2.appendChild(inputEl);
           break;
         case 'Boolean':
-          inputEl.type = 'checkbox';
+          inputEl = document.createElement('vscode-checkbox');
           inputEl.checked = config.defaultValue;
           td2.appendChild(inputEl);
           break;
         case 'Number':
+          inputEl = document.createElement('vscode-text-field');
           inputEl.type = 'number';
           inputEl.value = config.defaultValue || '';
           td2.appendChild(inputEl);
           break;
         default:
-          inputEl.type = 'text';
+          inputEl = document.createElement('vscode-text-field');
           inputEl.value = config.defaultValue || '';
           td2.appendChild(inputEl);
           break;
       }
+      if(config.type !=='Boolean') {
+        inputEl.addEventListener('keypress',(event)=>{
+          if (event.key == 'Enter') {
+            const obj = {
+              type:'string',
+              name:config.name,
+              defaultConfig:event.target.value
+            };
+            vscode.postMessage({command: 'updateCode', payload: obj});
+         } 
+        });
+      }
+      else if(config.type ==='Boolean') {
+        inputEl.addEventListener('change',(event)=>{
+            const obj = {
+              type:'string',
+              name:config.name,
+              defaultConfig:event.target.checked
+            };
+            vscode.postMessage({command: 'updateCode', payload: obj});
+        });
+      }
+
+      inputEl.style.width = '90%';
+  }
+  addFilterEvents(filrerEl){
+    filrerEl.addEventListener('keyup',(event)=>{
+      var search = event.target.value.toLowerCase();
+      var all = document.querySelectorAll("#config-section table tr");
+      for (let i=0;i<all.length;i++) {
+          let item = all[i].children[0].innerText.toLowerCase();
+          if (item.indexOf(search) == -1) { 
+            all[i].classList.add("hide"); 
+          }
+          else {  all[i].classList.remove("hide"); }
+      }
+    })
   }
     createListView(){
       const d = JSON.parse(window.localStorage.getItem('componentList'));
@@ -104,7 +145,7 @@ export class CategorySelection {
         unOrderedList.classList.add("component-list");
         for(let i=0; i< d.length; i++) {
           const list = document.createElement('li');
-          list.textContent = d[i].text;
+          list.textContent = `${d[i].text}(${d[i].compoentChild.length})`;
           list.onclick = () => {
             this.createCategorySubSction(d[i].compoentChild);
           }
@@ -123,6 +164,7 @@ export class CategorySelection {
           
           list.draggable="true";
           list.addEventListener('dragstart',(event)=>{
+              event.dataTransfer.effectAllowed = "copyMove";
               this.dataTobeTrasferd = d[i];
           }); 
           unOrderedList.appendChild(list);
@@ -179,27 +221,46 @@ export class CategorySelection {
         break;
       }
       
-      if(this.parent.classList.length>0 && this.droppableCls.includes(this.parent.classList[0])){
-        const type = this.parent.classList[0].split('-');
+      if(this.parent.classList.length>0 && this.isClassPresent()){
+        const type = this.parentCls.split('-');
         const isDropable = this.isDropable(type[1]);
         if(isDropable){
           this.parent.classList.add('drag-over-allowed');
-          event.dataTransfer.effectAllowed = "move";
-          event.preventDefault();
+          //event.dataTransfer.dropEffect = "copy";
+          event.target.style.cursor = 'move'
+          //this.parent.style.cursor = 'move';
+          //event.preventDefault();
+          event.dataTransfer.dropEffect = "copy";
         } else {
           this.parent.classList.add('drag-over-notallowed');
-          event.dataTransfer.effectAllowed = "";
+          event.target.style.cursor = 'default';
+          //event.dataTransfer.effectAllowed = "";
+          //this.parent.style.cursor = 'no-drop';
         }
         break;
       }
       this.parent = this.parent.parentElement;
     }
   }
+  isClassPresent(){
+    for(let i=0; i< this.parent.classList.length; i++){
+      if(this.droppableCls.includes(this.parent.classList[i])){
+        this.parentCls = this.parent.classList[i];
+        return true;
+      }
+    }
+    return false;
+  }
+  
   isDropable(type){
     const targets = JSON.parse(window.localStorage.getItem('componentTargets'));
     if(targets[type]){
       const primatyCollectionBaseType = targets[type].primatyCollectionBaseType;
-      return this.dataTobeTrasferd.extendsHirarchy.includes(primatyCollectionBaseType);
+      for(let i=0;i<primatyCollectionBaseType.length;i++){
+        if(this.dataTobeTrasferd.extendsHirarchy.includes(primatyCollectionBaseType[i])){
+          return true;
+        }
+      }
     }
     return false;
   }
@@ -252,7 +313,7 @@ export class CategorySelection {
   drop(event){
     this.parent.classList.remove('drag-over-allowed');
     this.parent.classList.remove('drag-over-notallowed');
-    const type = this.parent.classList[0].split('-');
+    const type = this.parentCls.split('-');
     const isDropable = this.isDropable(type[1]);
     if(isDropable){
       vscode.postMessage({command: 'updateCode', payload: this.dataTobeTrasferd});
@@ -267,7 +328,7 @@ export class CategorySelection {
     // }
   }
   dragOver(event){
-    //event.preventDefault();
+    event.preventDefault();
     // console.log(event.target);
     // if(event.currentTarget.classList.contains('x-panel')){
     //   debugger;

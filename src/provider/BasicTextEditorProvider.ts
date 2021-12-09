@@ -6,7 +6,8 @@ import * as escodegen from "escodegen";
 import axios from "axios";
 import * as fs from 'fs';
 import { getMainViewHtml } from "../webview/html/MainView";
-import {gridTemplate} from '../webview/html/grid'
+import {gridTemplate} from '../webview/html/grid';
+
 export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider {
   public _context: vscode.ExtensionContext;
   private readonly _extensionUri: vscode.Uri;
@@ -82,11 +83,15 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
             //console.log("*** this text");
             //console.log(webviewPanel.webview);
             //console.log(e.getText());
-            var s = this.doPropsJSON(e.getText());
-            webviewPanel.webview.postMessage({
-              type: "documentchange",
-              code: e.getText(),
-              s: s
+            // var s = this.doPropsJSON(e.getText());
+            // webviewPanel.webview.postMessage({
+            //   type: "documentchange",
+            //   code: e.getText(),
+            //   s: s
+            // });
+            this.webviewPanel.webview.postMessage({
+              type:'reloadView',
+              code: this._document.getText()
             });
           }
         }
@@ -96,7 +101,6 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
 
   public messagesFromWebview = (webviewPanel:vscode.WebviewPanel) => {
     webviewPanel.webview.onDidReceiveMessage((message) => {
-      //console.log(message);
       switch (message.command) {
         case "updateCode":{
           this.updateCode(message.payload);
@@ -131,17 +135,67 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   };
 
   private updateCode(message: any) {
-    const arr = [message.defaultConfig];
-    const configAst = (esprima.parseScript(JSON.stringify(arr)) as any).body[0].expression.elements[0];
-    const ast = esprima.parseScript(this._document.getText())
+    const ast = esprima.parseScript(this._document.getText());
     const properties = (ast as any).body[0].expression.arguments[1].properties;
+    let found = false;
     properties.forEach((item: any) => {
-      if(item.key.name==='columns'){
-        item.value.elements.push(configAst)
+      if(item.key.name === message.name && item.value.type === 'ArrayExpression'){
+          
+          const config = this.getConfig(message, true);
+          item.value.elements.push(config);
+          found = true;
+      }
+      else if(item.key.name === message.name){
+        const config = this.getConfig(message, true);
+        item.value = config.value;
+        found = true;
       }
     });
+    if(!found) {
+      const config = this.getConfig(message, false);
+      properties.push(config);
+    }
     var code = escodegen.generate(ast);
     this.updateTextDocument(this._document,code);
+  }
+
+  private getConfig(config: any, flag: boolean){
+    let configStr;
+    if(!flag && config.type==='Array'){
+      configStr = `
+        var obj = {
+          ${config.name}:[${JSON.stringify(config.defaultConfig)}]
+        }
+      `;
+      const script1 = esprima.parseScript(configStr) as any;
+      return script1.body[0].declarations[0].init.properties[0];
+    }
+    else if(flag && config.type==='Array'){
+      configStr = `
+        var obj = ${JSON.stringify(config.defaultConfig)}
+      `;
+      const script2 = esprima.parseScript(configStr) as any;
+      console.log("console.log(script2)",script2)
+      return script2.body[0].declarations[0].init;
+    }
+    else if(config.type==='Object'){
+      configStr = `
+        var obj = {
+          ${config.name}:${JSON.stringify(config.defaultConfig)}
+        }
+      `;
+      const script1 = esprima.parseScript(configStr) as any;
+      return script1.body[0].declarations[0].init.properties[0];
+    }
+    else {
+      configStr = `
+        var obj = {${config.name}:${JSON.stringify(config.defaultConfig)}}
+      `;
+      const script2 = esprima.parseScript(configStr) as any;
+      console.log("console.log(script2)",script2)
+      return script2.body[0].declarations[0].init.properties[0];
+    }
+    
   }
   
   private loadCompoentConfigs(message: any) {
@@ -153,14 +207,21 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     });
   }
 
-  private updateTextDocument(document: vscode.TextDocument, code: any) {
+  private async updateTextDocument(document: vscode.TextDocument, code: any) {
     const edit = new vscode.WorkspaceEdit();
     edit.replace(
         document.uri,
         new vscode.Range(0, 0, document.lineCount, 0),
         code
     );
-    return vscode.workspace.applyEdit(edit);
+    vscode.workspace.applyEdit(edit);
+    await vscode.workspace.fs.writeFile(document.uri,new TextEncoder().encode(this._document.getText()));
+    //vscode.workspace.saveAll();
+    this.webviewPanel.webview.postMessage({
+      type:'reloadView',
+      code: this._document.getText()
+    });
+    //vscode.workspace
   }
 
   public doPropsJSON(d: any) {
@@ -213,9 +274,18 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-modern-all-debug.js')).with({ 'scheme': 'vscode-resource' });
     const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_1.css')).with({ 'scheme': 'vscode-resource' });
     const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_2.css')).with({ 'scheme': 'vscode-resource' });
+    const toolkitUri = Utilities.getUri(webview, this._extensionUri, [
+      "node_modules",
+      "@vscode",
+      "webview-ui-toolkit",
+      "dist",
+      "toolkit.js",
+    ]);
+    // const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-all.js')).with({ 'scheme': 'vscode-resource' });
+    // const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-classic-all_1.css')).with({ 'scheme': 'vscode-resource' });
+    // const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-classic-all_2.css')).with({ 'scheme': 'vscode-resource' });
     const nonce = Utilities.getNonce();
-
-    
+    const codeText = this._document.getText();
 		return `<!DOCTYPE html>
     <html style="width:100%;height:100%;margin:0;padding:0;overflow:hidden;">
     <head>
@@ -223,6 +293,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, user-scalable=yes">
       ${resourceUrls}
+      <script type="module" nonce="${nonce}" src="${toolkitUri}"></script>
       <script nonce="${nonce}" src="${extModernAll}"></script>
       <link href="${themeAll1}" rel="stylesheet">
       <link href="${themeAll2}" rel="stylesheet">
@@ -234,7 +305,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
        window.localStorage.setItem('componentList',${componentList});
        window.localStorage.setItem('componentTargets',${componentTargets});
        const vscode = acquireVsCodeApi();
-       ${gridTemplate()}
+       ${gridTemplate(codeText)}
        </script> 
        <script type="module">
         import {renderView} from '${modifiedUrl}';
@@ -335,7 +406,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
 
   //                 //{xtype: 'container', html: '<iframe src="http://localhost:1841" title="description"></iframe>',margin: '30 10 0 0', padding: 10},
 
-  //                 {xtype: 'container', html: 'draggable components',margin: '30 10 0 0', padding: 10},
+  //                 {xtype: 'container', html: 'aggable components',margin: '30 10 0 0', padding: 10},
   //                 {
   //                   xtype: 'dataview',id: 'dataviewdrag',padding: 10,margin: '0 0 0 0',
   //                   store: {data: ${c}},
