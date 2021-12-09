@@ -215,9 +215,10 @@ export class CategorySelection {
     }
     this.parent = event.target;
     while(this.parent!==null){
-      if(this.parent.classList.contains('x-grid-body-el')){
+      if(this.parent.classList.contains('x-dataview-body-el')){
+        this.parentCls = 'x-dataview-body-el';
         this.parent.classList.add('drag-over-notallowed');
-        event.dataTransfer.effectAllowed = "none";
+        event.dataTransfer.dropEffect = "copy";
         break;
       }
       
@@ -227,13 +228,12 @@ export class CategorySelection {
         if(isDropable){
           this.parent.classList.add('drag-over-allowed');
           //event.dataTransfer.dropEffect = "copy";
-          event.target.style.cursor = 'move'
+          //event.target.style.cursor = 'move'
           //this.parent.style.cursor = 'move';
           //event.preventDefault();
           event.dataTransfer.dropEffect = "copy";
         } else {
           this.parent.classList.add('drag-over-notallowed');
-          event.target.style.cursor = 'default';
           //event.dataTransfer.effectAllowed = "";
           //this.parent.style.cursor = 'no-drop';
         }
@@ -314,6 +314,7 @@ export class CategorySelection {
     this.parent.classList.remove('drag-over-allowed');
     this.parent.classList.remove('drag-over-notallowed');
     const type = this.parentCls.split('-');
+    debugger;
     const isDropable = this.isDropable(type[1]);
     if(isDropable){
       vscode.postMessage({command: 'updateCode', payload: this.dataTobeTrasferd});
