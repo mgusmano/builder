@@ -49,28 +49,19 @@
       "text": "Grid",
       "compoentChild": [
         {
-          "name": "Column",
+          "name": "columns",
           "text": "Column",
           "groupField": "stan",
           "extendsHirarchy":["Ext.grid.column.Column"],
-          "defaultConfig":{"text":"column1"}
+          "defaultConfig":{"text":"column1"},
+          "type":"Array"
         },
         {
-          "text": "Action Column",
-          "groupField": "Grid",
-          "extendsHirarchy":["Ext.grid.column.Column"]
-        },
-        {
-          "name": "Boolean Fileter",
-          "text": "Boolean Filter",
-          "groupField": "Grid",
-          "extendsHirarchy":[]
-        },
-        {
-          "name": "Date Filter",
-          "text": "Date Filter",
-          "groupField": "Grid",
-          "extendsHirarchy":[]
+          "name": "plugins",
+          "text": "PagingToolBar",
+          "extendsHirarchy":["Ext.grid.plugin.PagingToolbar"],
+          "type":"Object",
+          "defaultConfig":{"pagingtoolbar": true,"pullrefresh": true}
         }
       ]
     }

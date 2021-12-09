@@ -1,14 +1,14 @@
 {   
     "grid":{
-        "primaryCollection":"columns",
-        "primatyCollectionBaseType":"Ext.grid.column.Column"
+        "primaryCollection":["columns","tools"],
+        "primatyCollectionBaseType":["Ext.grid.column.Column","Ext.grid.plugin.PagingToolbar"]
     },
     "panel":{
-        "primaryCollection":"items",
-        "primatyCollectionBaseType":"Ext.Component"
+        "primaryCollection":["items"],
+        "primatyCollectionBaseType":["Ext.Component"]
     },
     "gridcolumn":{
-        "primaryCollection":"columns",
-        "primatyCollectionBaseType":"Ext.grid.column.Column"
+        "primaryCollection":["columns"],
+        "primatyCollectionBaseType":["Ext.grid.column.Column"]
     }
 }
