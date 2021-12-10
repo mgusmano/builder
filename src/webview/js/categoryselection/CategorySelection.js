@@ -1,7 +1,11 @@
 export class CategorySelection {
-    constructor(list) {
+    constructor(ast) {
        this.categotyEl = document.getElementById('mainCategorySec');
        this.subCategotyEl = document.getElementById('subCategory'); 
+       this.ast = ast;
+       this.astValueMapper = {};
+       this.createAstValueMapper();
+       const list = JSON.parse(window.localStorage.getItem("componentList"));
        this.createListView(list);
        this.loadDroptarget();
        this.subscribeTomessage();
@@ -10,6 +14,12 @@ export class CategorySelection {
         'x-grid',
         'x-gridcolumn'
       ];
+    }
+    createAstValueMapper(){
+      const astObjMapper = this.ast.body[0].expression.arguments[1].properties;
+      for(let i=0;i<astObjMapper.length;i++){
+        this.astValueMapper[astObjMapper[i].key.name] = astObjMapper[i].value.value;
+      }
     }
     addListeners(){
       document.getElementById('show-code').addEventListener('click',()=>{
@@ -21,7 +31,7 @@ export class CategorySelection {
       },false);
     }
     contentFrameClick(event){ 
-     // event.stopImmediatePropagation();
+      event.stopImmediatePropagation();
 
       if(this.parent) {
         this.parent.classList.remove('drag-over-allowed');
@@ -46,12 +56,35 @@ export class CategorySelection {
         const message = event.data;
         switch (message.type) {
           case 'loadConfig': {
-            this.createConfigList(JSON.parse(message.payload))
+            this.createConfigList(JSON.parse(message.payload));
+            break;
+          }
+          case 'reloadView':{
+            this.updateConfigValues(message);
           }
         }
       });
     }
+    updateConfigValues(data){
+      this.ast = data.ast;
+      this.createAstValueMapper();
+      const tableRows = document.querySelectorAll('#config-section table tr');
+      if(!tableRows || tableRows.length == 0){
+       return;
+      }
+      this.updateViewConfigs(tableRows);
+    }
+    updateViewConfigs(tableRows){
+      const componentConfig = this.currentConfig.configs;
+      for(let i=0;i<componentConfig.length;i++){
+        if(this.astValueMapper[componentConfig[i].name]!==undefined){
+          const valueAtt = componentConfig[i].type === 'Boolean'?'checked':'value';
+          tableRows[i].children[1].firstChild[valueAtt] = this.astValueMapper[componentConfig[i].name];
+        }
+      }
+    }
     createConfigList(configs) {
+      this.currentConfig = configs;
       const configSection = document.querySelector('#config-section table');
       const filterEl = document.getElementById("filter-field");
       filterEl.style.display = '';
@@ -65,7 +98,22 @@ export class CategorySelection {
         for(let i=0;i < componentConfig.length;i++){
           const tr = document.createElement('tr');
           const td1 = document.createElement("td");
-          td1.textContent = componentConfig[i].name;
+          td1.classList.add('config-label');
+          const divTag = document. createElement("div");
+          divTag.textContent = componentConfig[i].name;
+          td1.appendChild(divTag);
+          const helpIcon = document. createElement("div");
+          helpIcon.classList.add('help-icon');
+          helpIcon.addEventListener('mouseenter',(event)=>{
+            event.stopPropagation();
+            this.createOverLay(event,componentConfig[i])
+          });
+
+          helpIcon.addEventListener('mouseleave',()=>{
+            this.removeOverlay()
+          });
+          td1.appendChild(helpIcon);
+          //td1.textContent = componentConfig[i].name;
           tr.appendChild(td1);
           const td2 = document.createElement("td");
           this.createFields(td2, componentConfig[i]);
@@ -80,29 +128,29 @@ export class CategorySelection {
         case 'String/Object':
         case 'String':
           inputEl = document.createElement('vscode-text-field');
-          inputEl.value = config.defaultValue || '';
+          inputEl.value = this.astValueMapper[config.name]||config.defaultValue || '';
           td2.appendChild(inputEl);
           break;
         case 'Boolean':
           inputEl = document.createElement('vscode-checkbox');
-          inputEl.checked = config.defaultValue;
+          inputEl.checked = this.astValueMapper[config.name]||config.defaultValue
           td2.appendChild(inputEl);
           break;
         case 'Number':
           inputEl = document.createElement('vscode-text-field');
           inputEl.type = 'number';
-          inputEl.value = config.defaultValue || '';
+          inputEl.value = this.astValueMapper[config.name]||config.defaultValue || '';
           td2.appendChild(inputEl);
           break;
         default:
           inputEl = document.createElement('vscode-text-field');
-          inputEl.value = config.defaultValue || '';
+          inputEl.value = this.astValueMapper[config.name]||config.defaultValue || '';
           td2.appendChild(inputEl);
           break;
       }
       if(config.type !=='Boolean') {
         inputEl.addEventListener('keypress',(event)=>{
-          if (event.key == 'Enter') {
+          if (event.key === 'Enter') {
             const obj = {
               type:'string',
               name:config.name,
@@ -136,78 +184,82 @@ export class CategorySelection {
           }
           else {  all[i].classList.remove("hide"); }
       }
-    })
+    });
   }
-    createListView(){
+  createOverLay(event, config){
+    if(!config.description){
+      return;
+    }
+    const overlay = document.createElement("div");
+    overlay.id = "configDescription";
+    overlay.innerText = config.description;
+    overlay.classList.add('overlay');
+    const offset = this.getOffset(event.target);
+    overlay.style.top = `${offset.top+20}px`;
+    overlay.style.left = `${offset.left+30}px`;
+    document.body.appendChild(overlay);
+  }
+  removeOverlay(){
+    const el = document.getElementById('configDescription');
+    if(el){
+      el.remove();
+    }
+  }
+  createListView(){
       const d = JSON.parse(window.localStorage.getItem('componentList'));
-      //window.localStorage.setItem('componentTargets',${componentTargets}),
-        const unOrderedList = document.createElement('ul');
-        unOrderedList.classList.add("component-list");
-        for(let i=0; i< d.length; i++) {
-          const list = document.createElement('li');
-          list.textContent = `${d[i].text}(${d[i].compoentChild.length})`;
-          list.onclick = () => {
-            this.createCategorySubSction(d[i].compoentChild);
-          }
-          unOrderedList.appendChild(list);
+      const unOrderedList = document.createElement('ul');
+      unOrderedList.classList.add("component-list");
+      for(let i=0; i< d.length; i++) {
+        const list = document.createElement('li');
+        list.textContent = `${d[i].text}(${d[i].compoentChild.length})`;
+        list.onclick = () => {
+          this.createCategorySubSction(d[i].compoentChild);
         }
-        this.categotyEl.appendChild(unOrderedList);
+        unOrderedList.appendChild(list);
       }
-      createCategorySubSction(d) {
-        if(d){
-        this.removeAllChildren(); 
-        const unOrderedList = document.createElement('ul');
-        unOrderedList.classList.add("component-list");
-        for(let i=0; i< d.length; i++) {
-          const list = document.createElement('li');
-          list.textContent = d[i].text;
-          
-          list.draggable="true";
-          list.addEventListener('dragstart',(event)=>{
-              event.dataTransfer.effectAllowed = "copyMove";
-              this.dataTobeTrasferd = d[i];
-          }); 
-          unOrderedList.appendChild(list);
-        }
-        this.subCategotyEl.appendChild(unOrderedList);
-      }
+      this.categotyEl.appendChild(unOrderedList);
     }
-    removeAllChildren(){
-      if(this.subCategotyEl.hasChildNodes()){
-        while (this.subCategotyEl.firstChild) {
-          this.subCategotyEl.removeChild(this.subCategotyEl.firstChild);
-        }
+    createCategorySubSction(d) {
+      if(d){
+      this.removeAllChildren(); 
+      const unOrderedList = document.createElement('ul');
+      unOrderedList.classList.add("component-list");
+      for(let i=0; i< d.length; i++) {
+        const list = document.createElement('li');
+        list.textContent = d[i].text;
+        
+        list.draggable="true";
+        list.addEventListener('dragstart',(event)=>{
+            event.dataTransfer.effectAllowed = "copyMove";
+            this.dataTobeTrasferd = d[i];
+        }); 
+        unOrderedList.appendChild(list);
+      }
+      this.subCategotyEl.appendChild(unOrderedList);
+    }
+  }
+  removeAllChildren(){
+    if(this.subCategotyEl.hasChildNodes()){
+      while (this.subCategotyEl.firstChild) {
+        this.subCategotyEl.removeChild(this.subCategotyEl.firstChild);
       }
     }
-    loadDroptarget(){
-      const dropZone = document.getElementById('content-frame');
-      dropZone.addEventListener('dragenter', (event)=>{
-        this.dragEnter(event);
-      },false);
-      dropZone.addEventListener('dragover', (event)=>{
-          this.dragOver(event);
-      },false);
-      dropZone.addEventListener('dragleave', (event)=>{
-        this.dragLeave(event);
-      },false);
-      dropZone.addEventListener('drop', (event)=>{
-        this.drop(event);
-      },false);
-      // var iframe = document.getElementById('extFrame');
-      // var contentWindow = iframe.contentWindow;
-      // iframe.onload = ()=> {
-      //   const allItems = contentWindow.document;
-      //   debugger;
-      // };
-      // var dropContainer = document.getElementById('content-frame');
-      // const children = dropContainer.querySelectorAll('*');
-      // for(let i=0;i<children.length;i++) {
-        // children[i].addEventListener('dragenter', this.dragEnter);
-        // //children[i].addEventListener('dragover', dragOver);
-        // children[i].addEventListener('dragleave', this.dragLeave);
-        // children[i].addEventListener('drop', this.drop);
-      // }
-    }
+  }
+  loadDroptarget(){
+    const dropZone = document.getElementById('content-frame');
+    dropZone.addEventListener('dragenter', (event)=>{
+      this.dragEnter(event);
+    },false);
+    dropZone.addEventListener('dragover', (event)=>{
+        this.dragOver(event);
+    },false);
+    dropZone.addEventListener('dragleave', (event)=>{
+      this.dragLeave(event);
+    },false);
+    dropZone.addEventListener('drop', (event)=>{
+      this.drop(event);
+    },false);
+  }
   dragEnter(event){
     if(this.parent) {
       this.parent.classList.remove('drag-over-allowed');
@@ -227,15 +279,9 @@ export class CategorySelection {
         const isDropable = this.isDropable(type[1]);
         if(isDropable){
           this.parent.classList.add('drag-over-allowed');
-          //event.dataTransfer.dropEffect = "copy";
-          //event.target.style.cursor = 'move'
-          //this.parent.style.cursor = 'move';
-          //event.preventDefault();
           event.dataTransfer.dropEffect = "copy";
         } else {
           this.parent.classList.add('drag-over-notallowed');
-          //event.dataTransfer.effectAllowed = "";
-          //this.parent.style.cursor = 'no-drop';
         }
         break;
       }
@@ -264,26 +310,12 @@ export class CategorySelection {
     }
     return false;
   }
-  createOverLay(){
-    // if(this.overLay){
-    //   this.overLay.remove();
-    // }
-    // debugger;
-    // this.overLay = document.createElement('div');
-    // this.overLay.style.position = 'absolute';
-    // this.overLay.style.backgroundColor = 'blue';
-    // const Offset = this.getOffset(this.parent);
-    // this.overLay.style.top = Offset.top+'px';
-    // this.overLay.style.left = Offset.left+'px';
-    // this.overLay.style.width = this.parent.style.width;
-    // this.overLay.style.height = this.parent.style.height;
-    // document.body.appendChild(this.overLay);
-  }
   getOffset(el) {
     const rect = el.getBoundingClientRect();
     return {
       left: rect.left + window.scrollX,
       top: rect.top + window.scrollY,
+      bottom: rect.bottom,
     };
   } 
   dragLeave(event){
@@ -314,7 +346,6 @@ export class CategorySelection {
     this.parent.classList.remove('drag-over-allowed');
     this.parent.classList.remove('drag-over-notallowed');
     const type = this.parentCls.split('-');
-    debugger;
     const isDropable = this.isDropable(type[1]);
     if(isDropable){
       vscode.postMessage({command: 'updateCode', payload: this.dataTobeTrasferd});

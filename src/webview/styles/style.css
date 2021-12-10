@@ -100,3 +100,50 @@ table, th, td > input {
 .hide{
    display: none;
 }
+/* .help {
+   color:#fff;
+   background-color:#feb22a;
+   width:12px;
+   height:12px;
+   display:inline-block;
+   border-radius:100%;
+   font-size:10px;
+   text-align:center;
+   text-decoration:none;
+   -webkit-box-shadow: inset -1px -1px 1px 0px rgba(0,0,0,0.25);
+   -moz-box-shadow: inset -1px -1px 1px 0px rgba(0,0,0,0.25);
+   box-shadow: inset -1px -1px 1px 0px rgba(0,0,0,0.25);
+}
+help::after{
+   content: '?';
+} */
+.config-label {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.help-icon {
+   height: 20px;
+   width: 20px;
+   border-radius: 50%;
+   background-image: url('../../../media/images/icons-help.png');
+   cursor: pointer;
+   background-size: cover;
+   visibility: hidden;
+}
+
+table td:first-child:hover .help-icon{
+   visibility: visible;
+}  
+
+.overlay{
+   position: absolute;
+   width: auto;
+   height: auto;
+   border: 1px solid var(--vscode-tree-tableColumnsBorder);
+   background-color: white;
+   color:var(--vscode-input-foreground);
+   z-index: 10000000000000000;
+   padding: 20px;
+}
