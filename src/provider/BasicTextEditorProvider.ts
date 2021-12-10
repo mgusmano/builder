@@ -89,9 +89,11 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
             //   code: e.getText(),
             //   s: s
             // });
+            this._ast = esprima.parseScript(this._document.getText());
             this.webviewPanel.webview.postMessage({
               type:'reloadView',
-              code: this._document.getText()
+              code: this._document.getText(),
+              ast:this._ast
             });
           }
         }
@@ -136,6 +138,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
 
   private updateCode(message: any) {
     const ast = esprima.parseScript(this._document.getText());
+    this._ast = ast;
     const properties = (ast as any).body[0].expression.arguments[1].properties;
     let found = false;
     properties.forEach((item: any) => {
@@ -270,6 +273,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     const modifiedUrl = vscode.Uri.joinPath(this._extensionUri,'src','webview','js','MainView.js').with({ 'scheme': 'vscode-resource' });
     const URLS = ['styles/style.css'] as Array<string>;
     const resourceUrls = this.getResourseUrl(URLS);
+    const ast = JSON.stringify(this._ast);
     // Test
     const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-modern-all-debug.js')).with({ 'scheme': 'vscode-resource' });
     const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_1.css')).with({ 'scheme': 'vscode-resource' });
@@ -309,7 +313,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
        </script> 
        <script type="module">
         import {renderView} from '${modifiedUrl}';
-        renderView(${componentList});
+        renderView(${ast});
        </script>
       </body>
     </html>`;

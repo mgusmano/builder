@@ -1,12 +1,12 @@
 import {CategorySelection} from './categoryselection/CategorySelection.js';
 class MainView {
-    constructor(componetList) {
+    constructor(ast) {
         this.addOnload();
         this.createView = this.createView.bind(this);
-        this.list = componetList;
+        this.ast = ast;
     }
     createView() {
-        this.categorySection = new CategorySelection(this.list);
+        this.categorySection = new CategorySelection(this.ast);
     }
     addOnload(){
         document.addEventListener('DOMContentLoaded',()=>{
@@ -16,6 +16,6 @@ class MainView {
     
 }
 
-export function renderView(componetList) {
-  const view = new MainView(componetList);
+export function renderView(ast) {
+  const view = new MainView(ast);
 }
