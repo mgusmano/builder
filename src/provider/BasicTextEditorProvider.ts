@@ -105,7 +105,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     webviewPanel.webview.onDidReceiveMessage((message) => {
       switch (message.command) {
         case "updateCode":{
-          this.updateCode(message.payload);
+          this.updateCode(message.payload,message.location);
           break;
         }
         case "changeTitle":
@@ -136,7 +136,10 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     });
   };
 
-  private updateCode(message: any) {
+  private updateCode(message: any, lc: any[]) {
+    // if(lc && lc.length){
+    //   this.locateComponent();
+    // }
     const ast = esprima.parseScript(this._document.getText());
     this._ast = ast;
     const properties = (ast as any).body[0].expression.arguments[1].properties;
@@ -178,7 +181,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
         var obj = ${JSON.stringify(config.defaultConfig)}
       `;
       const script2 = esprima.parseScript(configStr) as any;
-      console.log("console.log(script2)",script2)
+      console.log("console.log(script2)",script2);
       return script2.body[0].declarations[0].init;
     }
     else if(config.type==='Object'){
@@ -199,6 +202,10 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       return script2.body[0].declarations[0].init.properties[0];
     }
     
+  }
+
+  private locateComponent(){
+
   }
   
   private loadCompoentConfigs(message: any) {
@@ -275,9 +282,9 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     const resourceUrls = this.getResourseUrl(URLS);
     const ast = JSON.stringify(this._ast);
     // Test
-    const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-modern-all-debug.js')).with({ 'scheme': 'vscode-resource' });
-    const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_1.css')).with({ 'scheme': 'vscode-resource' });
-    const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_2.css')).with({ 'scheme': 'vscode-resource' });
+    // const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-modern-all-debug.js')).with({ 'scheme': 'vscode-resource' });
+    // const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_1.css')).with({ 'scheme': 'vscode-resource' });
+    // const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_2.css')).with({ 'scheme': 'vscode-resource' });
     const toolkitUri = Utilities.getUri(webview, this._extensionUri, [
       "node_modules",
       "@vscode",
@@ -285,9 +292,9 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       "dist",
       "toolkit.js",
     ]);
-    // const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-all.js')).with({ 'scheme': 'vscode-resource' });
-    // const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-classic-all_1.css')).with({ 'scheme': 'vscode-resource' });
-    // const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-classic-all_2.css')).with({ 'scheme': 'vscode-resource' });
+    const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-all.js')).with({ 'scheme': 'vscode-resource' });
+    const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-classic-all_1.css')).with({ 'scheme': 'vscode-resource' });
+    const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-classic-all_2.css')).with({ 'scheme': 'vscode-resource' });
     const nonce = Utilities.getNonce();
     const codeText = this._document.getText();
 		return `<!DOCTYPE html>

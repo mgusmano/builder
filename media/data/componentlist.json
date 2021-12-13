@@ -51,17 +51,11 @@
         {
           "name": "columns",
           "text": "Column",
+          "xtype":"gridcolumn",
           "groupField": "stan",
           "extendsHirarchy":["Ext.grid.column.Column"],
           "defaultConfig":{"text":"column1"},
           "type":"Array"
-        },
-        {
-          "name": "plugins",
-          "text": "PagingToolBar",
-          "extendsHirarchy":["Ext.grid.plugin.PagingToolbar"],
-          "type":"Object",
-          "defaultConfig":{"pagingtoolbar": true,"pullrefresh": true}
         }
       ]
     }

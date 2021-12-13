@@ -147,3 +147,10 @@ table td:first-child:hover .help-icon{
    z-index: 10000000000000000;
    padding: 20px;
 }
+
+.dropOverlay {
+   position: absolute;
+   z-index: 10000000000000000;
+   opacity:0.3;
+   pointer-events: none;
+}
