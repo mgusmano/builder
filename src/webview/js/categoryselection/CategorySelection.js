@@ -15,7 +15,7 @@ export class CategorySelection {
     }
     setClassicOrModern(type = 'classic'){
       let cssClasses, componentMapper;
-      if(type = 'classic'){
+      if (type = 'classic'){
         cssClasses = [
           'x-grid',
           'x-column-header',
@@ -42,6 +42,7 @@ export class CategorySelection {
     }
     createAstValueMapper(){
       const astObjMapper = this.ast.body[0].expression.arguments[1].properties;
+
       for(let i=0;i<astObjMapper.length;i++){
         this.astValueMapper[astObjMapper[i].key.name] = astObjMapper[i].value.value;
       }
@@ -173,6 +174,7 @@ export class CategorySelection {
   createFields(td2, config){
       let inputEl;
       let typeValue = '';
+
       switch(config.type){
         case 'String/Object':
         case 'String':
@@ -226,8 +228,9 @@ export class CategorySelection {
   }
   addFilterEvents(filrerEl){
     filrerEl.addEventListener('keyup',(event)=>{
-      var search = event.target.value.toLowerCase();
-      var all = document.querySelectorAll("#config-section table tr");
+      var search = event.target.value.toLowerCase(),
+          all = document.querySelectorAll("#config-section table tr");
+  
       for (let i=0;i<all.length;i++) {
           let item = all[i].children[0].innerText.toLowerCase();
           if (item.indexOf(search) === -1) { 
@@ -238,7 +241,7 @@ export class CategorySelection {
     });
   }
   createOverLay(event, config){
-    if(!config.description){
+    if (!config.description){
       return;
     }
     const overlay = document.createElement("div");
@@ -252,7 +255,7 @@ export class CategorySelection {
   }
   removeOverlay(){
     const el = document.getElementById('configDescription');
-    if(el){
+    if (el){
       el.remove();
     }
   }
@@ -260,7 +263,7 @@ export class CategorySelection {
       const d = list;
       const unOrderedList = document.createElement('ul');
       unOrderedList.classList.add("component-list");
-      for(let i=0; i< d.length; i++) {
+      for (let i=0; i< d.length; i++) {
         const list = document.createElement('li');
         list.textContent = `${d[i].text}(${d[i].compoentChild.length})`;
         list.onclick = () => {
@@ -271,7 +274,7 @@ export class CategorySelection {
       this.categotyEl.appendChild(unOrderedList);
     }
     createCategorySubSction(d) {
-      if(d){
+      if (d){
       this.removeAllChildren(); 
       const unOrderedList = document.createElement('ul');
       unOrderedList.classList.add("component-list");
@@ -290,7 +293,7 @@ export class CategorySelection {
     }
   }
   removeAllChildren(){
-    if(this.subCategotyEl.hasChildNodes()){
+    if (this.subCategotyEl.hasChildNodes()){
       while (this.subCategotyEl.firstChild) {
         this.subCategotyEl.removeChild(this.subCategotyEl.firstChild);
       }
@@ -300,18 +303,18 @@ export class CategorySelection {
     const dropZone = document.getElementById('content-frame');
     dropZone.addEventListener('dragenter', (event)=>{
       this.dragEnter(event);
-    },false);
+    }, false);
     
     dropZone.addEventListener('dragover', (event)=>{
         this.dragOver(event);
-    },false);
+    }, false);
 
     dropZone.addEventListener('dragleave', (event)=>{
       this.dragLeave(event);
-    },false);
+    }, false);
     dropZone.addEventListener('drop', (event)=>{
       this.drop(event);
-    },false);
+    }, false);
 
   }
   dragEnter(event){
@@ -371,13 +374,15 @@ export class CategorySelection {
     const isDropable = this.isDropable(type);
     if(isDropable){
       const location = this.locateComponent('drop');
-      debugger;
+
       vscode.postMessage({command: 'updateCode', payload: this.dataTobeTrasferd});
     }
   }
+
   locateComponent(action) {
     let parent = this.parent;
     const lc = [];
+
     while(parent!==null){
       const cssClass = parent.classList.length>0 && this.isComponentClassPresent(parent.classList);
       if(cssClass){
@@ -400,6 +405,7 @@ export class CategorySelection {
     }
     return lc;
   }
+
   isComponentClassPresent(classList){
     for(let i=0; i< classList.length;i++){
       if(this.droppableCls.includes(classList[i])){
@@ -407,6 +413,7 @@ export class CategorySelection {
       }
     }
   }
+
   dragOver(event){
     event.preventDefault();
   }
