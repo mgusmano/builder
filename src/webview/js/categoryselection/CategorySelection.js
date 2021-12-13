@@ -5,18 +5,44 @@ export class CategorySelection {
        this.ast = ast;
        this.astValueMapper = {};
        this.createAstValueMapper();
-       const list = JSON.parse(window.localStorage.getItem("componentList"));
-       this.createListView(list);
+       this.list = JSON.parse(window.localStorage.getItem("componentList"));
+       this.componentTargets = JSON.parse(window.localStorage.getItem('componentTargets'));
+       this.createListView(this.list);
        this.loadDroptarget();
        this.subscribeTomessage();
        this.addListeners();
-       this.droppableCls = [
-        'x-grid',
-        'x-gridcolumn'
-      ];
+       this.setClassicOrModern();
+    }
+    setClassicOrModern(type = 'classic'){
+      let cssClasses, componentMapper;
+      if (type = 'classic'){
+        cssClasses = [
+          'x-grid',
+          'x-column-header',
+          'x-grid-view'
+        ];
+        componentMapper = {
+         'x-grid':'grid',
+         'x-column-header':'gridcolumn',
+         'x-grid-view': 'gridview'
+        };
+      }
+      else {
+        cssClasses = [
+          'x-grid',
+          'x-gridcolumn'
+        ];
+        componentMapper = {
+         'x-grid':'grid',
+         'x-gridcolumn':'gridcolumn'
+        };
+      }
+      this.componentMapper = componentMapper;
+      this.droppableCls = cssClasses;
     }
     createAstValueMapper(){
       const astObjMapper = this.ast.body[0].expression.arguments[1].properties;
+
       for(let i=0;i<astObjMapper.length;i++){
         this.astValueMapper[astObjMapper[i].key.name] = astObjMapper[i].value.value;
       }
@@ -29,27 +55,51 @@ export class CategorySelection {
       document.getElementById('content-frame').addEventListener('click',(event)=>{
         this.contentFrameClick(event);
       },false);
+      // document.body.addEventListener('click',()=>{
+      //   debugger;
+      //   if(this.dropOverlay){
+      //     this.dropOverlay.remove();
+      //   }
+      // },true);
     }
     contentFrameClick(event){ 
       event.stopImmediatePropagation();
-
-      if(this.parent) {
-        this.parent.classList.remove('drag-over-allowed');
-        this.parent.classList.remove('drag-over-notallowed');
-      }
       this.parent = event.target;
       while(this.parent!==null){
         if(this.parent.classList.length>0 && this.isClassPresent()){
-          const type = this.parentCls.split('-');
-          if(type.length > 1 && type[1]) {
-            this.parent.classList.add('drag-over-allowed');
-            vscode.postMessage({command: 'showConfig', payload: {'type':type[1]}});
+          const type = this.componentMapper[this.parentCls];
+          if(type) {
+            this.createDropOverlay(false,true);
+            vscode.postMessage({command: 'showConfig', payload: {type}});
             event.preventDefault();
           }
           break;
         }
         this.parent = this.parent.parentElement;
       }
+    }
+    createDropOverlay(allow, borderOnly){
+      if(this.dropOverlay){
+        this.dropOverlay.remove();
+      }
+      this.dropOverlay = document.createElement("div");
+      const dropOverlay = this.dropOverlay;
+      dropOverlay.classList.add('dropOverlay');
+      const offset = this.parent.getBoundingClientRect();
+      dropOverlay.style.top = `${offset.top}px`;
+      dropOverlay.style.left = `${offset.left}px`;
+      dropOverlay.style.width = `${offset.width}px`;
+      dropOverlay.style.height = `${offset.height}px`;
+      if(!borderOnly){
+        const colorToapply = allow?"green":"red";
+        dropOverlay.style.backgroundColor = colorToapply;
+        dropOverlay.style.border = `2px solid ${colorToapply}`;
+      }
+      else {
+        dropOverlay.style.border = "2px solid blue";
+        dropOverlay.style.opacity = "inherit";
+      }
+      document.body.append(dropOverlay);
     }
     subscribeTomessage() {
         window.addEventListener('message', event => {
@@ -69,7 +119,7 @@ export class CategorySelection {
       this.ast = data.ast;
       this.createAstValueMapper();
       const tableRows = document.querySelectorAll('#config-section table tr');
-      if(!tableRows || tableRows.length == 0){
+      if(!tableRows || tableRows.length === 0){
        return;
       }
       this.updateViewConfigs(tableRows);
@@ -124,6 +174,7 @@ export class CategorySelection {
   createFields(td2, config){
       let inputEl;
       let typeValue = '';
+
       switch(config.type){
         case 'String/Object':
         case 'String':
@@ -150,6 +201,7 @@ export class CategorySelection {
       }
       if(config.type !=='Boolean') {
         inputEl.addEventListener('keypress',(event)=>{
+          event.stopPropagation();
           if (event.key === 'Enter') {
             const obj = {
               type:'string',
@@ -162,6 +214,7 @@ export class CategorySelection {
       }
       else if(config.type ==='Boolean') {
         inputEl.addEventListener('change',(event)=>{
+          event.stopPropagation();
             const obj = {
               type:'string',
               name:config.name,
@@ -175,11 +228,12 @@ export class CategorySelection {
   }
   addFilterEvents(filrerEl){
     filrerEl.addEventListener('keyup',(event)=>{
-      var search = event.target.value.toLowerCase();
-      var all = document.querySelectorAll("#config-section table tr");
+      var search = event.target.value.toLowerCase(),
+          all = document.querySelectorAll("#config-section table tr");
+  
       for (let i=0;i<all.length;i++) {
           let item = all[i].children[0].innerText.toLowerCase();
-          if (item.indexOf(search) == -1) { 
+          if (item.indexOf(search) === -1) { 
             all[i].classList.add("hide"); 
           }
           else {  all[i].classList.remove("hide"); }
@@ -187,7 +241,7 @@ export class CategorySelection {
     });
   }
   createOverLay(event, config){
-    if(!config.description){
+    if (!config.description){
       return;
     }
     const overlay = document.createElement("div");
@@ -201,26 +255,26 @@ export class CategorySelection {
   }
   removeOverlay(){
     const el = document.getElementById('configDescription');
-    if(el){
+    if (el){
       el.remove();
     }
   }
-  createListView(){
-      const d = JSON.parse(window.localStorage.getItem('componentList'));
+  createListView(list){
+      const d = list;
       const unOrderedList = document.createElement('ul');
       unOrderedList.classList.add("component-list");
-      for(let i=0; i< d.length; i++) {
+      for (let i=0; i< d.length; i++) {
         const list = document.createElement('li');
         list.textContent = `${d[i].text}(${d[i].compoentChild.length})`;
         list.onclick = () => {
           this.createCategorySubSction(d[i].compoentChild);
-        }
+        };
         unOrderedList.appendChild(list);
       }
       this.categotyEl.appendChild(unOrderedList);
     }
     createCategorySubSction(d) {
-      if(d){
+      if (d){
       this.removeAllChildren(); 
       const unOrderedList = document.createElement('ul');
       unOrderedList.classList.add("component-list");
@@ -239,7 +293,7 @@ export class CategorySelection {
     }
   }
   removeAllChildren(){
-    if(this.subCategotyEl.hasChildNodes()){
+    if (this.subCategotyEl.hasChildNodes()){
       while (this.subCategotyEl.firstChild) {
         this.subCategotyEl.removeChild(this.subCategotyEl.firstChild);
       }
@@ -249,39 +303,31 @@ export class CategorySelection {
     const dropZone = document.getElementById('content-frame');
     dropZone.addEventListener('dragenter', (event)=>{
       this.dragEnter(event);
-    },false);
+    }, false);
+    
     dropZone.addEventListener('dragover', (event)=>{
         this.dragOver(event);
-    },false);
+    }, false);
+
     dropZone.addEventListener('dragleave', (event)=>{
       this.dragLeave(event);
-    },false);
+    }, false);
     dropZone.addEventListener('drop', (event)=>{
       this.drop(event);
-    },false);
+    }, false);
+
   }
   dragEnter(event){
-    if(this.parent) {
-      this.parent.classList.remove('drag-over-allowed');
-      this.parent.classList.remove('drag-over-notallowed');
-    }
     this.parent = event.target;
     while(this.parent!==null){
-      if(this.parent.classList.contains('x-dataview-body-el')){
-        this.parentCls = 'x-dataview-body-el';
-        this.parent.classList.add('drag-over-notallowed');
-        event.dataTransfer.dropEffect = "copy";
-        break;
-      }
       
       if(this.parent.classList.length>0 && this.isClassPresent()){
-        const type = this.parentCls.split('-');
-        const isDropable = this.isDropable(type[1]);
+        const type = this.componentMapper[this.parentCls];
+        const isDropable = this.isDropable(type);
         if(isDropable){
-          this.parent.classList.add('drag-over-allowed');
-          event.dataTransfer.dropEffect = "copy";
+          this.createDropOverlay(true);
         } else {
-          this.parent.classList.add('drag-over-notallowed');
+          this.createDropOverlay(false);
         }
         break;
       }
@@ -299,11 +345,11 @@ export class CategorySelection {
   }
   
   isDropable(type){
-    const targets = JSON.parse(window.localStorage.getItem('componentTargets'));
+    const targets = this.componentTargets;
     if(targets[type]){
       const primatyCollectionBaseType = targets[type].primatyCollectionBaseType;
       for(let i=0;i<primatyCollectionBaseType.length;i++){
-        if(this.dataTobeTrasferd.extendsHirarchy.includes(primatyCollectionBaseType[i])){
+        if(targets[this.dataTobeTrasferd.xtype].extensionHierarchy.includes(primatyCollectionBaseType[i])){
           return true;
         }
       }
@@ -319,61 +365,56 @@ export class CategorySelection {
     };
   } 
   dragLeave(event){
-    // if(this.parent.classList.contains('drag-over-notallowed')){
-    //   this.parent.classList.remove('drag-over-allowed');
-    // }
-    // else {
-    //   this.parent.classList.remove('drag-over-notallowed');
-    // }
-    // this.parent.classList.remove('drag-over-notallowed');
-    // this.parent.classList.remove('drag-over-allowed');
-    // if(this.targetFound && this.parent){
-    //   //this.parent.classList.remove('drag-over');
-    //   this.targetFound = false;
-    // }
-    // var parent = event.target;
-    // debugger;
-    // while(parent!==null){
-    //   debugger;
-    //   if(parent.classList.contains('drag-over')){
-    //     parent.classList.remove('drag-over');
-    //     break;
-    //   }
-    //   parent = parent.parentElement;
-    // }
   }
   drop(event){
-    this.parent.classList.remove('drag-over-allowed');
-    this.parent.classList.remove('drag-over-notallowed');
-    const type = this.parentCls.split('-');
-    const isDropable = this.isDropable(type[1]);
+    if(this.dropOverlay){
+      this.dropOverlay.remove();
+    }
+    const type = this.componentMapper[this.parentCls];
+    const isDropable = this.isDropable(type);
     if(isDropable){
+      const location = this.locateComponent('drop');
+
       vscode.postMessage({command: 'updateCode', payload: this.dataTobeTrasferd});
     }
-    // for (let type of event.dataTransfer.types) {
-    //   console.log(event.dataTransfer.getData(type));
-    // }
-    // event.preventDefault();
-    // event.preventDefault();
-    // for (let type of event.dataTransfer.types) {
-    //   console.log(event.dataTransfer.getData(type));
-    // }
   }
+
+  locateComponent(action) {
+    let parent = this.parent;
+    const lc = [];
+
+    while(parent!==null){
+      const cssClass = parent.classList.length>0 && this.isComponentClassPresent(parent.classList);
+      if(cssClass){
+        const type = this.componentMapper[cssClass];
+        if(parent.parentElement){
+          const xtypeMapper = {
+            xtype: type,
+            index : Array.prototype.indexOf.call(parent.parentElement.children,parent)
+          };
+          lc.push(xtypeMapper);
+        }
+      }
+      parent = parent.parentElement;
+    }
+    if(action === 'drop'){
+      const dropType = {
+        xtype: this.dataTobeTrasferd.xtype
+      };
+      lc.push(dropType);
+    }
+    return lc;
+  }
+
+  isComponentClassPresent(classList){
+    for(let i=0; i< classList.length;i++){
+      if(this.droppableCls.includes(classList[i])){
+        return classList[i];
+      }
+    }
+  }
+
   dragOver(event){
     event.preventDefault();
-    // console.log(event.target);
-    // if(event.currentTarget.classList.contains('x-panel')){
-    //   debugger;
-    // }
-    // event.preventDefault();
-    // for (let type of event.dataTransfer.types) {
-    //   console.log(event.dataTransfer.getData(type));
-    // }
-    // event.preventDefault();
-    // const data = event.dataTransfer.getData("text");
-    // //debugger;
-    // console.log(event.dataTransfer.types);
-    // // Accept the drag-drop transfer.
-    // event.preventDefault();
   }
 }
