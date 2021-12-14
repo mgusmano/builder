@@ -4,7 +4,7 @@ export class CategorySelection {
        this.subCategotyEl = document.getElementById('subCategory'); 
        this.ast = ast;
        this.astValueMapper = {};
-       this.createAstValueMapper();
+       //this.createAstValueMapper();
        this.list = JSON.parse(window.localStorage.getItem("componentList"));
        this.componentTargets = JSON.parse(window.localStorage.getItem('componentTargets'));
        this.createListView(this.list);
@@ -40,26 +40,34 @@ export class CategorySelection {
       this.componentMapper = componentMapper;
       this.droppableCls = cssClasses;
     }
-    createAstValueMapper(){
-      const astObjMapper = this.ast.body[0].expression.arguments[1].properties;
+    createAstValueMapper(ast){
+      this.astValueMapper = {};
+      const astObjMapper = ast;
       for(let i=0;i<astObjMapper.length;i++){
-        this.astValueMapper[astObjMapper[i].key.name] = astObjMapper[i].value.value;
+        this.astValueMapper[astObjMapper[i].key.name || astObjMapper[i].key.value] = astObjMapper[i].value.value;
       }
     }
     addListeners(){
       document.getElementById('show-code').addEventListener('click',()=>{
+        //document.body.style.display = 'none'
         vscode.postMessage({command: 'showCode'});
       });
 
       document.getElementById('content-frame').addEventListener('click',(event)=>{
         this.contentFrameClick(event);
       },false);
+
+      window.addEventListener('resize', ()=>{
+        if(this.dropOverlay){
+          this.dropOverlay.remove();
+        }
+      });
       // document.body.addEventListener('click',()=>{
       //   debugger;
       //   if(this.dropOverlay){
       //     this.dropOverlay.remove();
       //   }
-      // },true);
+      // });
     }
     contentFrameClick(event){ 
       event.stopImmediatePropagation();
@@ -69,7 +77,8 @@ export class CategorySelection {
           const type = this.componentMapper[this.parentCls];
           if(type) {
             this.createDropOverlay(false,true);
-            vscode.postMessage({command: 'showConfig', payload: {type}});
+            const lc = this.locateComponent();
+            vscode.postMessage({command: 'showConfig',location:lc, payload: {type}});
             event.preventDefault();
           }
           break;
@@ -105,18 +114,18 @@ export class CategorySelection {
         const message = event.data;
         switch (message.type) {
           case 'loadConfig': {
-            this.createConfigList(JSON.parse(message.payload));
+            this.createConfigList(JSON.parse(message.payload),message.ast);
             break;
           }
           case 'reloadView':{
-            this.updateConfigValues(message);
+            //this.updateConfigValues(message);
           }
         }
       });
     }
     updateConfigValues(data){
       this.ast = data.ast;
-      this.createAstValueMapper();
+      //this.createAstValueMapper();
       const tableRows = document.querySelectorAll('#config-section table tr');
       if(!tableRows || tableRows.length === 0){
        return;
@@ -132,8 +141,9 @@ export class CategorySelection {
         }
       }
     }
-    createConfigList(configs) {
+    createConfigList(configs, ast) {
       this.currentConfig = configs;
+      this.createAstValueMapper(ast.properties);
       const configSection = document.querySelector('#config-section table');
       const filterEl = document.getElementById("filter-field");
       filterEl.style.display = '';
@@ -198,15 +208,26 @@ export class CategorySelection {
           break;
       }
       if(config.type !=='Boolean') {
+        inputEl.addEventListener('focus',(event)=>{
+          event.stopImmediatePropagation();
+        });
+
         inputEl.addEventListener('keypress',(event)=>{
           event.stopPropagation();
           if (event.key === 'Enter') {
+            let value;
+            try {
+              value = eval(event.target.value);
+            }
+            catch(error){
+              value = event.target.value;
+            }
             const obj = {
               type:'string',
               name:config.name,
-              defaultConfig:event.target.value
+              defaultConfig:value
             };
-            vscode.postMessage({command: 'updateCode', payload: obj});
+            vscode.postMessage({command: 'updateConfigs', payload: obj});
          } 
         });
       }
@@ -218,13 +239,19 @@ export class CategorySelection {
               name:config.name,
               defaultConfig:event.target.checked
             };
-            vscode.postMessage({command: 'updateCode', payload: obj});
+            vscode.postMessage({command: 'updateConfigs', payload: obj});
         });
       }
 
       inputEl.style.width = '90%';
   }
   addFilterEvents(filrerEl){
+
+    // filrerEl.addEventListener('focus',(event)=>{
+    //   debugger;
+    //   event.stopImmediatePropagation();
+    // },false);
+
     filrerEl.addEventListener('keyup',(event)=>{
       var search = event.target.value.toLowerCase();
       var all = document.querySelectorAll("#config-section table tr");
@@ -270,19 +297,21 @@ export class CategorySelection {
       }
       this.categotyEl.appendChild(unOrderedList);
     }
-    createCategorySubSction(d) {
-      if(d){
+    createCategorySubSction(subList) {
+      if(subList){
+      const groupedItems = this.getGroupedItems(subList);  
       this.removeAllChildren(); 
+      // const sectionContainer = document.createElement("div");
       const unOrderedList = document.createElement('ul');
       unOrderedList.classList.add("component-list");
-      for(let i=0; i< d.length; i++) {
+      for(let i=0; i< subList.length; i++) {
         const list = document.createElement('li');
-        list.textContent = d[i].text;
+        list.textContent = subList[i].text;
         
         list.draggable="true";
         list.addEventListener('dragstart',(event)=>{
             event.dataTransfer.effectAllowed = "copyMove";
-            this.dataTobeTrasferd = d[i];
+            this.dataTobeTrasferd = subList[i];
         }); 
         unOrderedList.appendChild(list);
       }
@@ -295,6 +324,18 @@ export class CategorySelection {
         this.subCategotyEl.removeChild(this.subCategotyEl.firstChild);
       }
     }
+  }
+  getGroupedItems(list){
+    const groupedItems = {};
+    for(let i=0;i<list.length;i++){
+      if(!groupedItems[list[i].groupField]){
+        groupedItems[list[i].groupField] = [list[i]];
+      }
+      else{
+        groupedItems[list[i].groupField].push(list[i]);
+      }
+    }
+    return groupedItems;
   }
   loadDroptarget(){
     const dropZone = document.getElementById('content-frame');
@@ -371,8 +412,7 @@ export class CategorySelection {
     const isDropable = this.isDropable(type);
     if(isDropable){
       const location = this.locateComponent('drop');
-      debugger;
-      vscode.postMessage({command: 'updateCode', payload: this.dataTobeTrasferd});
+      vscode.postMessage({command: 'updateCode',location:location, payload: this.dataTobeTrasferd});
     }
   }
   locateComponent(action) {
@@ -392,13 +432,37 @@ export class CategorySelection {
       }
       parent = parent.parentElement;
     }
+    lc.reverse();
     if(action === 'drop'){
       const dropType = {
-        xtype: this.dataTobeTrasferd.xtype
+        xtype: this.dataTobeTrasferd.xtype,
+        newItem:true,
       };
       lc.push(dropType);
     }
-    return lc;
+    return this.createCompnentHirarchy(lc);
+  }
+  createCompnentHirarchy(lc){
+    let ch = [];
+    for(let i=0;i<lc.length;i++){
+      ch.push({
+        index: lc[i].index
+      });
+      if(lc[i+1]){
+        const className =  this.componentTargets[lc[i+1].xtype].className;
+        const primaryCollection = this.componentTargets[lc[i].xtype].primaryCollection
+        for(let j=0;j<primaryCollection.length;j++){
+          if(primaryCollection[j].baseType===className){
+            ch.push({
+              propertyName: primaryCollection[j].name,
+              dataType: primaryCollection[j].type
+            });
+            break;
+          }
+        }
+      }
+    }
+    return ch;
   }
   isComponentClassPresent(classList){
     for(let i=0; i< classList.length;i++){
