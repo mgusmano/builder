@@ -18,6 +18,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   public _extend: any;
   public _namespace: any;
   public _xtype: any;
+  public _currrentAst: any;
 
   public static register( context: vscode.ExtensionContext ): vscode.Disposable {
     const provider = new BasicTextEditorProvider(context);
@@ -129,20 +130,20 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
           vscode.commands.executeCommand('vscode.openWith', uri, 'default', opts);
           break;
          case 'showConfig': {
-           this.loadCompoentConfigs(message.payload);
+           this.loadCompoentConfigs(message);
            break;
+         }
+         case 'updateConfigs':{
+           this.updateCodeConfigs(message.payload);
          } 
       }
     });
   };
 
-  private updateCode(message: any, lc: any[]) {
-    // if(lc && lc.length){
-    //   this.locateComponent();
-    // }
-    const ast = esprima.parseScript(this._document.getText());
-    this._ast = ast;
-    const properties = (ast as any).body[0].expression.arguments[1].properties;
+  private updateCodeConfigs(message: any){
+    //const ast = esprima.parseScript(this._document.getText());
+    //this._ast = ast;
+    const properties = Array.isArray(this._currrentAst)?this._currrentAst:this._currrentAst.properties;
     let found = false;
     properties.forEach((item: any) => {
       if(item.key.name === message.name && item.value.type === 'ArrayExpression'){
@@ -161,8 +162,12 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       const config = this.getConfig(message, false);
       properties.push(config);
     }
-    var code = escodegen.generate(ast);
+    var code = escodegen.generate(this._ast);
     this.updateTextDocument(this._document,code);
+  }
+
+  private updateCode(message: any, lc: any[]) {
+    this.locateObjectInAst(lc,message);
   }
 
   private getConfig(config: any, flag: boolean){
@@ -204,17 +209,124 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     
   }
 
-  private locateComponent(){
-
+  private locateObjectInAst(location: any[],message?: any,codeUpdate: boolean=true){
+    location.shift();
+    let ast:  any = esprima.parseScript(this._document.getText());
+    this._ast = ast;
+    this._currrentAst = (ast as any).body[0].expression.arguments[1];
+    for (let i=0;i<location.length;i++){
+      if(location[i].dataType==='Array') {
+        let found = false;
+        this._currrentAst.properties.forEach((item:any) => {
+          if(item.key.name === location[i].propertyName){
+            found = true;
+            if(item.value.type==='ArrayExpression'){
+              this._currrentAst = item.value.elements;
+            }
+          }
+       });
+       if(!found){
+        const ast = this.getConfig1('array',location[i].propertyName);
+        this._currrentAst.properties.push(ast);
+        this._currrentAst = ast.value.elements;
+       }
+      }
+      else{
+        if(location[i].index!==undefined){
+          this._currrentAst = this._currrentAst[location[i].index];
+        }
+        else {
+         const ast = this.getConfig1('object','simple',message.defaultConfig);
+         if(this._currrentAst.properties){
+          this._currrentAst.properties.push(ast);
+         }
+         else{
+          this._currrentAst.push(ast);
+         }
+        }
+      }
+    }
+    if(codeUpdate){
+      var code = escodegen.generate(ast);
+      this.updateTextDocument(this._document,code);
+    }
   }
-  
+  private getConfig1(type: string,property:string,value?: string){
+    let configStr;
+
+    if(type==='array'){
+        if(value){
+          configStr = `
+          var obj = {
+            ${property}:[${JSON.stringify(value)}]
+          }
+        `;
+        }
+        else{
+          configStr = `
+          var obj = {
+            ${property}:[]
+          }
+        `;
+        }
+      const script = esprima.parseScript(configStr) as any;
+      return script.body[0].declarations[0].init.properties[0];
+    }
+    else if(type==='object'){
+        configStr = `
+        var obj = {
+          ${property}:${JSON.stringify(value)}
+        }
+      `;
+      const script1 = esprima.parseScript(configStr) as any;
+      return script1.body[0].declarations[0].init.properties[0].value;
+    }
+    // if(!flag && config.type==='Array'){
+    //   configStr = `
+    //     var obj = {
+    //       ${config.name}:[${JSON.stringify(config.defaultConfig)}]
+    //     }
+    //   `;
+    //   const script1 = esprima.parseScript(configStr) as any;
+    //   return script1.body[0].declarations[0].init.properties[0];
+    // }
+    // else if(flag && config.type==='Array'){
+    //   configStr = `
+    //     var obj = ${JSON.stringify(config.defaultConfig)}
+    //   `;
+    //   const script2 = esprima.parseScript(configStr) as any;
+    //   console.log("console.log(script2)",script2);
+    //   return script2.body[0].declarations[0].init;
+    // }
+    // else if(config.type==='Object'){
+    //   configStr = `
+    //     var obj = {
+    //       ${config.name}:${JSON.stringify(config.defaultConfig)}
+    //     }
+    //   `;
+    //   const script1 = esprima.parseScript(configStr) as any;
+    //   return script1.body[0].declarations[0].init.properties[0];
+    // }
+    // else {
+    //   configStr = `
+    //     var obj = {${config.name}:${JSON.stringify(config.defaultConfig)}}
+    //   `;
+    //   const script2 = esprima.parseScript(configStr) as any;
+    //   console.log("console.log(script2)",script2)
+    //   return script2.body[0].declarations[0].init.properties[0];
+    // }
+    
+  }
   private loadCompoentConfigs(message: any) {
-    const uri = (vscode.Uri.joinPath(this._extensionUri, 'media','data',`${message.type}.json`)).with({ 'scheme': 'vscode-resource' });
+    const uri = (vscode.Uri.joinPath(this._extensionUri, 'media','data',`${message.payload.type}.json`)).with({ 'scheme': 'vscode-resource' });
     const data = fs.readFileSync(`${uri.path}`,{encoding:'utf8', flag:'r'});
+    this.locateObjectInAst(message.location, undefined, false);
     this.webviewPanel.webview.postMessage({
       type:'loadConfig',
+      ast: this._currrentAst,
       payload: data
     });
+
   }
 
   private async updateTextDocument(document: vscode.TextDocument, code: any) {
@@ -293,8 +405,11 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       "toolkit.js",
     ]);
     const extModernAll = (vscode.Uri.joinPath(this._extensionUri, 'media', 'ext-all.js')).with({ 'scheme': 'vscode-resource' });
-    const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-classic-all_1.css')).with({ 'scheme': 'vscode-resource' });
-    const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-classic-all_2.css')).with({ 'scheme': 'vscode-resource' });
+    // const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-classic-all_1.css')).with({ 'scheme': 'vscode-resource' });
+    // const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-classic-all_2.css')).with({ 'scheme': 'vscode-resource' });
+    const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-material','resources','theme-material-all_1.css')).with({ 'scheme': 'vscode-resource' });
+    const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-material','resources','theme-material-all_2.css')).with({ 'scheme': 'vscode-resource' });
+    const themeAll3 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'theme-material','resources','theme-material-all_3.css')).with({ 'scheme': 'vscode-resource' });
     const nonce = Utilities.getNonce();
     const codeText = this._document.getText();
 		return `<!DOCTYPE html>
@@ -308,6 +423,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       <script nonce="${nonce}" src="${extModernAll}"></script>
       <link href="${themeAll1}" rel="stylesheet">
       <link href="${themeAll2}" rel="stylesheet">
+      <link href="${themeAll3}" rel="stylesheet">
       <title>ExtJSPanel</title>
       <body>
       ${getMainViewHtml()}

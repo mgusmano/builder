@@ -52,9 +52,36 @@
           "name": "columns",
           "text": "Column",
           "xtype":"gridcolumn",
-          "groupField": "stan",
+          "groupField": "Columns",
           "extendsHirarchy":["Ext.grid.column.Column"],
           "defaultConfig":{"text":"column1"},
+          "type":"Array"
+        },
+        {
+          "name": "columns",
+          "text": "Boolean Column",
+          "xtype":"booleancolumn",
+          "groupField": "Columns",
+          "extendsHirarchy":["Ext.grid.column.Column","Ext.grid.column.Boolean"],
+          "defaultConfig":{"xtype":"booleancolumn","text":"column1"},
+          "type":"Array"
+        },
+        {
+          "name": "columns",
+          "text": "Check Column",
+          "xtype":"checkcolumn",
+          "groupField": "Columns",
+          "extendsHirarchy":["Ext.grid.column.Column","Ext.grid.column.Check"],
+          "defaultConfig":{"xtype":"checkcolumn","text":"column1"},
+          "type":"Array"
+        },
+        {
+          "name": "dockedItems",
+          "text": "Paging Toolbar",
+          "xtype":"pagingtoolbar",
+          "groupField": "Tools",
+          "extendsHirarchy":["Ext.Base","Ext.Component","Ext.container.Container","Ext.toolbar.Toolbar","Ext.toolbar.Paging"],
+          "defaultConfig":{"xtype": "pagingtoolbar", "dock": "bottom"},
           "type":"Array"
         }
       ]
