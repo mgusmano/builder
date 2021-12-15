@@ -3,6 +3,7 @@ import * as os from 'os';
 const fs = require('fs');
 import { Utilities } from "../Utilities";
 import { SenchaCmdPanelHTML } from "./SenchaCmdPanelHtml";
+import { spawn } from 'child_process';
 
 export class SenchaCmdPanel {
   public _context: vscode.ExtensionContext;
@@ -15,6 +16,61 @@ export class SenchaCmdPanel {
   public _theme: any;
   public _applicationName: any;
   public _applicationPath: any;
+  private mainViewFileContents = `Ext.define('myApp.view.MainView', {
+    extend: 'Ext.grid.Panel',
+    xtype: 'simpleview',
+    title: 'Title1',
+    width: '100%',
+    height: '100%',
+    store: {
+        fields: [
+            'name',
+            'email',
+            'phone'
+        ],
+        data: [
+            {
+                name: 'Lisa1',
+                email: 'lisa@simpsons.com',
+                phone: '555-111-1224'
+            },
+            {
+                name: 'Bart',
+                email: 'bart@simpsons.com',
+                phone: '555-222-1234'
+            },
+            {
+                name: 'Homer',
+                email: 'homer@simpsons.com',
+                phone: '555-222-1244'
+            },
+            {
+                name: 'Marge',
+                email: 'marge@simpsons.com',
+                phone: '555-222-1254'
+            }
+        ]
+    },
+    columns: [
+        {
+            text: 'Phone No',
+            dataIndex: 'phone',
+        },
+        {
+            text: 'Email',
+            dataIndex: 'email'
+        },
+        {
+            text: 'name',
+            dataIndex: 'name'
+        }
+    ]
+});`;
+private testFileContents = `descibe("test", () => {
+    it("Should run", () => {
+        expect(1).toBe(1);
+    });
+});`;
 
   public static createOrShow(context: vscode.ExtensionContext) {
     const extensionUri: vscode.Uri = context.extensionUri;
@@ -32,6 +88,8 @@ export class SenchaCmdPanel {
       });
     SenchaCmdPanel.currentPanel = new SenchaCmdPanel(panel, extensionUri, context);
   }
+
+
 
   private constructor(webviewPanel: vscode.WebviewPanel, extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
     this._panel = webviewPanel;
@@ -61,7 +119,7 @@ export class SenchaCmdPanel {
 
   public messagesFromWebview = (webviewPanel: vscode.WebviewPanel, context: vscode.ExtensionContext) => {
 
-    webviewPanel.webview.onDidReceiveMessage((message) => {
+    webviewPanel.webview.onDidReceiveMessage(async (message) => {
       console.log(message);
       switch (message.command) {
         case "open":
@@ -74,11 +132,31 @@ export class SenchaCmdPanel {
             vscode.window.showErrorMessage(`Directory exists: ${message.applicationPath}/${message.applicationName}`);
             return;
           }
-          const term = vscode.window.createTerminal(`Sencha Builder`);
-          term.show();
-          term.sendText(`chdir ${os.homedir()}/SenchaApps`);
-          var cmd = `sencha generate app --ext@${message.version} -${message.toolkit} --theme-name theme-${message.theme} ${message.applicationName} ${message.applicationPath}/${message.applicationName}`;
-          term.sendText(cmd);
+
+          vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            cancellable: false,
+            title: `Generating app.`
+          }, async (progress) => {
+            let pseudoProgress = 0;
+            progress.report({ increment: 0 });
+            // Fake progress bar code.
+            const timer = setInterval(() => {
+              if (pseudoProgress < 80) {
+                progress.report({
+                  increment: Math.floor(Math.random() * (10 - 1) + 1)
+                });
+              } else { clearInterval(timer); };
+            }, 1000);
+            const code = await this.generateApp(message);
+            if (code !== 0) {
+              vscode.window.showErrorMessage("Unable to generate app.");
+            } else {
+              await this.modifyGeneratedApp(`${message.applicationPath}/${message.applicationName}`);
+              vscode.window.showInformationMessage("App generated successfully.");
+            }
+            progress.report({ increment: 100 });
+          });
 
           this._toolkit = message.toolkit;
           this._theme = message.theme;
@@ -89,6 +167,60 @@ export class SenchaCmdPanel {
       }
     });
   };
+
+  /**
+   * @description Modifies the generated application and adds custom files.
+   * @param path string The path of the newly created application.
+   */
+  private modifyGeneratedApp(path: string) {
+    try {
+      fs.writeFileSync(`${path}/app/view/main/MainView.js`, this.mainViewFileContents, "utf-8");
+      fs.mkdirSync(`${path}/app/test`);
+      fs.writeFileSync(`${path}/app/test/test.js`, this.testFileContents, "utf-8");
+      fs.writeFileSync(`${path}/app/view/main/MainView.scss`, "", "utf-8");
+    } catch (er: any) {
+      vscode.window.showErrorMessage(er.message);
+    }
+  }
+
+  /**
+   * @description Launches the sencha cmd process and writes the output to
+   * the vscode output channel "sencha".
+   * @param message webview message object.
+   * @returns Promise execution code.
+   */
+  private generateApp(message: any) {
+    const args = [
+      'generate',
+      "app",
+      `--ext@${message.version}`,
+      `-${message.toolkit}`,
+      `--theme-name`,
+      `theme-${message.theme}`,
+      `${message.applicationName}`,
+      `${message.applicationPath}/${message.applicationName}`];
+    const appGen = spawn("sencha", args, {
+      stdio: ['pipe', 'pipe', 'inherit'],
+      shell: true
+    });
+    let sencha = vscode.window.createOutputChannel("Sencha");
+    sencha.show();
+    appGen.stdout.setEncoding('utf8');
+    appGen.stdout.on('data', function (data) {
+      data = data.toString();
+      sencha.append(data);
+    });
+        
+    return new Promise((resolve, reject) => {
+      appGen.on("close", code => {
+        sencha.append('Done!');
+        return resolve(code);
+      })
+        .on("error", err => {
+          return reject(err);
+        });
+    });
+  }
 
   public dispose() {
     SenchaCmdPanel.currentPanel = undefined;
