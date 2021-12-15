@@ -5,17 +5,24 @@
       "compoentChild": [
         {
           "text": "Button",
-          "groupField": "Standard"
+          "groupField": "Standard",
+          "xtype":"button",
+          "extendsHirarchy":["Ext.Component","Ext.button.Button"],
+          "defaultConfig":{"xtype":"button","text":"Button"}
         },
         {
-          "name": "Cycle Button",
           "text": "Cycle Button",
-          "groupField": "Grid"
+          "groupField": "Standard",
+          "xtype":"button",
+          "extendsHirarchy":["Ext.Component","Ext.button.Button"],
+          "defaultConfig":{"xtype":"button","text":"Button"}
         },
         {
-          "name": "Segmented Button",
           "text": "Segmented Button",
-          "groupField": "Grid"
+          "groupField": "Standard",
+          "xtype":"segmentedbutton",
+          "extendsHirarchy":["Ext.container.Container","Ext.button.Segmented"],
+          "defaultConfig":{"xtype":"segmentedbutton","items":[{"text": "Segment Item 1","menu": [{"text": "Menu Item 1"}]}]}
         }
       ]
     },
@@ -23,25 +30,6 @@
       "type": "panel",
       "text": "Panel",
       "compoentChild": [
-        {
-          "name": "Boolean Fileter",
-          "text": "Boolean Fileter1",
-          "groupField": "stan"
-        },
-        {
-          "text": "Date Filter1",
-          "groupField": "Grid"
-        },
-        {
-          "name": "Boolean Fileter",
-          "text": "Boolean Fileter1",
-          "groupField": "Grid"
-        },
-        {
-          "name": "Date Filter",
-          "text": "Date Filter",
-          "groupField": "Grid"
-        }
       ]
     },
     {

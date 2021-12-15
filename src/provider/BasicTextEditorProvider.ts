@@ -78,18 +78,6 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
         (e) => {
           //console.log("onDidSaveTextDocument in the extension");
           if (e.uri.toString() === this._document.uri.toString()) {
-            //console.log("post update message to webview");
-            //console.log("*** this text");
-            //console.log(e.document.getText());
-            //console.log("*** this text");
-            //console.log(webviewPanel.webview);
-            //console.log(e.getText());
-            // var s = this.doPropsJSON(e.getText());
-            // webviewPanel.webview.postMessage({
-            //   type: "documentchange",
-            //   code: e.getText(),
-            //   s: s
-            // });
             this._ast = esprima.parseScript(this._document.getText());
             this.webviewPanel.webview.postMessage({
               type:'reloadView',
@@ -145,11 +133,12 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     //this._ast = ast;
     const properties = Array.isArray(this._currrentAst)?this._currrentAst:this._currrentAst.properties;
     let found = false;
+
     properties.forEach((item: any) => {
       if(item.key.name === message.name && item.value.type === 'ArrayExpression'){
           
           const config = this.getConfig(message, true);
-          item.value.elements.push(config);
+          item.value = config.value;
           found = true;
       }
       else if(item.key.name === message.name){
@@ -225,15 +214,21 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
             }
           }
        });
+
        if(!found){
         const ast = this.getConfig1('array',location[i].propertyName);
         this._currrentAst.properties.push(ast);
         this._currrentAst = ast.value.elements;
        }
       }
-      else{
+      else {
         if(location[i].index!==undefined){
-          this._currrentAst = this._currrentAst[location[i].index];
+          if(this._currrentAst[location[i].index]){
+            this._currrentAst = this._currrentAst[location[i].index];
+          }
+          else if(this._currrentAst && this._currrentAst[0]){
+            this._currrentAst = this._currrentAst[0];
+          }
         }
         else {
          const ast = this.getConfig1('object','simple',message.defaultConfig);
@@ -253,7 +248,6 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   }
   private getConfig1(type: string,property:string,value?: string){
     let configStr;
-
     if(type==='array'){
         if(value){
           configStr = `
@@ -281,52 +275,34 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       const script1 = esprima.parseScript(configStr) as any;
       return script1.body[0].declarations[0].init.properties[0].value;
     }
-    // if(!flag && config.type==='Array'){
-    //   configStr = `
-    //     var obj = {
-    //       ${config.name}:[${JSON.stringify(config.defaultConfig)}]
-    //     }
-    //   `;
-    //   const script1 = esprima.parseScript(configStr) as any;
-    //   return script1.body[0].declarations[0].init.properties[0];
-    // }
-    // else if(flag && config.type==='Array'){
-    //   configStr = `
-    //     var obj = ${JSON.stringify(config.defaultConfig)}
-    //   `;
-    //   const script2 = esprima.parseScript(configStr) as any;
-    //   console.log("console.log(script2)",script2);
-    //   return script2.body[0].declarations[0].init;
-    // }
-    // else if(config.type==='Object'){
-    //   configStr = `
-    //     var obj = {
-    //       ${config.name}:${JSON.stringify(config.defaultConfig)}
-    //     }
-    //   `;
-    //   const script1 = esprima.parseScript(configStr) as any;
-    //   return script1.body[0].declarations[0].init.properties[0];
-    // }
-    // else {
-    //   configStr = `
-    //     var obj = {${config.name}:${JSON.stringify(config.defaultConfig)}}
-    //   `;
-    //   const script2 = esprima.parseScript(configStr) as any;
-    //   console.log("console.log(script2)",script2)
-    //   return script2.body[0].declarations[0].init.properties[0];
-    // }
     
   }
   private loadCompoentConfigs(message: any) {
     const uri = (vscode.Uri.joinPath(this._extensionUri, 'media','data',`${message.payload.type}.json`)).with({ 'scheme': 'vscode-resource' });
     const data = fs.readFileSync(`${uri.path}`,{encoding:'utf8', flag:'r'});
     this.locateObjectInAst(message.location, undefined, false);
+    const astMapperData = this.getAstMapperData();
     this.webviewPanel.webview.postMessage({
       type:'loadConfig',
-      ast: this._currrentAst,
+      ast: astMapperData,
       payload: data
     });
 
+  }
+
+  private getAstMapperData(){
+    const astValueMapper: any = {};
+    const astProperties = Array.isArray(this._currrentAst) ? this._currrentAst : this._currrentAst.properties;
+    for(var i=0;i< astProperties.length;i++){
+      if(astProperties[i].value.type === 'ArrayExpression'){
+        astValueMapper[astProperties[i].key.name || astProperties[i].key.value] = escodegen.generate(astProperties[i].value).replace(/(\r\n|\n|\r)/gm,"");
+      }
+      else{
+        astValueMapper[astProperties[i].key.name || astProperties[i].key.value] = astProperties[i].value.value;
+      }
+      
+    }
+    return astValueMapper;
   }
 
   private async updateTextDocument(document: vscode.TextDocument, code: any) {

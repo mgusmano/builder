@@ -39,5 +39,20 @@
         "className": "Ext.toolbar.Paging",
         "extensionHierarchy":["Ext.Base","Ext.Component","Ext.container.Container","Ext.toolbar.Toolbar","Ext.toolbar.Paging"],
         "primatyCollectionBaseType":[]
+    },
+    "button":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.button.Button",
+        "extensionHierarchy":["Ext.Component","Ext.button.Button"],
+        "primatyCollectionBaseType":[]
+    },
+    "segmentedbutton":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.button.Button",
+        "extensionHierarchy":["Ext.Component","Ext.button.Button"],
+        "primatyCollectionBaseType":[]
     }
+
 }
