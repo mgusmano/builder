@@ -19,12 +19,14 @@ export class CategorySelection {
         cssClasses = [
           'x-grid',
           'x-column-header',
-          'x-grid-view'
+          'x-grid-view',
+          'x-grid-paging-toolbar'
         ];
         componentMapper = {
          'x-grid':'grid',
          'x-column-header':'gridcolumn',
-         'x-grid-view': 'gridview'
+         'x-grid-view': 'gridview',
+         'x-grid-paging-toolbar':'pagingtoolbar'
         };
       }
       else {
@@ -85,6 +87,7 @@ export class CategorySelection {
         }
         this.parent = this.parent.parentElement;
       }
+      debugger;
     }
     createDropOverlay(allow, borderOnly){
       if(this.dropOverlay){
@@ -143,7 +146,8 @@ export class CategorySelection {
     }
     createConfigList(configs, ast) {
       this.currentConfig = configs;
-      this.createAstValueMapper(ast.properties);
+      //this.createAstValueMapper(ast.properties);
+      this.astValueMapper = ast;
       const configSection = document.querySelector('#config-section table');
       const filterEl = document.getElementById("filter-field");
       filterEl.style.display = '';
