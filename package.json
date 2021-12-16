@@ -35,6 +35,10 @@
       {
         "command": "builder.cmd",
         "title": "Run CMD"
+      },
+      {
+        "command": "builder.ViewGen",
+        "title": "Generate new view"
       }
     ]
   },
