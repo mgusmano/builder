@@ -4,6 +4,8 @@ import axios from "axios";
 
 import { BasicTextEditorProvider } from './provider/BasicTextEditorProvider';
 
+import { ViewScaffold } from './scaffold/View';
+
 import { SenchaCmdPanel } from './panel/SenchaCmdPanel';
 import { StatusBarSenchaCmdPanel } from './statusbar/StatusBarSenchaCmdPanel';
 
@@ -88,6 +90,14 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('builder.BasicPanel', () => {
 			BasicPanel.createOrShow(context);
+		})
+	);
+  context.subscriptions.push(StatusBarBasicPanel.register(context));
+
+  context.subscriptions.push(
+		vscode.commands.registerCommand('builder.ViewGen', () => {
+			const scaffold = new ViewScaffold(context);
+      scaffold.generate();
 		})
 	);
   context.subscriptions.push(StatusBarBasicPanel.register(context));

@@ -1,0 +1,73 @@
+import * as vscode from "vscode";
+import { Logger } from "../Logger";
+import { controllerFile, mainFile, modelFile } from "./Templates";
+import * as fs from "fs";
+
+export class ViewScaffold {
+  public _context: vscode.ExtensionContext;
+  private readonly _extensionUri: vscode.Uri;
+  private channel: vscode.OutputChannel;
+
+  constructor(private readonly context: vscode.ExtensionContext) {
+    Logger.log(`${Logger.productName}: BasicTextEditorProvider constructor`);
+    this._context = context;
+    this._extensionUri = context.extensionUri;
+    this.channel = vscode.window.createOutputChannel("Scaffold");
+  }
+  // Validate path and check if view already exists.
+  private validateWs(w: string, name: string) {
+    try {
+      const appFolderExists = fs.existsSync(`${w}/app/view`);
+      if (!appFolderExists) {
+        vscode.window.showErrorMessage(`Cannot find /app/view in ${w}`);
+        return { valid: false };
+      }
+      const viewExists = fs.existsSync(`${w}/app/view/${name}`);
+      if (viewExists) {
+        vscode.window.showErrorMessage(`View "${name}" already exists.`);
+        return { valid: false };
+      }
+    } catch (error: any) {
+      vscode.window.showErrorMessage(`Error: ${error}`);
+    }
+    return { valid: true };
+  }
+
+  // Generates the necessary files.
+  private scaffold(w: string, name: string) {
+    const dir = `${w}/app/view/${name}`;
+    const fileName = name.charAt(0).toUpperCase() + name.slice(1);
+    try {
+      fs.mkdirSync(`${dir}`);
+      fs.writeFileSync(`${dir}/${fileName}View.js`, mainFile(fileName), "utf-8");
+      fs.writeFileSync(`${dir}/${fileName}ViewController.js`, controllerFile(fileName), "utf-8");
+      fs.writeFileSync(`${dir}/${fileName}ViewModel.js`, modelFile(fileName), "utf-8");
+      fs.writeFileSync(`${dir}/${fileName}View.scss`, "", "utf-8");
+    } catch (error: any) {
+      vscode.window.showErrorMessage("Unable to scaffold view");
+      this.channel.show();
+      this.channel.append(error?.message);
+    }
+  }
+
+  public async generate() {
+    let wp = vscode.workspace.workspaceFolders![0].uri.fsPath;
+    const name = await vscode.window.showInputBox({
+      value: 'sample',
+      ignoreFocusOut: true,
+      placeHolder: 'For example: "sample". But not "&*34a"',
+      validateInput: text => {
+        let re = /^[a-zA-Z]\w*/g;
+        return re.test(text) ? null : "Not valid";
+      }
+    });
+    if (!name) {
+      vscode.window.showInformationMessage("Name is required. Cancelling...");
+      return;
+    }
+    const result = this.validateWs(wp, name);
+    if (!result.valid) { return; };
+    this.scaffold(wp, name);
+    vscode.window.showInformationMessage(`Scaffolding new view in ${wp}/app/view`);
+  }
+}
