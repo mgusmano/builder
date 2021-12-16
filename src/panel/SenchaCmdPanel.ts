@@ -72,6 +72,12 @@ private testFileContents = `descibe("test", () => {
     });
 });`;
 
+private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
+  extend: 'Ext.panel.Panel',
+  title: 'Form Panel Test',
+  width: '100%',
+  height: '100%',
+});`;
   public static createOrShow(context: vscode.ExtensionContext) {
     const extensionUri: vscode.Uri = context.extensionUri;
     const column = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
@@ -178,6 +184,7 @@ private testFileContents = `descibe("test", () => {
       fs.mkdirSync(`${path}/app/test`);
       fs.writeFileSync(`${path}/app/test/test.js`, this.testFileContents, "utf-8");
       fs.writeFileSync(`${path}/app/view/main/MainView.scss`, "", "utf-8");
+      fs.writeFileSync(`${path}/app/view/main/MainPanelView.js`,this.PanelViewContents, "utf-8");
     } catch (er: any) {
       vscode.window.showErrorMessage(er.message);
     }

@@ -207,7 +207,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       if(location[i].dataType==='Array') {
         let found = false;
         this._currrentAst.properties.forEach((item:any) => {
-          if(item.key.name === location[i].propertyName){
+          if(item.key.name === location[i].propertyName || item.key.value === location[i].propertyName){
             found = true;
             if(item.value.type==='ArrayExpression'){
               this._currrentAst = item.value.elements;

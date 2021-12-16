@@ -18,7 +18,7 @@
     "gridcolumn":{
         "primaryCollection":[{"name":"columns","type":"Array","baseType":"Ext.grid.column.Column"}],
         "className": "Ext.grid.column.Column",
-        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.container.Container","Ext.grid.header.Container","Ext.grid.column.Column"],
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.grid.header.Container","Ext.grid.column.Column"],
         "primatyCollectionBaseType":["Ext.grid.column.Column"]
     },
     "booleancolumn":{
@@ -41,8 +41,7 @@
         "primatyCollectionBaseType":[]
     },
     "button":{
-        "primaryCollection":[
-        ],
+        "primaryCollection":[],
         "className": "Ext.button.Button",
         "extensionHierarchy":["Ext.Component","Ext.button.Button"],
         "primatyCollectionBaseType":[]
@@ -52,6 +51,13 @@
         ],
         "className": "Ext.button.Button",
         "extensionHierarchy":["Ext.Component","Ext.button.Button"],
+        "primatyCollectionBaseType":[]
+    },
+    "textfield":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.form.field.Text",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.form.field.Base","Ext.form.field.Text"],
         "primatyCollectionBaseType":[]
     }
 

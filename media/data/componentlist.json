@@ -7,22 +7,7 @@
           "text": "Button",
           "groupField": "Standard",
           "xtype":"button",
-          "extendsHirarchy":["Ext.Component","Ext.button.Button"],
           "defaultConfig":{"xtype":"button","text":"Button"}
-        },
-        {
-          "text": "Cycle Button",
-          "groupField": "Standard",
-          "xtype":"button",
-          "extendsHirarchy":["Ext.Component","Ext.button.Button"],
-          "defaultConfig":{"xtype":"button","text":"Button"}
-        },
-        {
-          "text": "Segmented Button",
-          "groupField": "Standard",
-          "xtype":"segmentedbutton",
-          "extendsHirarchy":["Ext.container.Container","Ext.button.Segmented"],
-          "defaultConfig":{"xtype":"segmentedbutton","items":[{"text": "Segment Item 1","menu": [{"text": "Menu Item 1"}]}]}
         }
       ]
     },
@@ -30,6 +15,12 @@
       "type": "panel",
       "text": "Panel",
       "compoentChild": [
+        {
+          "text": "Text Field",
+          "xtype":"textfield",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "textfield","labelAlign":"top","name": "name","fieldLabel": "Name"}
+        }
       ]
     },
     {
@@ -37,40 +28,60 @@
       "text": "Grid",
       "compoentChild": [
         {
-          "name": "columns",
+          "text": "Grid",
+          "xtype":"gridcolumn",
+          "groupField": "Columns",
+          "defaultConfig":{ 
+            "xtype":"grid",
+            "title": "Grid",
+            "width": "100%",
+            "store": {
+              "fields": ["name", "email", "phone"],
+              "data": [{
+                  "name": "Lisa",
+                  "email": "lisa@simpsons.com",
+                  "phone": "555-111-1224"
+              }, {
+                  "name": "Bart",
+                  "email": "bart@simpsons.com",
+                  "phone": "555-222-1234"
+              }]
+            },
+            "columns": [{
+              "text": "Name",
+              "dataIndex": "name"
+              },{
+                "text": "Email",
+                "dataIndex": "email"
+            },{
+              "text": "Phone",
+              "dataIndex": "phone"
+            }] 
+          }
+        },
+        {
           "text": "Column",
           "xtype":"gridcolumn",
           "groupField": "Columns",
-          "extendsHirarchy":["Ext.grid.column.Column"],
-          "defaultConfig":{"text":"column1"},
-          "type":"Array"
+          "defaultConfig":{"xtype":"gridcolumn","text":"column1"}
         },
         {
-          "name": "columns",
           "text": "Boolean Column",
           "xtype":"booleancolumn",
           "groupField": "Columns",
-          "extendsHirarchy":["Ext.grid.column.Column","Ext.grid.column.Boolean"],
-          "defaultConfig":{"xtype":"booleancolumn","text":"column1"},
-          "type":"Array"
+          "defaultConfig":{"xtype":"booleancolumn","text":"column1"}
         },
         {
-          "name": "columns",
           "text": "Check Column",
           "xtype":"checkcolumn",
           "groupField": "Columns",
-          "extendsHirarchy":["Ext.grid.column.Column","Ext.grid.column.Check"],
-          "defaultConfig":{"xtype":"checkcolumn","text":"column1"},
-          "type":"Array"
+          "defaultConfig":{"xtype":"checkcolumn","text":"column1"}
         },
         {
-          "name": "dockedItems",
           "text": "Paging Toolbar",
           "xtype":"pagingtoolbar",
           "groupField": "Tools",
-          "extendsHirarchy":["Ext.Base","Ext.Component","Ext.container.Container","Ext.toolbar.Toolbar","Ext.toolbar.Paging"],
-          "defaultConfig":{"xtype": "pagingtoolbar", "dock": "bottom"},
-          "type":"Array"
+          "defaultConfig":{"xtype": "pagingtoolbar", "dock": "bottom"}
         }
       ]
     }

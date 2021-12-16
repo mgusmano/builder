@@ -20,13 +20,19 @@ export class CategorySelection {
           'x-grid',
           'x-column-header',
           'x-grid-view',
-          'x-grid-paging-toolbar'
+          'x-grid-paging-toolbar',
+          'x-panel',
+          'x-form-type-text',
+          'x-btn'
         ];
         componentMapper = {
          'x-grid':'grid',
          'x-column-header':'gridcolumn',
          'x-grid-view': 'gridview',
-         'x-grid-paging-toolbar':'pagingtoolbar'
+         'x-grid-paging-toolbar':'pagingtoolbar',
+         'x-panel':'panel',
+         'x-form-type-text':'textfield',
+         'x-btn':'button'
         };
       }
       else {
@@ -87,7 +93,6 @@ export class CategorySelection {
         }
         this.parent = this.parent.parentElement;
       }
-      debugger;
     }
     createDropOverlay(allow, borderOnly){
       if(this.dropOverlay){
@@ -252,11 +257,6 @@ export class CategorySelection {
   }
   addFilterEvents(filrerEl){
 
-    // filrerEl.addEventListener('focus',(event)=>{
-    //   debugger;
-    //   event.stopImmediatePropagation();
-    // },false);
-
     filrerEl.addEventListener('keyup',(event)=>{
       var search = event.target.value.toLowerCase(),
           all = document.querySelectorAll("#config-section table tr");
@@ -379,11 +379,22 @@ export class CategorySelection {
     }
   }
   isClassPresent(){
+    const cls = [];
     for(let i=0; i< this.parent.classList.length; i++){
       if(this.droppableCls.includes(this.parent.classList[i])){
-        this.parentCls = this.parent.classList[i];
-        return true;
+        // this.parentCls = this.parent.classList[i];
+        //debugger;
+        cls.push(this.parent.classList[i]);
+        // return true;
       }
+    }
+    if(cls.length > 1){
+      this.parentCls = cls[1];
+      return true;
+    }
+    else if(cls.length === 1){
+      this.parentCls = cls[0];
+      return true;
     }
     return false;
   }
@@ -457,10 +468,10 @@ export class CategorySelection {
         index: lc[i].index
       });
       if(lc[i+1]){
-        const className =  this.componentTargets[lc[i+1].xtype].className;
+        const extendsHirarchy =  this.componentTargets[lc[i+1].xtype].extensionHierarchy;
         const primaryCollection = this.componentTargets[lc[i].xtype].primaryCollection
         for(let j=0;j<primaryCollection.length;j++){
-          if(primaryCollection[j].baseType===className){
+          if(extendsHirarchy.includes(primaryCollection[j].baseType)){
             ch.push({
               propertyName: primaryCollection[j].name,
               dataType: primaryCollection[j].type
@@ -474,10 +485,19 @@ export class CategorySelection {
   }
 
   isComponentClassPresent(classList){
+    const cls = [];
     for(let i=0; i< classList.length;i++){
       if(this.droppableCls.includes(classList[i])){
-        return classList[i];
+        cls.push(classList[i]);
+        //return classList[i];
       }
+    }
+
+    if(cls.length > 1){
+      return cls[1];
+    }
+    else if(cls.length === 1){
+      return cls[0];
     }
   }
 
