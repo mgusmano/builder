@@ -13,7 +13,7 @@
             {"name":"items","type":"Array","baseType":"Ext.Component"}
         ],
         "extensionHierarchy":["Ext.Base","Ext.Component","Ext.container.Container","Ext.panel.Panel"],
-        "primatyCollectionBaseType":["Ext.Component"]
+        "primatyCollectionBaseType":["Ext.form.field.Base","Ext.panel.Panel","Ext.button.Button"]
     },
     "gridcolumn":{
         "primaryCollection":[{"name":"columns","type":"Array","baseType":"Ext.grid.column.Column"}],

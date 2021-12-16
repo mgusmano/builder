@@ -29,7 +29,7 @@
       "compoentChild": [
         {
           "text": "Grid",
-          "xtype":"gridcolumn",
+          "xtype":"grid",
           "groupField": "Columns",
           "defaultConfig":{ 
             "xtype":"grid",
