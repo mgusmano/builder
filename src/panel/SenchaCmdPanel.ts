@@ -427,15 +427,11 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
               </vscode-dropdown>
             </div>
             <div class="select-container">
-            <p>Templates*</p>
-            <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" name="template" required>
-              <vscode-option value="" selected>Select a Templates...</vscode-option>
-              <vscode-option value="loginform">Login Form</vscode-option>
-              <vscode-option value="dashboard">Dashboard</vscode-option>
-              <vscode-option value="grid">Grid</vscode-option>
-              <vscode-option value="chart">Chart</vscode-option>
-            </vscode-dropdown>
-          </div>
+              <p>Templates*</p>
+              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" id="template" name="template" required>
+                <vscode-option value="" selected>Select a Templates...</vscode-option>
+              </vscode-dropdown>
+            </div>
             <div class="select-container">
               <p>Version*</p>
               <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" onchange="versionSelection();" id="version" required>
@@ -449,7 +445,8 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       <script>
         var select = document.getElementById("version");
         var options = ["7.4.0", "7.3.1", "7.3.0", "7.2.0", "7.1.0","7.0.0","7.0.0-CE","6.7.0","6.7.0-CE","6.6.0-CE","6.6.0","6.5.3","6.5.2","6.5.1","6.5.0","6.2.1","6.2.0","6.0.2","6.0.2","6.0.1","6.0.0","5.1.4","5.1.3","5.1.2","5.1.1","5.1.0","5.0.1","5.0.0","4.2.6","4.1.3","4.0.7","3.4.0"];
-
+        var template = document.getElementById("template");
+        var templateOptions = ["Login Form","Grid","Chart","Dashboard"];
         function versionSelection(){
           if(select.value){
             return true;
@@ -459,8 +456,10 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
 
         function onToolkitChange(){
           var arr = options.slice(0);
+          var arrTemplate = templateOptions.slice(0);
           if(document.getElementById('toolkit').value == "modern"){
             arr = options.slice(0,21);
+            arrTemplate = templateOptions.slice(0,3);
           } 
 
           for( var k = 0; k < select.childNodes.length;) {
@@ -472,6 +471,16 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
             el.textContent = opt;
             el.value = opt;
             select.appendChild(el);
+          }
+          for( var k = 0; k < template.childNodes.length;) {
+            template.removeChild(template.childNodes[k]);
+          }
+          for(var i = 0; i < arrTemplate.length; i++) {
+            var opt = arrTemplate[i];
+            var el = document.createElement("vscode-option");
+            el.textContent = opt;
+            el.value = opt;
+            template.appendChild(el);
           }
         }
         function validateForm(){
