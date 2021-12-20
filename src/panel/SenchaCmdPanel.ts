@@ -427,6 +427,16 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
               </vscode-dropdown>
             </div>
             <div class="select-container">
+            <p>Templates*</p>
+            <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" name="template" required>
+              <vscode-option value="" selected>Select a Templates...</vscode-option>
+              <vscode-option value="loginform">Login Form</vscode-option>
+              <vscode-option value="dashboard">Dashboard</vscode-option>
+              <vscode-option value="grid">Grid</vscode-option>
+              <vscode-option value="chart">Chart</vscode-option>
+            </vscode-dropdown>
+          </div>
+            <div class="select-container">
               <p>Version*</p>
               <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" onchange="versionSelection();" id="version" required>
               <vscode-option value="" selected>Select a version...</vscode-option>
@@ -472,7 +482,8 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
             theme: document.forms["RegForm"]["theme"].value,
             version: document.forms["RegForm"]["version"].value,
             applicationName: document.forms["RegForm"]["ApplicationName"].value,
-            applicationPath: document.forms["RegForm"]["ApplicationPath"].value
+            applicationPath: document.forms["RegForm"]["ApplicationPath"].value,
+            template: document.forms["RegForm"]["template"].value
           });
           }
         }
