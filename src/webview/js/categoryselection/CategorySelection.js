@@ -1,3 +1,4 @@
+import getExtjsComponentMapper from '../constants/ComponentList.js';
 export class CategorySelection {
     constructor(ast) {
        this.categotyEl = document.getElementById('mainCategorySec');
@@ -13,40 +14,12 @@ export class CategorySelection {
        this.addListeners();
        this.setClassicOrModern();
     }
-    setClassicOrModern(type = 'classic'){
-      let cssClasses, componentMapper;
-      if (type = 'classic'){
-        cssClasses = [
-          'x-grid',
-          'x-column-header',
-          'x-grid-view',
-          'x-grid-paging-toolbar',
-          'x-panel',
-          'x-form-type-text',
-          'x-btn'
-        ];
-        componentMapper = {
-         'x-grid':'grid',
-         'x-column-header':'gridcolumn',
-         'x-grid-view': 'gridview',
-         'x-grid-paging-toolbar':'pagingtoolbar',
-         'x-panel':'panel',
-         'x-form-type-text':'textfield',
-         'x-btn':'button'
-        };
-      }
-      else {
-        cssClasses = [
-          'x-grid',
-          'x-gridcolumn'
-        ];
-        componentMapper = {
-         'x-grid':'grid',
-         'x-gridcolumn':'gridcolumn'
-        };
-      }
-      this.componentMapper = componentMapper;
-      this.droppableCls = cssClasses;
+    setClassicOrModern(){
+      const toolkit = window.localStorage.getItem('toolkit');
+      const mapper = getExtjsComponentMapper(toolkit);
+      debugger;
+      this.componentMapper = mapper;
+      this.droppableCls = Object.keys(mapper);
     }
     createAstValueMapper(ast){
       this.astValueMapper = {};
@@ -57,7 +30,6 @@ export class CategorySelection {
     }
     addListeners(){
       document.getElementById('show-code').addEventListener('click',()=>{
-        //document.body.style.display = 'none'
         vscode.postMessage({command: 'showCode'});
       });
 
@@ -172,9 +144,9 @@ export class CategorySelection {
           td1.appendChild(divTag);
           const helpIcon = document. createElement("div");
           helpIcon.classList.add('help-icon');
-          helpIcon.addEventListener('mouseenter',(event)=>{
+          helpIcon.addEventListener('mouseenter',(event) => {
             event.stopPropagation();
-            this.createOverLay(event,componentConfig[i])
+            this.createOverLay(event,componentConfig[i]);
           });
 
           helpIcon.addEventListener('mouseleave',()=>{

@@ -12,8 +12,8 @@
       ]
     },
     {
-      "type": "panel",
-      "text": "Panel",
+      "type": "forms",
+      "text": "Forms",
       "compoentChild": [
         {
           "text": "Text Field",
