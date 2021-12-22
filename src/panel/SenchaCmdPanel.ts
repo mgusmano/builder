@@ -130,7 +130,12 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       console.log(message);
       switch (message.command) {
         case "open":
-          let uri = vscode.Uri.file(`${this._applicationPath}/${this._applicationName.replace(/[A-Z]/g, (m: any) => "-" + m.toLowerCase())}`);
+          let uri = vscode.Uri.file(`${this._applicationPath}/${this
+            ._applicationName
+            .charAt(0)
+            .toLowerCase()+this._applicationName
+            .slice(1)
+            .replace(/[A-Z]/g, (m: any) => "-" + m.toLowerCase())}`);
           vscode.commands.executeCommand('vscode.openFolder', uri);
           break;
         case "runcmd":
