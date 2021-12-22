@@ -444,7 +444,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       </div>
       <script>
         var select = document.getElementById("version");
-        var options = ["7.4.0", "7.3.1", "7.3.0", "7.2.0", "7.1.0","7.0.0","7.0.0-CE","6.7.0","6.7.0-CE","6.6.0-CE","6.6.0","6.5.3","6.5.2","6.5.1","6.5.0","6.2.1","6.2.0","6.0.2","6.0.2","6.0.1","6.0.0","5.1.4","5.1.3","5.1.2","5.1.1","5.1.0","5.0.1","5.0.0","4.2.6","4.1.3","4.0.7","3.4.0"];
+        var options = ["ext gen 7.4.0", "ext gen 7.3.1", "ext gen 7.3.0", "ext gen 7.2.0", "ext gen 7.1.0","ext gen 7.0.0"];
         var template = document.getElementById("template");
         var templateOptions = ["Login Form","Grid","Chart","Dashboard"];
         function versionSelection(){
@@ -458,7 +458,6 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
           var arr = options.slice(0);
           var arrTemplate = templateOptions.slice(0);
           if(document.getElementById('toolkit').value == "modern"){
-            arr = options.slice(0,21);
             arrTemplate = templateOptions.slice(0,3);
           } 
 
