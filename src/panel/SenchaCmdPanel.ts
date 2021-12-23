@@ -3,11 +3,13 @@ import * as os from 'os';
 const fs = require('fs');
 import { Utilities } from "../Utilities";
 import { SenchaCmdPanelHTML } from "./SenchaCmdPanelHtml";
+import * as path from "path";
 import { spawn } from 'child_process';
 
 export class SenchaCmdPanel {
   public _context: vscode.ExtensionContext;
   private readonly _extensionUri: vscode.Uri;
+  private readonly _repoUrl = "https://github.com/CelestialSystem/starterApps";
   public static currentPanel: SenchaCmdPanel | undefined;
   private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
@@ -129,7 +131,12 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       console.log(message);
       switch (message.command) {
         case "open":
-          let uri = vscode.Uri.file(`${this._applicationPath}/${this._applicationName}`);
+          let uri = vscode.Uri.file(`${this._applicationPath}/${this
+            ._applicationName
+            .charAt(0)
+            .toLowerCase()+this._applicationName
+            .slice(1)
+            .replace(/[A-Z]/g, (m: any) => "-" + m.toLowerCase())}`);
           vscode.commands.executeCommand('vscode.openFolder', uri);
           break;
         case "runcmd":
@@ -154,13 +161,19 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
                 });
               } else { clearInterval(timer); };
             }, 1000);
-            const code = await this.generateApp(message);
-            if (code !== 0) {
+  
+            try {
+              const code = await this.generateApp(message, context);
+              if (code !== 0) {
               vscode.window.showErrorMessage("Unable to generate app.");
             } else {
-              await this.modifyGeneratedApp(`${message.applicationPath}/${message.applicationName}`);
               vscode.window.showInformationMessage("App generated successfully.");
             }
+            } catch (error:any) {
+              console.log(error);
+              vscode.window.showErrorMessage(error.message);
+            }
+            
             progress.report({ increment: 100 });
           });
 
@@ -191,42 +204,48 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
   }
 
   /**
-   * @description Launches the sencha cmd process and writes the output to
+   * @description Launches the ext-gen process and writes the output to
    * the vscode output channel "sencha".
+   * Example command ext-gen app --template universalmodern --classictheme theme-classic --name CoolUniversalApp
    * @param message webview message object.
    * @returns Promise execution code.
    */
-  private generateApp(message: any) {
-    const args = [
-      'generate',
+  private generateApp(message: any, ctx: vscode.ExtensionContext) {
+    const executable = path.join(
+      ctx.extensionPath,
+      "node_modules",
+      "ext-gen",
+      "packages",
+      "ext-gen",
+      "ext-gen.js");
+    let args = [
+      executable,
       "app",
-      `--ext@${message.version}`,
-      `-${message.toolkit}`,
-      `--theme-name`,
+      `--${message.toolkit}theme`,
       `theme-${message.theme}`,
-      `${message.applicationName}`,
-      `${message.applicationPath}/${message.applicationName}`];
-    const appGen = spawn("sencha", args, {
-      stdio: ['pipe', 'pipe', 'inherit'],
-      shell: true
-    });
-    let sencha = vscode.window.createOutputChannel("Sencha");
-    sencha.show();
-    appGen.stdout.setEncoding('utf8');
-    appGen.stdout.on('data', function (data) {
-      data = data.toString();
-      sencha.append(data);
-    });
-        
-    return new Promise((resolve, reject) => {
-      appGen.on("close", code => {
-        sencha.append('Done!');
-        return resolve(code);
-      })
-        .on("error", err => {
-          return reject(err);
-        });
-    });
+      `--name`,
+      `${message.applicationName}`
+    ];
+    if(message.template) {
+      let branch;
+      switch (message.template) {
+        case "Login Form":
+          branch = "loginform-classic-v2";
+          break;
+        default:
+          branch = "loginform-classic-v2";
+           
+      }
+      args = [...args,  
+      `--repo`,
+      this._repoUrl,
+      "--branch",
+      branch];
+    }
+      let sencha = vscode.window.createOutputChannel("Sencha");
+    return  Utilities.invokeCmd("node", args, {
+      cwd: `${message.applicationPath}`
+    }, sencha);
   }
 
   public dispose() {
