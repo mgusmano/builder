@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { Logger } from "../Logger";
+import * as path from "path";
 import { controllerFile, mainFile, modelFile } from "./Templates";
 import * as fs from "fs";
 
@@ -17,12 +18,13 @@ export class ViewScaffold {
   // Validate path and check if view already exists.
   private validateWs(w: string, name: string) {
     try {
-      const appFolderExists = fs.existsSync(`${w}/app/view`);
+      const dir  = path.join(w, "app", "desktop", "src", "view");
+      const appFolderExists = fs.existsSync(dir);
       if (!appFolderExists) {
-        vscode.window.showErrorMessage(`Cannot find /app/view in ${w}`);
+        vscode.window.showErrorMessage(`Cannot find ${dir} in ${w}`);
         return { valid: false };
       }
-      const viewExists = fs.existsSync(`${w}/app/view/${name}`);
+      const viewExists = fs.existsSync(path.join(dir, name));
       if (viewExists) {
         vscode.window.showErrorMessage(`View "${name}" already exists.`);
         return { valid: false };
@@ -35,7 +37,7 @@ export class ViewScaffold {
 
   // Generates the necessary files.
   private scaffold(w: string, name: string) {
-    const dir = `${w}/app/view/${name}`;
+    const dir  = path.join(w, "app", "desktop", "src", "view", name);
     const fileName = name.charAt(0).toUpperCase() + name.slice(1);
     try {
       fs.mkdirSync(`${dir}`);
