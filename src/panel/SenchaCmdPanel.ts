@@ -3,6 +3,7 @@ import * as os from 'os';
 const fs = require('fs');
 import { Utilities } from "../Utilities";
 import { SenchaCmdPanelHTML } from "./SenchaCmdPanelHtml";
+import * as path from "path";
 import { spawn } from 'child_process';
 
 export class SenchaCmdPanel {
@@ -210,9 +211,15 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
    * @returns Promise execution code.
    */
   private generateApp(message: any, ctx: vscode.ExtensionContext) {
-    const executablePath = ctx.extensionPath+"/node_modules/ext-gen/packages/ext-gen/ext-gen.js";
+    const executable = path.join(
+      ctx.extensionPath,
+      "node_modules",
+      "ext-gen",
+      "packages",
+      "ext-gen",
+      "ext-gen.js");
     let args = [
-      executablePath,
+      executable,
       "app",
       `--${message.toolkit}theme`,
       `theme-${message.theme}`,
