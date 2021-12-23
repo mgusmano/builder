@@ -230,7 +230,24 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       let branch;
       switch (message.template) {
         case "Login Form":
-          branch = "loginform-classic-v2";
+          branch = (message.toolkit === "classic") 
+          ? "classicdesktoplogin" 
+          : "moderndesktoplogin" ;
+          break;
+        case "Grid":
+          branch = (message.toolkit === "classic") 
+          ? "classicdesktopgrid" 
+          : "moderndesktoplogin" ;
+          break;
+        case "Chart":
+          branch = (message.toolkit === "classic") 
+          ? "classicdesktopchart" 
+          : "moderndesktoplogin" ;
+          break;
+        case "Dashboard":
+          branch = (message.toolkit === "classic") 
+          ? "classicdesktopdashboard" 
+          : "moderndesktoplogin" ;
           break;
         default:
           branch = "loginform-classic-v2";
