@@ -396,7 +396,6 @@ export class CategorySelection {
     if(this.dropOverlay){
       this.dropOverlay.remove();
     }
-    debugger;
     const type = this.componentMapper[this.parentCls];
     const isDropable = this.isDropable(type);
     if(isDropable){
@@ -413,7 +412,6 @@ export class CategorySelection {
       const cssClass = parent.classList.length>0 && this.isComponentClassPresent(parent.classList);
       if(cssClass){
         const type = this.componentMapper[cssClass];
-        debugger;
         if(parent.parentElement){
           const xtypeMapper = {
             xtype: type,

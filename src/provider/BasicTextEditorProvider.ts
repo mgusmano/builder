@@ -21,6 +21,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   public _currrentAst: any;
   public _appName: string = '';
   public _toolkit: string = '';
+  public _componetInfo: any;
 
   public static register( context: vscode.ExtensionContext ): vscode.Disposable {
     const provider = new BasicTextEditorProvider(context);
@@ -44,6 +45,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     webviewPanel.webview.options = { enableScripts: true, enableCommandUris: true, };
     const componentList = this.readFileSync('media','data',this._toolkit,'componentlist.json');
     const componetTarget = this.readFileSync('media','data',this._toolkit,'componenttargets.json');
+    this._componetInfo = JSON.parse(componetTarget);
     const stringify = JSON.stringify;
     webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview, stringify(componentList),stringify(componetTarget));
     this.messagesFromExtension(webviewPanel);
@@ -130,7 +132,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   private loadCompoentConfigs(message: any) {
     this.locateObjectInAst(message.location, undefined, false);
     const xtypeName = this.getXtypeName(message.payload.type);
-    const data = this.readFileSync('media','data','classic',`${xtypeName}.json`);
+    const data = this.readFileSync('media','data',this._toolkit,`${xtypeName}.json`);
     const astMapperData = this.getAstMapperData();
 
     this.webviewPanel.webview.postMessage({
@@ -155,7 +157,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       return type;
     }
 
-    if(xtype!==type){
+    if(xtype!==type && this._componetInfo[xtype]){
       return xtype;
     }
     return type;
@@ -272,7 +274,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
        });
 
        if(!found){
-        const ast = this.getConfig1('array',location[i].propertyName);
+        const ast = this.getComponentConfig('array',location[i].propertyName);
         this._currrentAst.properties.push(ast);
         this._currrentAst = ast.value.elements;
        }
@@ -287,7 +289,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
           }
         }
         else {
-         const ast = this.getConfig1('object','simple',message.defaultConfig);
+         const ast = this.getComponentConfig('object','simple',message.defaultConfig);
          if(this._currrentAst.properties){
           this._currrentAst.properties.push(ast);
          }
@@ -302,7 +304,8 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       this.updateTextDocument(this._document,code);
     }
   }
-  private getConfig1(type: string,property:string,value?: string){
+  
+  private getComponentConfig(type: string,property:string,value?: string){
     let configStr;
     if(type==='array'){
         if(value){
