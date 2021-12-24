@@ -1,6 +1,6 @@
 {
   "xtype": "button",
-  "name": "Ext.Button",
+  "name": "Ext.button.Button",
   "extends": "Ext.Component",
   "numConfigs": 137,
   "numMethods": 386,
@@ -68,7 +68,7 @@
       "defaultValue": "'arrow'"
     },
     {
-      "name": "arrow",
+      "name": "arrowVisible",
       "type": "Boolean",
       "defaultValue": "true"
     },
@@ -116,9 +116,9 @@
       "defaultValue": "[\n    'btnEl',\n    'btnWrap',\n    'btnInnerEl',\n    'btnIconEl',\n    'arrowEl',\n    'tooltipEl'\n]"
     },
     {
-      "name": "autoEvent",
+      "name": "clickEvent",
       "type": "String",
-      "defaultValue": "null"
+      "defaultValue": "'click'"
     },
     {
       "name": "cls",
@@ -190,7 +190,7 @@
       "defaultValue": "Ext.baseCSSPrefix + 'item-disabled'"
     },
     {
-      "name": "docked",
+      "name": "dock",
       "type": "'top'/'bottom'/'left'/'right'"
     },
     {
