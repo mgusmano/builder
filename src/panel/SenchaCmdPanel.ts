@@ -237,17 +237,17 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         case "Grid":
           branch = (message.toolkit === "classic") 
           ? "classicdesktopgrid" 
-          : "moderndesktoplogin" ;
+          : "moderndesktopgrid" ;
           break;
         case "Chart":
           branch = (message.toolkit === "classic") 
           ? "classicdesktopchart" 
-          : "moderndesktoplogin" ;
+          : "moderndesktopchart" ;
           break;
         case "Dashboard":
           branch = (message.toolkit === "classic") 
           ? "classicdesktopdashboard" 
-          : "moderndesktoplogin" ;
+          : "moderndesktopdashboard" ;
           break;
         default:
           branch = "loginform-classic-v2";

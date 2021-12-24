@@ -20,6 +20,24 @@
           "xtype":"textfield",
           "groupField": "panel",
           "defaultConfig":{"xtype": "textfield","labelAlign":"top","name": "name","fieldLabel": "Name"}
+        },
+        {
+          "xtype": "numberfield",
+          "text": "Number Field",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "numberfield","labelAlign":"top","name": "name","fieldLabel": "Numberfield"}
+        },
+        {
+          "xtype": "displayfield",
+          "text": "Display Field",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "displayfield","labelAlign":"top","name": "displayfield","fieldLabel": "Display Field"}
+        },
+        {
+          "xtype": "datefield",
+          "text": "Date Field",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "datefield","labelAlign":"top","name": "datefield","fieldLabel": "Date field"}
         }
       ]
     },

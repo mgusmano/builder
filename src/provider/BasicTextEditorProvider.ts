@@ -36,12 +36,14 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
 
   public async resolveCustomTextEditor( document: vscode.TextDocument, webviewPanel: vscode.WebviewPanel, _token: vscode.CancellationToken ): Promise<void> {
     this._document = document;
-    this._toolkit = 'modern';
+    this.getExtFraworkLocation();
+    if(!this._toolkit){
+      this._toolkit = 'modern';
+    }
     this.webviewPanel = webviewPanel;
     webviewPanel.webview.options = { enableScripts: true, enableCommandUris: true, };
     const componentList = this.readFileSync('media','data',this._toolkit,'componentlist.json');
     const componetTarget = this.readFileSync('media','data',this._toolkit,'componenttargets.json');
-    //this.getExtFraworkLocation();
     const stringify = JSON.stringify;
     webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview, stringify(componentList),stringify(componetTarget));
     this.messagesFromExtension(webviewPanel);
@@ -79,8 +81,9 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
 
     try {
       const appInfo = (fs.readFileSync(appPath, "utf-8") as string) || '';
-      const toolKitName = (appInfo.match(/"toolkit":\s"[a-zA-Z-]*"/g) as any);
-      this._toolkit = toolKitName[0].slice(1,toolKitName[0].length).split(":")[1].slice(1);
+      const parsedAppinfo = JSON.parse(appInfo);
+      this._toolkit = parsedAppinfo.builds.desktop.toolkit;
+      this._appName = parsedAppinfo.namespace;
     }
     catch(err) {
       throw(err);
@@ -125,8 +128,9 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   }
 
   private loadCompoentConfigs(message: any) {
-    const data = this.readFileSync('media','data','classic',`${message.payload.type}.json`);
     this.locateObjectInAst(message.location, undefined, false);
+    const xtypeName = this.getXtypeName(message.payload.type);
+    const data = this.readFileSync('media','data','classic',`${xtypeName}.json`);
     const astMapperData = this.getAstMapperData();
 
     this.webviewPanel.webview.postMessage({
@@ -136,7 +140,26 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     });
 
   }
+  
+  private getXtypeName(type: string): string {
+    const astProperties = Array.isArray(this._currrentAst) ? this._currrentAst : this._currrentAst.properties;
+    let xtype;
+    for(var i=0;i< astProperties.length;i++){
+      const property = astProperties[i];
+      if(property.key.name ==='xtype' ||  property.key.value ==='xtype') {
+        xtype = property.value.value;
+        break;
+      }
+    }
+    if(!xtype){
+      return type;
+    }
 
+    if(xtype!==type){
+      return xtype;
+    }
+    return type;
+  }
   private getAstMapperData(){
     const astValueMapper: any = {};
     const astProperties = Array.isArray(this._currrentAst) ? this._currrentAst : this._currrentAst.properties;
