@@ -1,6 +1,6 @@
 {
   "xtype": "displayfield",
-  "name": "Ext.form.field.Display",
+  "name": "Ext.field.Display",
   "description": "A display-only text field which is not validated and not submitted. This is useful for when\nyou want to display a value from a form's {@link Ext.form.Basic#load loaded data} but do not want\nto allow the user to edit or submit that value. The value can be optionally\n{@link #htmlEncode HTML encoded} if it contains HTML markup that you do not want to be rendered.\n\nIf you have more complex content, or need to include components within the displayed content,\nalso consider using a {@link Ext.form.FieldContainer} instead.\n\nExample:\n\n    @example\n    Ext.create('Ext.form.Panel', {\n        renderTo: Ext.getBody(),\n        width: 175,\n        height: 150,\n        bodyPadding: 10,\n        title: 'Final Score',\n        items: [{\n            xtype: 'displayfield',\n            fieldLabel: 'Home',\n            name: 'home_score',\n            value: '10'\n        }, {\n            xtype: 'displayfield',\n            fieldLabel: 'Visitor',\n            name: 'visitor_score',\n            value: '11'\n        }],\n        buttons: [{\n            text: 'Update'\n        }]\n    });\n",
   "extends": "Ext.form.field.Base",
   "extended": "Ext.form.field.Base,Ext.Component,Ext.Base",
@@ -312,7 +312,7 @@
       "description": "The default CSS class for the field input\n"
     },
     {
-      "name": "fieldLabel",
+      "name": "label",
       "type": "String",
       "defaultValue": "undefined",
       "description": "The label for the field. It gets appended with the {@link #labelSeparator}, and its position\nand sizing is determined by the {@link #labelAlign} and {@link #labelWidth} configs.\n"
@@ -888,7 +888,7 @@
     },
     {
       "name": "value",
-      "type": "Object",
+      "type": "Mixed",
       "description": "A value to initialize this field with.\n"
     },
     {
