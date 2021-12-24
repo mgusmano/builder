@@ -1,8 +1,8 @@
 {
   "xtype": "checkboxfield",
-  "name": "Ext.form.field.Checkbox",
+  "name": "Ext.field.Checkbox",
   "description": "Single checkbox field. Can be used as a direct replacement for traditional checkbox fields.\nAlso serves as a parent class for {@link Ext.form.field.Radio radio buttons}.\n\n## Labeling\n\nIn addition to the {@link Ext.form.Labelable standard field labeling options}, checkboxes\nmay be given an optional {@link #boxLabel} which will be displayed immediately after checkbox.\nAlso see {@link Ext.form.CheckboxGroup} for a convenient method of grouping related checkboxes.\n\n# Values\n\nThe main value of a checkbox is a boolean, indicating whether or not the checkbox is checked.\nThe following values will check the checkbox:\n\n- `true`\n- `'true'`\n- `'1'`\n- `'on'`\n\nAny other value will un-check the checkbox.\n\nIn addition to the main boolean value, you may also specify a separate {@link #inputValue}.\nThis will be sent as the parameter value when the form is\n{@link Ext.form.Basic#submit submitted}. You will want to set this value if you have multiple\ncheckboxes with the same {@link #name}. If not specified, the value `{@link #method!on on}` will be used.\n\n## Example usage\n\n    @example\n    Ext.create('Ext.form.Panel', {\n        bodyPadding: 10,\n        width: 300,\n        title: 'Pizza Order',\n        items: [\n            {\n                xtype: 'fieldcontainer',\n                fieldLabel: 'Toppings',\n                defaultType: 'checkboxfield',\n                items: [\n                    {\n                        boxLabel  : 'Anchovies',\n                        name      : 'topping',\n                        inputValue: '1',\n                        id        : 'checkbox1'\n                    }, {\n                        boxLabel  : 'Artichoke Hearts',\n                        name      : 'topping',\n                        inputValue: '2',\n                        checked   : true,\n                        id        : 'checkbox2'\n                    }, {\n                        boxLabel  : 'Bacon',\n                        name      : 'topping',\n                        inputValue: '3',\n                        id        : 'checkbox3'\n                    }\n                ]\n            }\n        ],\n        bbar: [\n            {\n                text: 'Select Bacon',\n                handler: function() {\n                    Ext.getCmp('checkbox3').setValue(true);\n                }\n            },\n            '-',\n            {\n                text: 'Select All',\n                handler: function() {\n                    Ext.getCmp('checkbox1').setValue(true);\n                    Ext.getCmp('checkbox2').setValue(true);\n                    Ext.getCmp('checkbox3').setValue(true);\n                }\n            },\n            {\n                text: 'Deselect All',\n                handler: function() {\n                    Ext.getCmp('checkbox1').setValue(false);\n                    Ext.getCmp('checkbox2').setValue(false);\n                    Ext.getCmp('checkbox3').setValue(false);\n                }\n            }\n        ],\n        renderTo: Ext.getBody()\n    });\n",
-  "extends": "Ext.form.field.Base,Object",
+  "extends": "Ext.field.Input",
   "extended": "Ext.form.field.Base,Ext.Component,Ext.Base",
   "primaryCollection": "na",
   "primaryCollectionBaseType": "na",
@@ -340,7 +340,7 @@
       "description": "CSS class to add when the Component is disabled.\n"
     },
     {
-      "name": "dock",
+      "name": "docked",
       "type": "'top'/'bottom'/'left'/'right'",
       "description": "The side of the {@link Ext.panel.Panel panel} where this component is to be\ndocked when specified in the panel's\n{@link Ext.panel.Panel#dockedItems dockedItems} config.\n\nPossible values are:\n\n - top\n - bottom\n - left\n - right\n"
     },
@@ -369,7 +369,7 @@
       "description": "The default CSS class for the checkbox\n"
     },
     {
-      "name": "fieldLabel",
+      "name": "label",
       "type": "String",
       "defaultValue": "undefined",
       "description": "The label for the field. It gets appended with the {@link #labelSeparator}, and its position\nand sizing is determined by the {@link #labelAlign} and {@link #labelWidth} configs.\n"
@@ -509,18 +509,6 @@
       "type": "String",
       "defaultValue": "Ext.baseCSSPrefix + 'form-invalid'",
       "description": "The CSS class to use when marking the component invalid.\n"
-    },
-    {
-      "name": "invalidText",
-      "type": "String",
-      "defaultValue": "'The value in this field is invalid'",
-      "description": "The error text to use when marking a field invalid and no message is provided\n"
-    },
-    {
-      "name": "isTextInput",
-      "type": "Boolean",
-      "defaultValue": "false",
-      "description": "`true` if this field renders as a text input.\n"
     },
     {
       "name": "itemId",
