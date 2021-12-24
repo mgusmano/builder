@@ -1,7 +1,7 @@
 {
   "xtype": "panel",
-  "name": "Ext.panel.Panel",
-  "extends": "Ext.container.Container",
+  "name": "Ext.Panel",
+  "extends": "Ext.Container",
   "numConfigs": 177,
   "numMethods": 425,
   "numEvents": 53,

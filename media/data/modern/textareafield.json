@@ -1,6 +1,6 @@
 {
   "xtype": "textareafield",
-  "name": "Ext.form.field.TextArea",
+  "name": "Ext.field.TextArea",
   "description": "This class creates a multiline text field, which can be used as a direct replacement\nfor traditional textarea fields. In addition, it supports automatically {@link #grow growing}\nthe height of the textarea to fit its content.\n\nAll of the configuration options from {@link Ext.form.field.Text} can be used on TextArea.\n\nExample usage:\n\n    @example\n    Ext.create('Ext.form.FormPanel', {\n        title      : 'Sample TextArea',\n        width      : 400,\n        bodyPadding: 10,\n        renderTo   : Ext.getBody(),\n        items: [{\n            xtype     : 'textareafield',\n            grow      : true,\n            name      : 'message',\n            fieldLabel: 'Message',\n            anchor    : '100%'\n        }]\n    });\n\nSome other useful configuration options when using {@link #grow} are {@link #growMin} and\n{@link #growMax}. These allow you to set the minimum and maximum grow heights for the textarea.\n\n**NOTE:** In some browsers, carriage returns ('\\r', not to be confused with new lines)\nwill be automatically stripped out the value is set to the textarea. Since we cannot\nuse any reasonable method to attempt to re-insert these, they will automatically be\nstripped out to ensure the behaviour is consistent across browser.\n",
   "extends": "Ext.form.field.Text",
   "extended": "Ext.form.field.Text,Ext.form.field.Base,Ext.Component,Ext.Base",
@@ -112,7 +112,7 @@
       "description": "Optional text description for this object. This text will be\nannounced to Assistive Technology users when the object is focused.\n"
     },
     {
-      "name": "ariaLabel",
+      "name": "label",
       "type": "String",
       "description": "ARIA label for this Component. It is best to use\n{@link #ariaLabelledBy} option instead, because screen readers prefer\n`aria-labelledby` attribute to `aria-label`. {@link #ariaLabel} and\n{@link #ariaLabelledBy} config options are mutually exclusive.\n"
     },
