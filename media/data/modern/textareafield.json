@@ -112,7 +112,7 @@
       "description": "Optional text description for this object. This text will be\nannounced to Assistive Technology users when the object is focused.\n"
     },
     {
-      "name": "label",
+      "name": "ariaLabel",
       "type": "String",
       "description": "ARIA label for this Component. It is best to use\n{@link #ariaLabelledBy} option instead, because screen readers prefer\n`aria-labelledby` attribute to `aria-label`. {@link #ariaLabel} and\n{@link #ariaLabelledBy} config options are mutually exclusive.\n"
     },
@@ -380,7 +380,7 @@
       "description": "The default CSS class for the field input\n"
     },
     {
-      "name": "fieldLabel",
+      "name": "label",
       "type": "String",
       "defaultValue": "undefined",
       "description": "The label for the field. It gets appended with the {@link #labelSeparator}, and its position\nand sizing is determined by the {@link #labelAlign} and {@link #labelWidth} configs.\n"
