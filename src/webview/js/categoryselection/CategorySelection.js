@@ -17,7 +17,6 @@ export class CategorySelection {
     setClassicOrModern(){
       const toolkit = window.localStorage.getItem('toolkit');
       const mapper = getExtjsComponentMapper(toolkit);
-      debugger;
       this.componentMapper = mapper;
       this.droppableCls = Object.keys(mapper);
     }
@@ -325,9 +324,6 @@ export class CategorySelection {
         this.dragOver(event);
     }, false);
 
-    dropZone.addEventListener('dragleave', (event)=>{
-      this.dragLeave(event);
-    }, false);
     dropZone.addEventListener('drop', (event)=>{
       this.drop(event);
     }, false);
@@ -360,14 +356,18 @@ export class CategorySelection {
         // return true;
       }
     }
-    if(cls.length > 1){
-      this.parentCls = cls[1];
-      return true;
-    }
-    else if(cls.length === 1){
+    if((cls.length > 0)) {
       this.parentCls = cls[0];
       return true;
     }
+    // if(cls.length > 1){
+    //   this.parentCls = cls[1];
+    //   return true;
+    // }
+    // else if(cls.length === 1){
+    //   this.parentCls = cls[0];
+    //   return true;
+    // }
     return false;
   }
   
@@ -391,12 +391,12 @@ export class CategorySelection {
       bottom: rect.bottom,
     };
   } 
-  dragLeave(event){
-  }
+  
   drop(event){
     if(this.dropOverlay){
       this.dropOverlay.remove();
     }
+    debugger;
     const type = this.componentMapper[this.parentCls];
     const isDropable = this.isDropable(type);
     if(isDropable){
@@ -413,6 +413,7 @@ export class CategorySelection {
       const cssClass = parent.classList.length>0 && this.isComponentClassPresent(parent.classList);
       if(cssClass){
         const type = this.componentMapper[cssClass];
+        debugger;
         if(parent.parentElement){
           const xtypeMapper = {
             xtype: type,

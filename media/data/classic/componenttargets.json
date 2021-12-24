@@ -59,6 +59,26 @@
         "className": "Ext.form.field.Text",
         "extensionHierarchy":["Ext.Base","Ext.Component","Ext.form.field.Base","Ext.form.field.Text"],
         "primatyCollectionBaseType":[]
+    },
+    "numberfield":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.form.field.Number",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.form.field.Base","Ext.form.field.Text","Ext.form.field.Spinner","Ext.form.field.Number"],
+        "primatyCollectionBaseType":[]
+    },
+    "displayfield":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.form.field.Display",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.form.field.Base","Ext.form.field.Display"],
+        "primatyCollectionBaseType":[]
+    },
+    "datefield":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.form.field.Date",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.form.field.Base","Ext.form.field.Text","Ext.form.field.Picker","Ext.form.field.Date"],
+        "primatyCollectionBaseType":[]
     }
-
 }
