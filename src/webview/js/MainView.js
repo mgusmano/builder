@@ -1,4 +1,5 @@
-import {CategorySelection} from './categoryselection/CategorySelection.js';
+import {ComponentDropZone} from './components/componentdropzone/ComponentDropZone.js';
+import { ExtComponentList } from './components/extcomponentlist/ExtComponentList.js';
 class MainView {
     constructor(ast) {
         this.addOnload();
@@ -6,7 +7,8 @@ class MainView {
         this.ast = ast;
     }
     createView() {
-        this.categorySection = new CategorySelection(this.ast);
+        this.categorySection = new ComponentDropZone(this.ast);
+        this.componentListView = new ExtComponentList();
     }
     addOnload(){
         document.addEventListener('DOMContentLoaded',()=>{

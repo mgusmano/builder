@@ -15,7 +15,70 @@ We can also select a component and change the configs of that compoenent using a
 
 esprima and codegen are the two dependencies of this extension.
 
-After the cloning the repo do a npm install. Once all the dependencies are installed run the extension so it will open it in a new window
+node  - 16.13
+vscode - 1.63.0
+git-cli - 
+
+
+### Installation
+
+Steps to install the extension
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/CelestialSystem/builder.git or download the file from the google drive
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Add a lauch.json 
+   ```js
+   {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Run Extension",
+                "type": "extensionHost",
+                "request": "launch",
+                "args": [
+                    "--extensionDevelopmentPath=${workspaceFolder}"
+                ],
+                "outFiles": [
+                    "${workspaceFolder}/out/**/*.js"
+                ],
+                "preLaunchTask": "${defaultBuildTask}"
+            },
+            {
+                "name": "Extension Tests",
+                "type": "extensionHost",
+                "request": "launch",
+                "args": [
+                    "--extensionDevelopmentPath=${workspaceFolder}",
+                    "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+                ],
+                "outFiles": [
+                    "${workspaceFolder}/out/test/**/*.js"
+                ],
+                "preLaunchTask": "${defaultBuildTask}"
+            }
+        ]
+    }
+   ```
+3. press F5 to start debugging
+
+4. Once the Application starts new window will open. 
+
+5. in the new window click on New Extjs App panel at the bottom left
+
+6. in the form select toolkit modern (classic will not work without licence) 
+
+7. click on submit
+
+8. Click on open new extjs folder button to open the application
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 
 ## Extension Settings
 
