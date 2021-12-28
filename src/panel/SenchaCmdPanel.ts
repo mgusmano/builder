@@ -148,14 +148,15 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
           const dirFolderExists = fs.existsSync(`${message.applicationPath}`);
           if(!dirFolderExists) {
             vscode.window.showWarningMessage(`Directory does not exist: ${message.applicationPath}.`);
+            try {
+              vscode.window.showInformationMessage(`Trying to make ${message.applicationPath} for you.`);
+              fs.mkdirSync(message.applicationPath);
+            } catch (error) {
+              vscode.window.showErrorMessage(`Unable to create ${message.applicationPath}. Aborting...`);
+              return;
+            }
           }
-          try {
-            vscode.window.showInformationMessage(`Trying to make ${message.applicationPath} for you.`);
-            fs.mkdirSync(message.applicationPath);
-          } catch (error) {
-            vscode.window.showErrorMessage(`Unable to create ${message.applicationPath}. Aborting...`);
-            return;
-          }
+          
 
           vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
