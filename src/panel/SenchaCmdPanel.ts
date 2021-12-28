@@ -400,7 +400,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       }
       .split-left{
         width: 25%;
-        height: 89.3%;
+        height: 88.4%;
         position: fixed;
         margin: 3.2rem auto 0 auto;
         background-color: var(--vscode-sideBar-background);
