@@ -21,18 +21,11 @@
    margin: 0;
    text-align: start;
    color: var(--vscode-input-foreground);
-   /* width: 100%; */
    height: 100%;
  }
 
 .component-list li {
    padding: 5px;
-    /* border-top: 1px solid #ccc;
-    padding: .5em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor:pointer; */
 }
 
 .list-group li:first-child {
@@ -100,23 +93,7 @@ table, th, td > input {
 .hide{
    display: none;
 }
-/* .help {
-   color:#fff;
-   background-color:#feb22a;
-   width:12px;
-   height:12px;
-   display:inline-block;
-   border-radius:100%;
-   font-size:10px;
-   text-align:center;
-   text-decoration:none;
-   -webkit-box-shadow: inset -1px -1px 1px 0px rgba(0,0,0,0.25);
-   -moz-box-shadow: inset -1px -1px 1px 0px rgba(0,0,0,0.25);
-   box-shadow: inset -1px -1px 1px 0px rgba(0,0,0,0.25);
-}
-help::after{
-   content: '?';
-} */
+
 .config-label {
    display: flex;
    flex-direction: row;
@@ -153,4 +130,17 @@ table td:first-child:hover .help-icon{
    z-index: 10000000000000000;
    opacity:0.3;
    pointer-events: none;
+}
+.ext-overlay {
+   position: absolute;
+   width: auto;
+   height: auto;
+}
+
+.tooltip {
+   border: 1px solid var(--vscode-tree-tableColumnsBorder);
+   background-color: white;
+   color:var(--vscode-input-foreground);
+   z-index: 10000000000000000;
+   padding: 20px;
 }

@@ -83,6 +83,7 @@
             "xtype":"grid",
             "title": "Grid",
             "width": "100%",
+            "height":500,
             "store": {
               "fields": ["name", "email", "phone"],
               "data": [{
