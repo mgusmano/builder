@@ -32,39 +32,6 @@ Steps to install the extension
    ```sh
    npm install
    ```
-3. Add a lauch.json 
-   ```js
-   {
-        "version": "0.2.0",
-        "configurations": [
-            {
-                "name": "Run Extension",
-                "type": "extensionHost",
-                "request": "launch",
-                "args": [
-                    "--extensionDevelopmentPath=${workspaceFolder}"
-                ],
-                "outFiles": [
-                    "${workspaceFolder}/out/**/*.js"
-                ],
-                "preLaunchTask": "${defaultBuildTask}"
-            },
-            {
-                "name": "Extension Tests",
-                "type": "extensionHost",
-                "request": "launch",
-                "args": [
-                    "--extensionDevelopmentPath=${workspaceFolder}",
-                    "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
-                ],
-                "outFiles": [
-                    "${workspaceFolder}/out/test/**/*.js"
-                ],
-                "preLaunchTask": "${defaultBuildTask}"
-            }
-        ]
-    }
-   ```
 3. press F5 to start debugging
 
 4. Once the Application starts new window will open. 
@@ -76,6 +43,10 @@ Steps to install the extension
 7. click on submit
 
 8. Click on open new extjs folder button to open the application
+
+9. Once the Application is generated go to app/desktop/src/view/MainPanelView.js
+
+10. click on MainPanelView.js
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
