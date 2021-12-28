@@ -32,7 +32,7 @@ Steps to install the extension
    ```sh
    npm install
    ```
-3. press F5 to start debugging
+3. press F5 to start debugging or go debug panel and click on play button
 
 4. Once the Application starts new window will open. 
 
