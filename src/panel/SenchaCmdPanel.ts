@@ -145,6 +145,11 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
             vscode.window.showErrorMessage(`Directory exists: ${message.applicationPath}/${message.applicationName}`);
             return;
           }
+          const dirFolderExists = fs.existsSync(`${message.applicationPath}`);
+          if(!dirFolderExists) {
+            vscode.window.showErrorMessage(`Directory does not exist: ${message.applicationPath}`);
+            return;
+          }
 
           vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
