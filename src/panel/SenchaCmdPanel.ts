@@ -293,7 +293,9 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
     const themeAll1 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_1.css')).with({ 'scheme': 'vscode-resource' });
     const themeAll2 = (vscode.Uri.joinPath(this._extensionUri, 'media', 'buildertheme-all-debug_2.css')).with({ 'scheme': 'vscode-resource' });
     const nonce = Utilities.getNonce();
-    const sencha = (vscode.Uri.joinPath(this._extensionUri, 'media', 'SenchaLogoLg.svg')).with({ 'scheme': 'vscode-resource' });
+    const senchaLight = (vscode.Uri.joinPath(this._extensionUri, 'media', 'SenchaLogoLg.svg')).with({ 'scheme': 'vscode-resource' });
+    const senchaDark = (vscode.Uri.joinPath(this._extensionUri, 'media', 'SenchaLogo-dark.svg')).with({ 'scheme': 'vscode-resource' });
+
     const toolkitUri = Utilities.getUri(webview, this._extensionUri, [
       "node_modules",
       "@vscode",
@@ -383,15 +385,26 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         color: var(--input-placeholder-foreground);
         margin-bottom: 20px;
       }
-      .img{
+      .sencha-dark{
         height: 90px;
-        background-image: url('${sencha}');
+        background-image: url('${senchaDark}');
         background-repeat: no-repeat;
         position: relative;
         background-position: center;
         background-size: auto 80%;
         margin-top: 45%;
       }
+
+      .sencha-light{
+        height: 90px;
+        background-image: url('${senchaLight}');
+        background-repeat: no-repeat;
+        position: relative;
+        background-position: center;
+        background-size: auto 80%;
+        margin-top: 45%;
+      }
+
       .ext-folder{
         font-family: Roboto, sans-serif;
         background-color: #1d893e;
@@ -443,7 +456,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       <div>
         <div class="split-left">
           <vscode-button class="ext-folder" onclick="onOpen()">OPEN NEW EXTJS FOLDER</vscode-button>
-          <div class="img"></div>
+          <div id ="sencha-logo"></div>
         </div>
         <div class="split-right">
           <div class="header">Create a New Application</div>
@@ -548,6 +561,20 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
             command: 'open'
           })
         }
+        function setSenchaLogo(){
+          const logoEl = document.getElementById('sencha-logo');
+          debugger;
+          if(document.body.classList.contains('vscode-light')){
+            logoEl.classList.add('sencha-dark');
+          }
+          else{
+            logoEl.classList.add('sencha-light');
+          }
+        }
+
+        document.addEventListener('DOMContentLoaded',()=>{
+          setSenchaLogo();
+        });
       </script>
 
       <script>

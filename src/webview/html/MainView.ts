@@ -8,8 +8,12 @@ export function getMainViewHtml(){
                 </div>
             </div>
             <div id="config-section">
-            <vscode-text-field id="filter-field" placeholder="Search Configs" style="width:100%;display:none;position:sticky"></vscode-text-field>
-            <table></table>
+                <div class="filter-section">
+                    <vscode-text-field id="filter-field" placeholder="Search Configs" style="width:100%;display:none;position:sticky"></vscode-text-field>
+                </div>
+                <div class="config-table-section">
+                    <table></table>
+                </div>
             </div>
         </div>
         <div id="content-frame">

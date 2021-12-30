@@ -41,6 +41,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     if(!this._toolkit){
       this._toolkit = 'modern';
     }
+    
     this.webviewPanel = webviewPanel;
     webviewPanel.webview.options = { enableScripts: true, enableCommandUris: true, };
     const componentList = this.readFileSync('media','data',this._toolkit,'componentlist.json');
