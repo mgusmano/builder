@@ -128,7 +128,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
   public messagesFromWebview = (webviewPanel: vscode.WebviewPanel, context: vscode.ExtensionContext) => {
 
     webviewPanel.webview.onDidReceiveMessage(async (message) => {
-      console.log(message);
+      console.log(message);      
       switch (message.command) {
         case "open":
           let uri = vscode.Uri.file(`${this._applicationPath}/${this
@@ -449,23 +449,65 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         width: 0; 
         background: transparent;  
       }
+      #snackbar {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: var(--vscode-editor-background);
+        color: var(--vscode-input-foreground);
+        text-align: center;
+        border-radius: 30px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        bottom: 30px;
+        font-size: 18px;
+      }
+      
+      #snackbar.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
+      
+      @-webkit-keyframes fadein {
+        from {bottom: 0; opacity: 0;} 
+        to {bottom: 30px; opacity: 1;}
+      }
+      
+      @keyframes fadein {
+        from {bottom: 0; opacity: 0;}
+        to {bottom: 30px; opacity: 1;}
+      }
+      
+      @-webkit-keyframes fadeout {
+        from {bottom: 30px; opacity: 1;} 
+        to {bottom: 0; opacity: 0;}
+      }
+      
+      @keyframes fadeout {
+        from {bottom: 30px; opacity: 1;}
+        to {bottom: 0; opacity: 0;}
+      }
 
       </style>
     </head>
     <body id='extbody' class="body-container" align="center">
       <div>
         <div class="split-left">
-          <vscode-button class="ext-folder" onclick="onOpen()">OPEN NEW EXTJS FOLDER</vscode-button>
+          <vscode-button class="ext-folder" id="openSencha" onclick="onOpen()" disabled>OPEN NEW EXTJS FOLDER</vscode-button>
           <div id ="sencha-logo"></div>
         </div>
         <div class="split-right">
           <div class="header">Create a New Application</div>
           <div class="sub-header">Use this form to create a new Sencha Ext JS Application</div>
-          <form name="RegForm" method="post">
+          <form name="RegForm" id="RegForm" method="post">
             <div class="select-container">
                 <label class="vscode-text-label">Application Name*</label>
-                <vscode-text-field value="" name="ApplicationName" placeholder="Enter Application Name" required></vscode-text-field>
-            </div>
+                <vscode-text-field value="" name="ApplicationName" id="ApplicationName"  onkeypress="return allowOnlyLetters(event,this);" placeholder="Enter Application Name" required></vscode-text-field>
+                <div id="error"></div> 
+            </div>          
             <div class="select-container">
                 <label class="vscode-text-label">Application Path*</label>
                 <vscode-text-field value="${os.homedir()}/SenchaApps" name="ApplicationPath" placeholder="Enter Application Path" required></vscode-text-field>
@@ -480,7 +522,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
             </div>
             <div class="select-container">
               <p>Theme*</p>
-              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" name="theme" required>
+              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" id="theme" name="theme" required>
                 <vscode-option value="" selected>Select a theme...</vscode-option>
             	  <vscode-option value="material">material</vscode-option>
             	  <vscode-option value="ios">ios</vscode-option>
@@ -498,12 +540,26 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
               <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" onchange="versionSelection();" id="version" required>
               <vscode-option value="" selected>Select a version...</vscode-option>
             </div>
+            <div id="snackbar"></div>
             <div class="content">On click of Submit button a terminal window will start and Sencha Cmd will run.</div>
-            <vscode-button class="button" onclick ="validateForm()">SUBMIT</vscode-button>
+            <vscode-button id="validForm" class="button" onclick ="validateForm()" disabled>SUBMIT</vscode-button>
           </form>
         </div>
       </div>
       <script>
+        const form = document.getElementById('RegForm');
+        form.addEventListener("change",() => {
+            document.getElementById('validForm').disabled = !form.checkValidity()
+        });
+        let button = document.getElementById("validForm")
+        let input = document.getElementById("ApplicationName")
+        input.addEventListener("input", function(e) {
+        if(input.value.length == 0) {
+          button.disabled = true
+        } else {
+          button.disabled = false
+        }
+        })
         var select = document.getElementById("version");
         var options = ["ext gen 7.4.0", "ext gen 7.3.1", "ext gen 7.3.0", "ext gen 7.2.0", "ext gen 7.1.0","ext gen 7.0.0"];
         var template = document.getElementById("template");
@@ -521,6 +577,21 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
           if(document.getElementById('toolkit').value == "modern"){
             arrTemplate = templateOptions.slice(0,3);
           } 
+          if(document.getElementById('toolkit').value == "classic"){
+            document.getElementById('template').disabled = true;
+            document.getElementById('theme').disabled = true;
+            document.getElementById('version').disabled = true;
+            document.getElementById('validForm').disabled = true;
+            var x = document.getElementById("snackbar");
+            x.innerHTML ="Oops!! Classic feature is only available for licensed users!"
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+           // vscode.window.showInformationMessage('Oops!! Classic feature only allowed for licensed users');
+          } else {
+            document.getElementById('template').disabled = false;
+            document.getElementById('theme').disabled = false;
+            document.getElementById('version').disabled = false;
+          }
 
           for( var k = 0; k < select.childNodes.length;) {
             select.removeChild(select.childNodes[k]);
@@ -545,6 +616,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         }
         function validateForm(){
          if(document.forms["RegForm"].checkValidity()){
+          document.getElementById("openSencha").disabled = false;
           vscode.postMessage({
             command: 'runcmd',
             toolkit: document.forms["RegForm"]["toolkit"].value,
@@ -563,7 +635,6 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         }
         function setSenchaLogo(){
           const logoEl = document.getElementById('sencha-logo');
-          debugger;
           if(document.body.classList.contains('vscode-light')){
             logoEl.classList.add('sencha-dark');
           }
@@ -575,6 +646,31 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         document.addEventListener('DOMContentLoaded',()=>{
           setSenchaLogo();
         });
+
+        function allowOnlyLetters(e, t)   
+        {    
+         var error = document.getElementById("error");
+           if (window.event)    
+           {    
+              var charCode = window.event.keyCode;    
+           }    
+           else if (e)   
+           {    
+              var charCode = e.which;    
+           }    
+           else { return true; }    
+           if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123)){
+           error.textContent = "" 
+           return true;    
+           }
+            else  
+           {   
+               error.textContent = "*Only characters allowed"
+               error.style.color = "red"
+               error.style.marginRight = "44%";
+               return false;    
+           }           
+        }  
       </script>
 
       <script>
