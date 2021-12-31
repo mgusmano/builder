@@ -144,6 +144,9 @@ table td:first-child:hover .help-icon{
    position: absolute;
    width: auto;
    height: auto;
+   /* display: flex !important;
+   align-items: center;
+   justify-content: center; */
 }
 
 .tooltip {
@@ -152,4 +155,13 @@ table td:first-child:hover .help-icon{
    color:var(--vscode-input-foreground);
    z-index: 10000000000000000;
    padding: 20px;
+}
+
+.ext-overlay-info {
+   color: white;
+   font-size: 20px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
 }

@@ -49,6 +49,7 @@ export class ConfigList {
           case 'Boolean':
             inputEl = document.createElement('vscode-checkbox');
             valueProperty = 'checked';
+            break;
           case 'Number':
             inputEl = document.createElement('vscode-text-field');
             inputEl.type = 'number';
