@@ -49,6 +49,7 @@ export class ConfigList {
           case 'Boolean':
             inputEl = document.createElement('vscode-checkbox');
             valueProperty = 'checked';
+            break;
           case 'Number':
             inputEl = document.createElement('vscode-text-field');
             inputEl.type = 'number';
@@ -70,6 +71,11 @@ export class ConfigList {
           event.stopImmediatePropagation();
         });
 
+        inputEl.addEventListener('blur',(event)=>{
+          event.stopPropagation();  
+          this.onBlur(event,config);
+        });
+
         inputEl.addEventListener('keypress',(event)=>{
           event.stopPropagation();
           this.onEnter(event,config);
@@ -81,7 +87,9 @@ export class ConfigList {
         });
       }
     }
-
+    onBlur(event, config){
+      this.updateCode(event, config);
+    }
     onCheckChange(event, config){
       event.stopPropagation();
       const obj = {
@@ -94,20 +102,23 @@ export class ConfigList {
 
     onEnter(event, config) {
       if (event.key === 'Enter') {
-        let value;
-        try {
-          value = eval(event.target.value);
-        }
-        catch(error){
-          value = event.target.value;
-        }
-        const obj = {
-          type:'string',
-          name:config.name,
-          defaultConfig:value
-        };
-        vscode.postMessage({command: 'updateConfigs', payload: obj});
+        this.updateCode(event, config);
       } 
+    }
+    updateCode(event, config){
+      let value1 = '';
+      try {
+        value1 = eval(event.target.value);
+      }
+      catch(error){
+        value1 = event.target.value;
+      }
+      const obj = {
+        type:'string',
+        name:config.name,
+        defaultConfig:value1
+      };
+      vscode.postMessage({command: 'updateConfigs', payload: obj});
     }
     updateTooltipText(event, config){
         if (!config.description){

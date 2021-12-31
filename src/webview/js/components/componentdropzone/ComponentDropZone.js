@@ -117,7 +117,7 @@ export class ComponentDropZone {
     }, false);
 
     dropZone.addEventListener('drop', (event)=>{
-      this.drop(event);
+      this.onDrop(event);
     }, false);
 
   }
@@ -132,11 +132,13 @@ export class ComponentDropZone {
         const offset = this.parent.getBoundingClientRect();
         const size = {height: `${offset.height}px`, width: `${offset.width}px`};
         const pos = {top:`${offset.top}px`, left: `${offset.left}px`};
-        
+
         if(isDropable){
-          this.componentMask.createValidDropZone(pos, size);
+          const msg = `${DataShareService.dataTobeTrasferd.xtype} is allowed to drop inside ${type}`;
+          this.componentMask.createValidDropZone(pos, size,msg);
         } else {
-          this.componentMask.createInvalidDropZone(pos, size);
+          const msg = `${DataShareService.dataTobeTrasferd.xtype} is not allowed to drop inside ${type}`;
+          this.componentMask.createInvalidDropZone(pos, size, msg);
         }
         break;
       }
@@ -189,7 +191,7 @@ export class ComponentDropZone {
     };
   } 
   
-  drop(event){
+  onDrop(event){
     if(this.componentMask){
       this.componentMask.hide();
     }
