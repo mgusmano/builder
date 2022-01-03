@@ -18,6 +18,7 @@ export class SenchaCmdPanel {
   public _theme: any;
   public _applicationName: any;
   public _applicationPath: any;
+  public _document: any;
   private mainViewFileContents = `Ext.define('myApp.view.MainView', {
     extend: 'Ext.grid.Panel',
     xtype: 'simpleview',
@@ -80,7 +81,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
   width: '100%',
   height: '100%',
 });`;
-  public static createOrShow(context: vscode.ExtensionContext) {
+  public static createOrShow(context: vscode.ExtensionContext, document: vscode.TextDocument) {
     const extensionUri: vscode.Uri = context.extensionUri;
     const column = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
     if (SenchaCmdPanel.currentPanel) {
@@ -94,12 +95,12 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       {
         enableScripts: true
       });
-    SenchaCmdPanel.currentPanel = new SenchaCmdPanel(panel, extensionUri, context);
+    SenchaCmdPanel.currentPanel = new SenchaCmdPanel(panel, extensionUri, context,document);
   }
 
 
 
-  private constructor(webviewPanel: vscode.WebviewPanel, extensionUri: vscode.Uri, context: vscode.ExtensionContext) {
+  private constructor(webviewPanel: vscode.WebviewPanel, extensionUri: vscode.Uri, context: vscode.ExtensionContext, document: vscode.TextDocument) {
     this._panel = webviewPanel;
     this._context = context;
     this._extensionUri = extensionUri;
@@ -109,6 +110,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
     this.messagesFromVSCode(this._panel);
     this.messagesFromWebview(this._panel, context);
+    this._document = document;
 
   }
 
@@ -180,6 +182,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
               vscode.window.showErrorMessage("Unable to generate app.");
             } else {
               vscode.window.showInformationMessage("App generated successfully.");
+              this.openMainView();
             }
             } catch (error:any) {
               console.log(error);
@@ -198,7 +201,15 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       }
     });
   };
-
+  private openMainView() {
+    let uri = vscode.Uri.file(this._document.fileName);
+    const opts: vscode.TextDocumentShowOptions = {
+      preserveFocus: false,
+      preview: true,
+      viewColumn: vscode.ViewColumn.Beside
+    };
+    vscode.commands.executeCommand('vscode.open', uri, opts);
+  }
   /**
    * @description Modifies the generated application and adds custom files.
    * @param path string The path of the newly created application.
@@ -359,10 +370,22 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         width: 80%;
       }
       .button {
-        background-color: #1d893e;
+        background-color: #20c652;
         border-radius: 3px;
         margin: -3px 2px;
         width: 72%;
+        height: 30px;
+        cursor: pointer;
+        font-family: 'Roboto';
+        font-size: 16px;
+        color: #ffff;
+        border: none;
+      }
+      button:disabled,
+      button[disabled]{
+        background-color: #18993f;
+        color: #666666;
+        cursor: no-drop;
       }
       p{
         text-align: start;
@@ -505,12 +528,12 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
           <form name="RegForm" id="RegForm" method="post">
             <div class="select-container">
                 <label class="vscode-text-label">Application Name*</label>
-                <vscode-text-field value="" name="ApplicationName" id="ApplicationName"  onkeypress="return allowOnlyLetters(event,this);" placeholder="Enter Application Name" required></vscode-text-field>
+                <vscode-text-field value="" name="ApplicationName" id="ApplicationName" onkeyup="checkForms()"  onkeypress="return allowOnlyLetters(event,this);" placeholder="Enter Application Name" required></vscode-text-field>
                 <div id="error"></div> 
             </div>          
             <div class="select-container">
                 <label class="vscode-text-label">Application Path*</label>
-                <vscode-text-field value="${os.homedir()}/SenchaApps" name="ApplicationPath" placeholder="Enter Application Path" required></vscode-text-field>
+                <vscode-text-field value="${os.homedir()}/SenchaApps" name="ApplicationPath" onkeyup="checkForms()" placeholder="Enter Application Path" required></vscode-text-field>
             </div>
             <div class="select-container">
               <p>Toolkit*</p>
@@ -522,7 +545,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
             </div>
             <div class="select-container">
               <p>Theme*</p>
-              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" id="theme" name="theme" required>
+              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" id="theme" onchange="themeChange()" name="theme" required>
                 <vscode-option value="" selected>Select a theme...</vscode-option>
             	  <vscode-option value="material">material</vscode-option>
             	  <vscode-option value="ios">ios</vscode-option>
@@ -542,24 +565,34 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
             </div>
             <div id="snackbar"></div>
             <div class="content">On click of Submit button a terminal window will start and Sencha Cmd will run.</div>
-            <vscode-button id="validForm" class="button" onclick ="validateForm()" disabled>SUBMIT</vscode-button>
+            <button id="validForm" class="button" onclick ="validateForm()" disabled>SUBMIT</button>
           </form>
         </div>
       </div>
       <script>
-        const form = document.getElementById('RegForm');
-        form.addEventListener("change",() => {
-            document.getElementById('validForm').disabled = !form.checkValidity()
-        });
-        let button = document.getElementById("validForm")
-        let input = document.getElementById("ApplicationName")
-        input.addEventListener("input", function(e) {
-        if(input.value.length == 0) {
-          button.disabled = true
-        } else {
-          button.disabled = false
+        function checkForms(){
+          var cansubmit = true;
+          const form = document.getElementById('RegForm');
+          form.addEventListener("keyup",() => {
+            console.log('change detection',form.checkValidity());
+            if(!form.checkValidity()){
+              cansubmit = false;
+            }
+              document.getElementById('validForm').disabled = !cansubmit;
+              console.log(document.getElementById('validForm').disabled)
+          });
         }
-        })
+
+        function themeChange(){
+          var cansubmit = true;
+          const form = document.getElementById('RegForm');
+          form.addEventListener("change",() => {
+            if(!form.checkValidity()){
+              cansubmit = false;
+            }
+              document.getElementById('validForm').disabled = !cansubmit;
+          });
+        }
         var select = document.getElementById("version");
         var options = ["ext gen 7.4.0", "ext gen 7.3.1", "ext gen 7.3.0", "ext gen 7.2.0", "ext gen 7.1.0","ext gen 7.0.0"];
         var template = document.getElementById("template");
@@ -591,6 +624,16 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
             document.getElementById('template').disabled = false;
             document.getElementById('theme').disabled = false;
             document.getElementById('version').disabled = false;
+            var cansubmit = true;
+            const form = document.getElementById('RegForm');
+            form.addEventListener("change",() => {
+              console.log('change detection',form.checkValidity());
+              if(!form.checkValidity()){
+                cansubmit = false;
+              }
+                document.getElementById('validForm').disabled = !cansubmit;
+                console.log(document.getElementById('validForm').disabled)
+            });
           }
 
           for( var k = 0; k < select.childNodes.length;) {
@@ -648,7 +691,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         });
 
         function allowOnlyLetters(e, t)   
-        {    
+        {   
          var error = document.getElementById("error");
            if (window.event)    
            {    
