@@ -186,7 +186,20 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       preview: true,
       viewColumn: vscode.ViewColumn.Beside
     };
-    vscode.commands.executeCommand('vscode.openWith', uri, 'default', opts);
+    let openedEditors = vscode.window.visibleTextEditors;
+    let isEditorOpened = false;
+
+    for (var i = 0; i < openedEditors.length; i ++) {
+      if (openedEditors[i].document.fileName === uri.path) {
+        isEditorOpened = true;
+        break;
+      }
+    }
+      
+    // Restrict opening the editor for multiple times
+    if (!isEditorOpened) {
+      vscode.commands.executeCommand('vscode.openWith', uri, 'default', opts);
+    }
   }
   private updateCodeConfigs(message: any){
 
