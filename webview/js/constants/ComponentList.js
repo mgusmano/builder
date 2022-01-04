@@ -22,7 +22,8 @@ const componentMapperModern = {
     'x-textareafield':'textareafield',
     'x-datepickerfield': 'datepickerfield',
     'x-passwordfield':'passwordfield',
-    "x-formpanel": 'formpanel'
+    "x-formpanel": 'formpanel',
+    "x-draw-container":"cartesianChart"
 };
 
 const getExtjsComponentMapper = (type = 'classic')=>{
