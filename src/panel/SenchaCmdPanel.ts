@@ -110,7 +110,6 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
     this.messagesFromVSCode(this._panel);
     this.messagesFromWebview(this._panel, context);
-    this._document = document;
 
   }
 
