@@ -6,8 +6,8 @@ import * as escodegen from "escodegen";
 import axios from "axios";
 import * as fs from 'fs';
 import * as path from 'path';
-import { getMainViewHtml } from "../webview/html/MainView";
-import {gridTemplate} from '../webview/html/grid';
+import { getMainViewHtml } from "../html/MainView";
+import {gridTemplate} from '../html/grid';
 
 export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider {
   public _context: vscode.ExtensionContext;
@@ -186,7 +186,20 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       preview: true,
       viewColumn: vscode.ViewColumn.Beside
     };
-    vscode.commands.executeCommand('vscode.openWith', uri, 'default', opts);
+    let openedEditors = vscode.window.visibleTextEditors;
+    let isEditorOpened = false;
+
+    for (var i = 0; i < openedEditors.length; i ++) {
+      if (openedEditors[i].document.fileName === uri.path) {
+        isEditorOpened = true;
+        break;
+      }
+    }
+      
+    // Restrict opening the editor for multiple times
+    if (!isEditorOpened) {
+      vscode.commands.executeCommand('vscode.openWith', uri, 'default', opts);
+    }
   }
   private updateCodeConfigs(message: any){
 
@@ -356,7 +369,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   }
 
   private getHtmlForWebview(webview: vscode.Webview, componentList: any, componentTargets:any): string {
-    const modifiedUrl = vscode.Uri.joinPath(this._extensionUri,'src','webview','js','MainView.js').with({ 'scheme': 'vscode-resource' });
+    const modifiedUrl = vscode.Uri.joinPath(this._extensionUri,'webview','js','MainView.js').with({ 'scheme': 'vscode-resource' });
     const toolkitUri = Utilities.getUri(webview, this._extensionUri, [
       "node_modules",
       "@vscode",
@@ -364,7 +377,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       "dist",
       "toolkit.js",
     ]);
-    const styles = ['src/webview/styles/style.css'] as Array<string>;
+    const styles = ['webview/styles/style.css'] as Array<string>;
     const scripts = [] as Array<string>;
     if(this._toolkit === 'classic'){
       styles.push(
@@ -377,9 +390,13 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     else if(this._toolkit === 'modern'){
       styles.push(
         "media/buildertheme-all-debug_1.css",
-        "media/buildertheme-all-debug_2.css"
+        "media/buildertheme-all-debug_2.css",
+        "media/charts-modern-all.css",
         );
-        scripts.push("media/ext-modern-all-debug.js");
+        scripts.push(
+          "media/ext-modern-all-debug.js",
+          "media/charts-modern.js"
+        );
     }
     const resourceUrls = this.getResourseUrl(styles,'css');
     const scriptTags = this.getResourseUrl(scripts);

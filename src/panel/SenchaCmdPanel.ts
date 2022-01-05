@@ -352,12 +352,29 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       }     
       vscode-text-field {
         width: 350px;
+        display: flex;
+        width: 94%;
+        flex-direction: column;
       }
       vscode-dropdown:invalid,vscode-text-field:invalid{
         border: 1px solid red;
+        display: flex;
+        width: 94%;
+        flex-direction: column;
+      }
+      vscode-dropdown {
+        display: flex;
+        width: 94%;
+        flex-direction: column;
+        color: var(--input-placeholder-foreground);
       }
       .select-container{
         margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        float: right;
+        width: 88%;
+        margin-top: 6px;
       }
       .content{
         font-size: 12px;
@@ -387,26 +404,31 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         color: #666666;
         cursor: no-drop;
       }
-      p{
+      button:disabled,
+      button[disabled]{
+        background-color: #18993f;
+        color: #666666;
+        cursor: no-drop;
+      }
+      span{
         text-align: start;
         font-size: 12px;
-        margin-left: 12%;
+        margin-bottom: 5px;
         color: var(--input-placeholder-foreground);
       }
       .header{
         font-size: 21px;
-        text-align: start;
+        text-align: center;
         font-weight: 600;
         color: var(--input-placeholder-foreground);
         margin-bottom: 7px;
-        margin-left: 11.5%;
       }
       .sub-header{
         font-size: 14px;
         text-align: center;
         font-weight: 600;
         color: var(--input-placeholder-foreground);
-        margin-bottom: 20px;
+        margin: 0px 6px 20px 6px;
       }
       .sencha-dark{
         height: 90px;
@@ -433,14 +455,11 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         background-color: #1d893e;
         border-radius: 3px;
         margin: 14px 25px;
-        width: 83%;
         display: flex;
       }
       .vscode-text-label{
         display: flex;
         justify-content: flex-start;
-        margin-left: 12%;
-        cursor: pointer;
         color: var(--input-placeholder-foreground);
         font-size: 12px;
         line-height: var(--type-ramp-base-line-height);
@@ -448,8 +467,10 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       }
       .split-left{
         width: 25%;
-        height: 88.4%;
-        position: fixed;
+        height: 88.3%;
+        flex-direction: column;
+        display: flex;
+        position: absolute;
         margin: 3.2rem auto 0 auto;
         background-color: var(--vscode-sideBar-background);
         left: 19%;
@@ -458,7 +479,7 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       }
       .split-right{
         width: 37%;
-        height: 86%;
+        height: 85%;
         overflow-y: auto;
         padding-top: 20px;
         position: fixed;
@@ -467,6 +488,9 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
         right: 19%;
         border-top-right-radius: 3px;
         border-bottom-right-radius: 3px;
+        flex-direction: column;
+        display: flex;
+        position: absolute;
       }
       ::-webkit-scrollbar {
         width: 0; 
@@ -536,16 +560,16 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
                 <vscode-text-field value="${os.homedir()}/SenchaApps" name="ApplicationPath" onkeyup="checkForms()" placeholder="Enter Application Path" required></vscode-text-field>
             </div>
             <div class="select-container">
-              <p>Toolkit*</p>
-              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" onchange="onToolkitChange();" id="toolkit" required>
+              <span>Toolkit*</span>
+              <vscode-dropdown onchange="onToolkitChange();" id="toolkit" required>
             	  <vscode-option value="" selected>Select a toolkit...</vscode-option>
             	  <vscode-option value="modern">modern</vscode-option>
             	  <vscode-option value="classic">classic</vscode-option>
               </vscode-dropdown>
             </div>
             <div class="select-container">
-              <p>Theme*</p>
-              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" id="theme" onchange="themeChange()" name="theme" required>
+              <span>Theme*</span>
+              <vscode-dropdown id="theme" onchange="themeChange()" name="theme" required>
                 <vscode-option value="" selected>Select a theme...</vscode-option>
             	  <vscode-option value="material">material</vscode-option>
             	  <vscode-option value="ios">ios</vscode-option>
@@ -553,19 +577,21 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
               </vscode-dropdown>
             </div>
             <div class="select-container">
-              <p>Templates*</p>
-              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" id="template" name="template" required>
+              <span>Templates*</span>
+              <vscode-dropdown id="template" name="template" required>
                 <vscode-option value="" selected>Select a Templates...</vscode-option>
               </vscode-dropdown>
             </div>
             <div class="select-container">
-              <p>Version*</p>
-              <vscode-dropdown style="width:350px; color: var(--input-placeholder-foreground);" onchange="versionSelection();" id="version" required>
+              <span>Version*</span>
+              <vscode-dropdown onchange="versionSelection();" id="version" required>
               <vscode-option value="" selected>Select a version...</vscode-option>
             </div>
             <div id="snackbar"></div>
             <div class="content">On click of Submit button a terminal window will start and Sencha Cmd will run.</div>
+            <div style="display: flex; justify-content: center; margin-left: 15px;">
             <button id="validForm" class="button" onclick ="validateForm()" disabled>SUBMIT</button>
+            </div>
           </form>
         </div>
       </div>

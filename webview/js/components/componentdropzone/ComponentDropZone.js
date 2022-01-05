@@ -30,7 +30,7 @@ export class ComponentDropZone {
     addListeners(){
       document.getElementById('show-code').addEventListener('click',()=>{
         vscode.postMessage({command: 'showCode'});
-      },{once:true});
+      });
 
       document.getElementById('content-frame').addEventListener('click',(event)=>{
         this.contentFrameClick(event);
