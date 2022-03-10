@@ -1,0 +1,173 @@
+ body {
+    width:100%;
+    height: 100%;
+ }
+
+ .main-view {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    background-color: var(--vscode-editor-background);
+ }
+
+ .main-view > div {
+    border: 1px solid var(--vscode-tree-tableColumnsBorder);
+ }
+         
+ .component-list {
+   padding: 12px;
+   font-size: var(--vscode-font-size);
+   list-style-type: none;
+   margin: 0;
+   text-align: start;
+   color: var(--vscode-input-foreground);
+   height: 100%;
+ }
+
+.component-list li {
+   padding: 5px;
+}
+
+.list-group li:first-child {
+    border-top: 0;
+}
+
+.component-list li:hover {
+   background: var(--vscode-list-hoverBackground);
+   cursor: pointer;
+}
+
+table, th, td {
+  border: 1px solid var(--vscode-tree-tableColumnsBorder);
+  border-collapse: collapse;
+  color: var(--vscode-input-foreground);
+  padding-left:10px;
+  background-color: var(--vscode-editor-background);
+}
+
+table, th, td > input {
+   background-color: var(--vscode-input-background);
+}
+
+.cmp-category {
+   width: 100%;
+   height: 60%;
+   display: flex;
+   flex-direction: row;
+}
+.cmp-category > div {
+   flex:1;
+}
+#config-section{
+   width: 100%;
+   height: 40%;
+   border: 1px solid var(--vscode-tree-tableColumnsBorder);
+}
+
+.filter-section{
+   height: 10%;
+}
+
+.events-list{
+   color: var(--vscode-input-foreground);
+   display: flex;
+   padding: 5px
+}
+
+.config-table-section{
+   height: 90%;
+   overflow: scroll;
+}
+
+#config-section table {
+   width: 100%;
+}
+
+.drag-over-allowed {
+   position: relative !important;
+   z-index: 1000000000000000000;
+   outline: dashed 2px blue;
+   outline-offset: 3px;
+}
+.drag-over-notallowed {
+   outline: dashed 2px red;
+   outline-offset: 5px;
+   cursor: sw-resize;
+}
+
+#content-frame {
+   flex: 1;
+   margin: 5px;
+}
+#component-section{
+   width: 30%;
+}
+#mainCategorySec{
+   border-right: 1px solid var(--vscode-tree-tableColumnsBorder);
+}
+.hide{
+   display: none;
+}
+
+.config-label {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.help-icon {
+   height: 20px;
+   width: 20px;
+   border-radius: 50%;
+   background-image: url('../../../media/images/icons-help.png');
+   cursor: pointer;
+   background-size: cover;
+   visibility: hidden;
+}
+
+table td:first-child:hover .help-icon{
+   visibility: visible;
+}  
+
+.overlay{
+   position: absolute;
+   width: auto;
+   height: auto;
+   border: 1px solid var(--vscode-tree-tableColumnsBorder);
+   background-color: white;
+   color:var(--vscode-input-foreground);
+   z-index: 10000000000000000;
+   padding: 20px;
+}
+
+.dropOverlay {
+   position: absolute;
+   z-index: 10000000000000000;
+   opacity:0.3;
+   pointer-events: none;
+}
+.ext-overlay {
+   position: absolute;
+   width: auto;
+   height: auto;
+   /* display: flex !important;
+   align-items: center;
+   justify-content: center; */
+}
+
+.tooltip {
+   border: 1px solid var(--vscode-tree-tableColumnsBorder);
+   background-color: white;
+   color:var(--vscode-input-foreground);
+   z-index: 10000000000000000;
+   padding: 20px;
+}
+
+.ext-overlay-info {
+   color: white;
+   font-size: 20px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}

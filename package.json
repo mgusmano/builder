@@ -35,6 +35,10 @@
       {
         "command": "builder.cmd",
         "title": "Run CMD"
+      },
+      {
+        "command": "builder.ViewGen",
+        "title": "Generate new view"
       }
     ]
   },
@@ -65,6 +69,12 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "axios": "^0.24.0"
+    "@vscode/test-electron": "^1.6.2",
+    "@vscode/webview-ui-toolkit": "^0.8.3",
+    "axios": "^0.24.0",
+    "escodegen": "~2.0.0",
+    "esprima": "~4.0.1",
+    "ext-gen": "github:n0wfal/ext-gen",
+    "vsce": "^2.5.3"
   }
 }

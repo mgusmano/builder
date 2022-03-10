@@ -1,0 +1,84 @@
+{   
+    "grid":{
+        "primaryCollection":[
+            {"name":"columns","type":"Array","baseType":"Ext.grid.column.Column"},
+            {"name":"dockedItems","type":"Array","baseType":"Ext.toolbar.Paging"}
+        ],
+        "className":"Ext.grid.Panel",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.container.Container","Ext.panel.Panel","Ext.panel.Table","Ext.grid.Panel"],
+        "primatyCollectionBaseType":["Ext.grid.column.Column","Ext.toolbar.Paging"]
+    },
+    "panel":{
+        "primaryCollection":[
+            {"name":"items","type":"Array","baseType":"Ext.Component"}
+        ],
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.container.Container","Ext.panel.Panel"],
+        "primatyCollectionBaseType":["Ext.form.field.Base","Ext.panel.Panel","Ext.button.Button"]
+    },
+    "gridcolumn":{
+        "primaryCollection":[{"name":"columns","type":"Array","baseType":"Ext.grid.column.Column"}],
+        "className": "Ext.grid.column.Column",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.grid.header.Container","Ext.grid.column.Column"],
+        "primatyCollectionBaseType":["Ext.grid.column.Column"]
+    },
+    "booleancolumn":{
+        "primaryCollection":[{"name":"columns","type":"Array","baseType":"Ext.grid.column.Column"}],
+        "className": "Ext.grid.column.Column",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.container.Container","Ext.grid.header.Container","Ext.grid.column.Column","Ext.grid.column.Boolean"],
+        "primatyCollectionBaseType":["Ext.grid.column.Column"]
+    },
+    "checkcolumn":{
+        "primaryCollection":[{"name":"columns","type":"Array","baseType":"Ext.grid.column.Column"}],
+        "className": "Ext.grid.column.Column",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.container.Container","Ext.grid.header.Container","Ext.grid.column.Column","Ext.grid.column.Check"],
+        "primatyCollectionBaseType":["Ext.grid.column.Column"]
+    },
+    "pagingtoolbar":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.toolbar.Paging",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.container.Container","Ext.toolbar.Toolbar","Ext.toolbar.Paging"],
+        "primatyCollectionBaseType":[]
+    },
+    "button":{
+        "primaryCollection":[],
+        "className": "Ext.button.Button",
+        "extensionHierarchy":["Ext.Component","Ext.button.Button"],
+        "primatyCollectionBaseType":[]
+    },
+    "segmentedbutton":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.button.Button",
+        "extensionHierarchy":["Ext.Component","Ext.button.Button"],
+        "primatyCollectionBaseType":[]
+    },
+    "textfield":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.form.field.Text",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.form.field.Base","Ext.form.field.Text"],
+        "primatyCollectionBaseType":[]
+    },
+    "numberfield":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.form.field.Number",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.form.field.Base","Ext.form.field.Text","Ext.form.field.Spinner","Ext.form.field.Number"],
+        "primatyCollectionBaseType":[]
+    },
+    "displayfield":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.form.field.Display",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.form.field.Base","Ext.form.field.Display"],
+        "primatyCollectionBaseType":[]
+    },
+    "datefield":{
+        "primaryCollection":[
+        ],
+        "className": "Ext.form.field.Date",
+        "extensionHierarchy":["Ext.Base","Ext.Component","Ext.form.field.Base","Ext.form.field.Text","Ext.form.field.Picker","Ext.form.field.Date"],
+        "primatyCollectionBaseType":[]
+    }
+}
