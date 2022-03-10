@@ -126,7 +126,12 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
        }
        case 'updateConfigs':{
          this.updateCodeConfigs(message.payload);
+         break;
        } 
+       case 'updateFunctions':{
+        this.updateFunctions(message.payload);
+        break;
+      }
     }
   }
 
@@ -171,6 +176,17 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       if(property.value.type === 'ArrayExpression'){
         astValueMapper[property.key.name || property.key.value] = escodegen.generate(property.value).replace(/(\r\n|\n|\r)/gm,"");
       }
+      else if(property.value.type === 'ObjectExpression'){
+        const object: any = {};
+        for(var j=0;j< property.value.properties.length;j++){
+          const prop = property.value.properties[j];
+          if(!prop.key) {
+            return;
+          }
+           object[prop.key.name || prop.key.value] = prop.value.value
+        }
+        astValueMapper[property.key.name || property.key.value] = object;
+      }
       else {
         astValueMapper[property.key.name || property.key.value] = property.value.value;
       }
@@ -202,7 +218,6 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
     }
   }
   private updateCodeConfigs(message: any){
-
     const properties = Array.isArray(this._currrentAst)?this._currrentAst:this._currrentAst.properties;
     let found = false;
     let astProperty;
@@ -229,6 +244,10 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
 
   private updateCode(message: any, lc: any[]) {
     this.locateObjectInAst(lc,message);
+  }
+
+  private updateFunctions(message: any){
+
   }
 
   private getConfig(config: any, flag: boolean){

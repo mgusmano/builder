@@ -37,6 +37,9 @@ export class ConfigList {
         tableRow.appendChild(valueCell);
         configSection.appendChild(tableRow);
       } 
+
+      //Events List
+      this.createEventsList(configs);
     }
     createFields(valueCell, config){
         let inputEl;
@@ -64,6 +67,127 @@ export class ConfigList {
         valueCell.appendChild(inputEl);
         this.addConfigPanelFieldEvents(config, inputEl);
     }
+
+    createEventsList(configs){
+      const eventListSection = document.getElementById('events-list');
+      Utils.removeChildren(eventListSection);
+      const divTag = document.createElement("div");
+      divTag.className = 'events-list';
+
+      const nameDiv = document.createElement("div");
+      nameDiv.textContent = 'Event bindings';
+      nameDiv.style.flex = 1;
+      divTag.appendChild(nameDiv);
+
+      const addIcon = document.createElement("div");
+      addIcon.className = 'x-fa fa-plus';
+      addIcon.style.cursor = 'pointer';
+      addIcon.addEventListener('click',(event) => {
+        this.createEventConfig(configs);
+      });
+      divTag.appendChild(addIcon);
+      eventListSection.appendChild(divTag);
+
+      //Set existing events
+      const existingEvents = this.astValueMapper.listeners;
+      for (const key in existingEvents) {
+        this.addEventConfig(key, existingEvents[key]);
+      }
+    }
+
+    createEventConfig(configs){
+      const eventListSection = document.getElementById('events-list');
+      const eventsList = configs.events;
+      //Create and append select list
+      var selectList = document.createElement("vscode-dropdown");
+      // Default option
+      var option = document.createElement("vscode-option");
+      option.innerText = 'Select an event';
+      option.style.display = 'none';
+      selectList.appendChild(option);
+
+      //Create and append the options
+      for (var i = 0; i < eventsList.length; i++) {
+          var option = document.createElement("vscode-option");
+          option.innerText = eventsList[i].name;
+          selectList.appendChild(option);
+      }
+      selectList.addEventListener('change', (event) => {
+        const xtype = configs.xtype;
+        const eventName = selectList.value;
+        const methodName = `on${xtype.charAt(0).toUpperCase() + xtype.substring(1)}${eventName.charAt(0).toUpperCase() + eventName.substring(1)}`;
+        this.addEventConfig(eventName, methodName);
+        selectList.remove();
+        this.updateEventsCode(eventName, methodName);
+        this.createFunction(eventsList.find(event => event.name === eventName), methodName);
+      })
+      selectList.style.width = '90%';
+      eventListSection.appendChild(selectList);
+    }
+
+    addEventConfig(eventName, methodName){
+      // const xtype = configs.xtype;
+      // const eventName = selectList.value;
+      // const methodName = `on${xtype.charAt(0).toUpperCase() + xtype.substring(1)}${eventName.charAt(0).toUpperCase() + eventName.substring(1)}`;
+
+      const eventListSection = document.getElementById('events-list');
+      const divTag = document.createElement("div");
+      divTag.className = 'events-list';
+
+      const nameDiv = document.createElement("div");
+      nameDiv.innerText = methodName;
+      const eventNameSpan = document.createElement("span");
+      eventNameSpan.style.fontStyle = 'italic';
+      eventNameSpan.textContent = eventName;
+      eventNameSpan.style.paddingLeft = '5px';
+      nameDiv.appendChild(eventNameSpan);
+      nameDiv.style.flex = 1;
+      // nameDiv.style.fontStyle = 'italic';
+      divTag.appendChild(nameDiv);
+
+      const addIcon = document.createElement("div");
+      addIcon.className = 'x-fa fa-remove';
+      addIcon.style.cursor = 'pointer';
+      addIcon.addEventListener('click',(event) => {
+        this.removeEventConfig(divTag, eventName);
+      });
+      divTag.appendChild(addIcon);
+      eventListSection.appendChild(divTag);
+    }
+
+    removeEventConfig(eventConfigElement, eventName){
+      eventConfigElement.remove();
+      this.updateEventsCode(eventName, null, true);
+    }
+
+    updateEventsCode(eventName, methodName, remove){
+      const listeners = this.astValueMapper.listeners || {};
+      if(remove){
+        delete listeners[eventName];
+      }else{
+        listeners[eventName] = methodName;
+      }
+      const obj = {
+        type:'string',
+        name: 'listeners',
+        defaultConfig: listeners
+      };
+      vscode.postMessage({command: 'updateConfigs', payload: obj});
+    }
+
+    createFunction(eventConfig, methodName){
+      if(eventConfig){
+        const params = eventConfig.params.map(param => param.name);
+        // const fn = new Function(...eventConfig.params.map(param => param.name));
+        const obj = {
+          type:'string',
+          name: methodName,
+          defaultConfig: `function ${methodName}(${params.join(',')}){}`
+        };
+        vscode.postMessage({command: 'updateFunctions', payload: obj});
+      }
+    }
+
     addConfigPanelFieldEvents(config, inputEl){
       
       if(config.type !=='Boolean') {
