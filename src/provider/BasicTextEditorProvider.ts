@@ -187,6 +187,9 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
         }
         astValueMapper[property.key.name || property.key.value] = object;
       }
+      else if(property.value.type === 'FunctionExpression'){
+        astValueMapper[property.key.name || property.key.value] = property.value;
+      }
       else {
         astValueMapper[property.key.name || property.key.value] = property.value.value;
       }
@@ -239,7 +242,9 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       astProperty.value = config.value;
     }
     var code = escodegen.generate(this._ast);
-    this.updateTextDocument(this._document,code);
+    if(!message.skipCodeUpdate){
+      this.updateTextDocument(this._document,code);
+    }
   }
 
   private updateCode(message: any, lc: any[]) {
@@ -247,7 +252,24 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   }
 
   private updateFunctions(message: any){
-
+    const astProperties = message.currentView ? this._currrentAst.properties : this._ast.body[0].expression.arguments[1].properties;
+    if(message.remove){
+      const functionIdx = astProperties.findIndex((property: any) => property.key.name === message.name);
+      if(functionIdx > -1){
+        astProperties.splice(functionIdx, 1);
+      }
+    }else{
+      const config = this.getConfig(message, false);
+      const foundProperty = astProperties.find((property: any) => property.key.name === message.name);
+      if(foundProperty){
+        foundProperty.value = config.value;
+      }else{
+        astProperties.push(config);
+      }
+    }
+    
+    const code = escodegen.generate(this._ast);
+    this.updateTextDocument(this._document,code);
   }
 
   private getConfig(config: any, flag: boolean){
@@ -277,6 +299,13 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       `;
       const script1 = esprima.parseScript(configStr) as any;
       return script1.body[0].declarations[0].init.properties[0];
+    }
+    else if(config.type==='Function'){
+      configStr = `
+        var obj = {${config.name}:function(${config.defaultConfig.join(',')}){}}
+      `;
+      const script2 = esprima.parseScript(configStr) as any;
+      return script2.body[0].declarations[0].init.properties[0];
     }
     else {
       configStr = `
