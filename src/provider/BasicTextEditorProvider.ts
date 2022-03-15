@@ -22,6 +22,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   public _appName: string = '';
   public _toolkit: string = '';
   public _componetInfo: any;
+  public _filesLinks:any;
 
   public static register( context: vscode.ExtensionContext ): vscode.Disposable {
     const provider = new BasicTextEditorProvider(context);
@@ -38,6 +39,8 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   public async resolveCustomTextEditor( document: vscode.TextDocument, webviewPanel: vscode.WebviewPanel, _token: vscode.CancellationToken ): Promise<void> {
     this._document = document;
     this.getExtFraworkLocation();
+    
+    this.loadRequiredDepenDencies();
     if(!this._toolkit){
       this._toolkit = 'modern';
     }
@@ -65,6 +68,28 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       throw(err);
     }
   }
+
+  private loadRequiredDepenDencies() :void {
+    let dir: string[] = path.dirname(this._document.uri.path).split('/');
+    let filePath = '';
+    while(dir.length > 0){
+      const dirName = path.resolve(dir.join('/'),'.cache');
+      const isExist = fs.existsSync(dirName);
+      if(isExist) {
+        filePath = dirName;
+        break;
+      }
+      dir.pop();
+    }
+    try {
+      const appInfo = (fs.readFileSync(path.resolve(filePath+'/filelinks.json'), "utf-8") as string) || '';
+      this._filesLinks= JSON.parse(appInfo);
+    }
+    catch(err) {
+      throw(err);
+    }
+  }
+
   private getExtFraworkLocation(){
     let dir: string[] = path.dirname(this._document.uri.path).split('/');
     let appPath = '';
@@ -417,6 +442,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
   }
 
   private getHtmlForWebview(webview: vscode.Webview, componentList: any, componentTargets:any): string {
+    const extAppFiles = this.getExtAppScriptFiles();
     const modifiedUrl = vscode.Uri.joinPath(this._extensionUri,'webview','js','MainView.js').with({ 'scheme': 'vscode-resource' });
     const toolkitUri = Utilities.getUri(webview, this._extensionUri, [
       "node_modules",
@@ -459,6 +485,7 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, user-scalable=yes">
       ${resourceUrls}
       ${scriptTags}
+      ${extAppFiles}
       <script type="module" nonce="${nonce}" src="${toolkitUri}"></script>
       <title>ExtJSPanel</title>
       <body>
@@ -478,6 +505,22 @@ export class BasicTextEditorProvider implements vscode.CustomTextEditorProvider 
       </body>
     </html>`;
 
+  }
+
+  getExtAppScriptFiles() :string[]|undefined {
+    let scriptsLink:any = [];
+    const nonce = Utilities.getNonce();
+    if(!this._filesLinks){
+      return ;
+    }
+    const files = Array.prototype.concat(...Object.values(this._filesLinks)) || [];
+    for(let i=0;i<files.length;i++){
+      if(!files[i].includes('Application.js')){
+        const modifiedUrl = vscode.Uri.parse(files[i]).with({ 'scheme': 'vscode-resource' });
+        scriptsLink.push(`<script nonce="${nonce}" src="${modifiedUrl}"></script>`);
+      }
+    }
+    return scriptsLink;
   }
 
   private getResourseUrl(relativeUrl: string[], type: string = 'script'):string{
