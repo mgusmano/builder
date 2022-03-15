@@ -68,6 +68,12 @@ table, th, td > input {
    height: 10%;
 }
 
+.events-list{
+   color: var(--vscode-input-foreground);
+   display: flex;
+   padding: 5px
+}
+
 .config-table-section{
    height: 90%;
    overflow: scroll;

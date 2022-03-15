@@ -13,6 +13,8 @@ export function getMainViewHtml(){
                 </div>
                 <div class="config-table-section">
                     <table></table>
+                    <div id="events-list" style="width:100%"></div>
+                    <div id="custom-functions"></div>
                 </div>
             </div>
         </div>
