@@ -2,7 +2,7 @@
   "name": "builder",
   "displayName": "builder",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -35,8 +35,25 @@
       {
         "command": "builder.cmd",
         "title": "Run CMD"
+      },
+      {
+        "command": "builder.ViewGen",
+        "title": "Generate new view"
+      },
+      {
+        "command": "builder.ViewGenOnFolder",
+        "title": "Generate new view here"
       }
-    ]
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "explorerResourceIsFolder",
+          "command": "builder.ViewGenOnFolder",
+          "group": "2_workspace"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -57,14 +74,19 @@
     "@typescript-eslint/parser": "^5.1.0",
     "@vscode/test-electron": "^1.6.2",
     "@vscode/webview-ui-toolkit": "^0.8.3",
-    "escodegen": "~2.0.0",
     "eslint": "^8.1.0",
-    "esprima": "~4.0.1",
     "glob": "^7.1.7",
     "mocha": "^9.1.3",
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "axios": "^0.24.0"
+    "@vscode/test-electron": "^1.6.2",
+    "@vscode/webview-ui-toolkit": "^0.8.3",
+    "axios": "^0.24.0",
+    "directory-tree": "^3.2.2",
+    "escodegen": "~2.0.0",
+    "esprima": "~4.0.1",
+    "ext-gen": "github:n0wfal/ext-gen",
+    "vsce": "^2.5.3"
   }
 }

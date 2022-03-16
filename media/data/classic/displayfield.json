@@ -1,0 +1,5140 @@
+{
+  "xtype": "displayfield",
+  "name": "Ext.form.field.Display",
+  "description": "A display-only text field which is not validated and not submitted. This is useful for when\nyou want to display a value from a form's {@link Ext.form.Basic#load loaded data} but do not want\nto allow the user to edit or submit that value. The value can be optionally\n{@link #htmlEncode HTML encoded} if it contains HTML markup that you do not want to be rendered.\n\nIf you have more complex content, or need to include components within the displayed content,\nalso consider using a {@link Ext.form.FieldContainer} instead.\n\nExample:\n\n    @example\n    Ext.create('Ext.form.Panel', {\n        renderTo: Ext.getBody(),\n        width: 175,\n        height: 150,\n        bodyPadding: 10,\n        title: 'Final Score',\n        items: [{\n            xtype: 'displayfield',\n            fieldLabel: 'Home',\n            name: 'home_score',\n            value: '10'\n        }, {\n            xtype: 'displayfield',\n            fieldLabel: 'Visitor',\n            name: 'visitor_score',\n            value: '11'\n        }],\n        buttons: [{\n            text: 'Update'\n        }]\n    });\n",
+  "extends": "Ext.form.field.Base",
+  "extended": "Ext.form.field.Base,Ext.Component,Ext.Base",
+  "primaryCollection": "na",
+  "primaryCollectionBaseType": "na",
+  "numConfigs": 162,
+  "numMethods": 404,
+  "numEvents": 35,
+  "configs": [
+    {
+      "name": "activeCounter",
+      "type": "Number",
+      "defaultValue": "0",
+      "description": "An incrementing numeric counter indicating activation\nindex for use by the {@link #zIndexManager} to sort its stack.\n"
+    },
+    {
+      "name": "activeError",
+      "type": "String",
+      "description": "If specified, then the component will be displayed with this value as its active error\nwhen first rendered. Use {@link #setActiveError} or {@link #unsetActiveError} to change it\nafter component creation.\n"
+    },
+    {
+      "name": "activeErrorsTpl",
+      "type": "String/String[]/Ext.XTemplate",
+      "defaultValue": "undefined",
+      "description": "The template used to format the Array of error messages passed to {@link #setActiveErrors}\ninto a single HTML string. if the {@link #msgTarget} is title, it defaults to a list\nseparated by new lines. Otherwise, it renders each message as an item in an unordered list.\n"
+    },
+    {
+      "name": "afterBodyEl",
+      "type": "String/Array/Ext.XTemplate",
+      "description": "An optional string or `XTemplate` configuration to insert in the field markup\nat the end of the input containing element. If an `XTemplate` is used, the component's\n{@link Ext.Component#renderData render data} serves as the context.\n"
+    },
+    {
+      "name": "afterLabelTextTpl",
+      "type": "String/Array/Ext.XTemplate",
+      "description": "An optional string or `XTemplate` configuration to insert in the field markup\nafter the label text. If an `XTemplate` is used, the component's\n{@link Ext.Component#renderData render data} serves as the context.\n"
+    },
+    {
+      "name": "afterLabelTpl",
+      "type": "String/Array/Ext.XTemplate",
+      "description": "An optional string or `XTemplate` configuration to insert in the field markup\nafter the label element. If an `XTemplate` is used, the component's\n{@link Ext.Component#renderData render data} serves as the context.\n"
+    },
+    {
+      "name": "afterSubTpl",
+      "type": "String/Array/Ext.XTemplate",
+      "description": "An optional string or `XTemplate` configuration to insert in the field markup\nafter the {@link #getSubTplMarkup subTpl markup}. If an `XTemplate` is used, the\ncomponent's {@link Ext.Component#renderData render data} serves as the context.\n"
+    },
+    {
+      "name": "alignOnScroll",
+      "type": "Boolean",
+      "defaultValue": "true",
+      "description": "By default, when the {@link Ext.Component#alignTo alignTo} method is called, a floating\ncomponent will scroll to keep aligned with the anchoring element if the anchoring element\nis part of the scroll.\n\nIf this is not necessary, and the `alignTo` is a one-off operation then set this config\nto `false`.\n"
+    },
+    {
+      "name": "alignTarget",
+      "type": "String",
+      "defaultValue": "null",
+      "description": "A Component or Element by which to position this component according to the\n{@link #defaultAlign}. Defaults to the owning Container.\n\n*Only applicable if this component is {@link #cfg-floating}*\n\n*Used upon first show*.\n"
+    },
+    {
+      "name": "alwaysOnTop",
+      "type": "Boolean/Number",
+      "defaultValue": "false",
+      "description": "A flag indicating that this component should be\non the top of the z-index stack for use by the {@link #zIndexManager} to sort its stack.\n\nThis may be a positive number to prioritize the ordering of multiple visible\nalways on top components.\n\nThis may be set to a *negative* number to prioritize a component to the *bottom*\nof the z-index stack.\n"
+    },
+    {
+      "name": "anchor",
+      "type": "String",
+      "description": "\nThis configuration option is to be applied to **child `items`** of a container managed\nby an {@link Ext.layout.container.Anchor Anchor Layout}.\n\nThis value is what tells the layout how an item should be anchored to the container. `items`\nadded to an AnchorLayout accept an anchoring-specific config property of **anchor**\nwhich is a string containing two values: the horizontal anchor value and the vertical anchor\nvalue (for example, '100% 50%'). The following types of anchor values are supported:\n\n- **Percentage** : Any value between 1 and 100, expressed as a percentage.\n\n  The first anchor is the percentage width that the item should take up within the container,\n  and the second is the percentage height.  For example:\n\n      // two values specified\n      anchor: '100% 50%' // render item complete width of the container and\n                         // 1/2 height of the container\n      // one value specified\n      anchor: '100%'     // the width value; the height will default to auto\n\n- **Offsets** : Any positive or negative integer value.\n\n  This is a raw adjustment where the first anchor is the offset from the right edge\n  of the container, and the second is the offset from the bottom edge. For example:\n\n      // two values specified\n      anchor: '-50 -100' // render item the complete width of the container\n                         // minus 50 pixels and\n                         // the complete height minus 100 pixels.\n      // one value specified\n      anchor: '-50'      // anchor value is assumed to be the right offset value\n                         // bottom offset will default to 0\n\n- **Sides** : Valid values are `right` (or `r`) and `bottom` (or `b`).\n\n  Either the container must have a fixed size or an anchorSize config value defined\n  at render time in order for these to have any effect.\n\n- **Mixed** :\n\n  Anchor values can also be mixed as needed.  For example, to render the width offset\n  from the container right edge by 50 pixels and 75% of the container's height use:\n\n      anchor:   '-50 75%'\n"
+    },
+    {
+      "name": "animateShadow",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "`true` to animate the shadow along with the component while the component is animating.\nBy default the shadow is hidden while the component is animating\n"
+    },
+    {
+      "name": "ariaAttributes",
+      "type": "Object",
+      "defaultValue": "null",
+      "description": "An object containing ARIA attributes to be set\non this Component's ARIA element. Use this to set the attributes that cannot be\ndetermined by the Component's state, such as `aria-live`, `aria-flowto`, etc.\n\n**Note** that this config is only meaningful at the Component rendering time,\nand setting it after that will do nothing.\n"
+    },
+    {
+      "name": "ariaDescribedBy",
+      "type": "String",
+      "description": "DOM selector for a child element that is to be used\nas description for this Component, set in `aria-describedby` attribute.\nThe selector works the same way as {@link #ariaLabelledBy}.\n"
+    },
+    {
+      "name": "ariaErrorText",
+      "type": "String",
+      "defaultValue": "'Input error. {0}.'",
+      "description": "Localized announcement text for validation errors. This text\nwill be used by Assistive Technologies such as screen readers to alert the users when\nfield validation fails.\n\nThis config is used with {@link Ext.String#format}. '{0}' will be replaced with the actual\nerror message(s), '{1}' will be replaced with field label.\n"
+    },
+    {
+      "name": "ariaHelp",
+      "type": "String",
+      "defaultValue": "undefined",
+      "description": "Optional text description for this object. This text will be\nannounced to Assistive Technology users when the object is focused.\n"
+    },
+    {
+      "name": "ariaLabel",
+      "type": "String",
+      "description": "ARIA label for this Component. It is best to use\n{@link #ariaLabelledBy} option instead, because screen readers prefer\n`aria-labelledby` attribute to `aria-label`. {@link #ariaLabel} and\n{@link #ariaLabelledBy} config options are mutually exclusive.\n"
+    },
+    {
+      "name": "ariaLabelledBy",
+      "type": "String",
+      "description": "DOM selector for a child element that is to be used\nas label for this Component, set in `aria-labelledby` attribute.\nIf the selector is by `{@link #cfg!id #id}`, the label element can be any existing element,\nnot necessarily a child of the main Component element.\n\n{@link #ariaLabelledBy} and {@link #ariaLabel} config options are\nmutually exclusive, and `{@link #cfg!ariaLabelledBy ariaLabelledBy}` has the higher precedence.\n"
+    },
+    {
+      "name": "autoEl",
+      "type": "String/Object",
+      "defaultValue": "{\n    role: 'presentation'\n}",
+      "description": "A tag name or {@link Ext.dom.Helper DomHelper} spec used to create the {@link #getEl Element}\nwhich will encapsulate this Component.\n\nYou do not normally need to specify this. For the base classes {@link Ext.Component} and\n{@link Ext.container.Container}, this defaults to **'div'**. The more complex Sencha classes\nuse a more complex DOM structure specified by their own {@link #cfg-renderTpl}s.\n\nThis is intended to allow the developer to create application-specific utility Components\nencapsulated by different DOM elements. Example usage:\n\n    {\n        xtype: 'component',\n        autoEl: {\n            tag: 'img',\n            src: 'http://www.example.com/example.jpg'\n        }\n    }, {\n        xtype: 'component',\n        autoEl: {\n            tag: 'blockquote',\n            html: 'autoEl is cool!'\n        }\n    }, {\n        xtype: 'container',\n        autoEl: 'ul',\n        cls: 'ux-unordered-list',\n        items: {\n            xtype: 'component',\n            autoEl: 'li',\n            html: 'First list item'\n        }\n    }\n"
+    },
+    {
+      "name": "autoFitErrors",
+      "type": "Boolean",
+      "defaultValue": "true",
+      "description": "Whether to adjust the component's body width to make room for 'side'\n{@link #msgTarget error messages}.\n"
+    },
+    {
+      "name": "autoRender",
+      "type": "Boolean/String/HTMLElement/Ext.dom.Element",
+      "defaultValue": "false",
+      "description": "This config is intended mainly for non-{@link #cfg-floating} Components which may or may not\nbe shown. Instead of using {@link #renderTo} in the configuration, and rendering upon\nconstruction, this allows a Component to render itself upon first\n_{@link Ext.Component#method-show show}_. If {@link #cfg-floating} is `true`, the value\nof this config is omitted as if it is `true`.\n\nSpecify as `true` to have this Component render to the document body upon first show.\n\nSpecify as an element, or the ID of an element to have this Component render to a specific\nelement upon first show.\n"
+    },
+    {
+      "name": "autoScroll",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "`true` to use overflow:'auto' on the components layout element and show scroll bars\nautomatically when necessary, `false` to clip any overflowing content.\n\nThis should not be combined with {@link #overflowX} or  {@link #overflowY}.\n"
+    },
+    {
+      "name": "autoShow",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "`true` to automatically show the component upon creation. This config option may only be used\nfor {@link #cfg-floating} components or components that use {@link #autoRender}.\n"
+    },
+    {
+      "name": "baseBodyCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'form-item-body'",
+      "description": "The CSS class to be applied to the body content element.\n"
+    },
+    {
+      "name": "baseCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'field'",
+      "description": "The base CSS class to apply to this component's element. This will also be prepended\nto elements within this component like Panel's body will get a class `x-panel-body`.\nThis means that if you create a subclass of Panel, and you want it to get all the Panels\nstyling for the element and the body, you leave the `{@link #cfg!baseCls baseCls}` `x-panel` and use\n`{@link #cfg!componentCls componentCls}` to add specific styling for this component.\n"
+    },
+    {
+      "name": "beforeBodyEl",
+      "type": "String/Array/Ext.XTemplate",
+      "description": "An optional string or `XTemplate` configuration to insert in the field markup\nat the beginning of the input containing element. If an `XTemplate` is used,\nthe component's {@link Ext.Component#renderData render data} serves as the context.\n"
+    },
+    {
+      "name": "beforeLabelTextTpl",
+      "type": "String/Array/Ext.XTemplate",
+      "description": "An optional string or `XTemplate` configuration to insert in the field markup\nbefore the label text. If an `XTemplate` is used, the component's\n{@link Ext.Component#renderData render data} serves as the context.\n"
+    },
+    {
+      "name": "beforeLabelTpl",
+      "type": "String/Array/Ext.XTemplate",
+      "description": "An optional string or `XTemplate` configuration to insert in the field markup\nbefore the label element. If an `XTemplate` is used, the component's\n{@link Ext.Component#renderData render data} serves as the context.\n"
+    },
+    {
+      "name": "beforeSubTpl",
+      "type": "String/Array/Ext.XTemplate",
+      "description": "An optional string or `XTemplate` configuration to insert in the field markup\nbefore the {@link #getSubTplMarkup subTpl markup}. If an `XTemplate` is used, the\ncomponent's {@link Ext.Component#renderData render data} serves as the context.\n"
+    },
+    {
+      "name": "bind",
+      "type": "Object/String",
+      "defaultValue": "null",
+      "description": "Setting this config option adds or removes data bindings for other configs.\nFor example, to bind the `title` config:\n\n     var panel = Ext.create({\n         xtype: 'panel',\n         bind: {\n             title: 'Hello {user.name}'\n         }\n     });\n\nTo dynamically add bindings:\n\n     panel.setBind({\n         title: 'Greetings {user.name}!'\n     });\n\nTo remove bindings:\n\n     panel.setBind({\n         title: null\n     });\n\nThe bind expressions are presented to `{@link Ext.app.ViewModel#bind}`. The\n`ViewModel` instance is determined by `{@link #method!lookupViewModel lookupViewModel}`.\n\n**Note:** If  bind is passed as a string, it will use the\n{@link Ext.Component#property-defaultBindProperty} for the binding.\n"
+    },
+    {
+      "name": "border",
+      "type": "Number/String/Boolean",
+      "description": "Specifies the border size for this component. The border can be a single numeric value\nto apply to all sides or it can be a CSS style specification for each style,\nfor example: '10 5 3 10' (top, right, bottom, left).\n\nFor components that have no border by default, setting this won't make the border appear\nby itself. You also need to specify border color and style:\n\n    border: 5,\n    style: {\n        borderColor: 'red',\n        borderStyle: 'solid'\n    }\n\nTo turn off the border, use `border: false`.\n"
+    },
+    {
+      "name": "checkChangeBuffer",
+      "type": "Number",
+      "description": "Not description available"
+    },
+    {
+      "name": "checkChangeEvents",
+      "type": "Number",
+      "description": "Not description available"
+    },
+    {
+      "name": "childEls",
+      "type": "Object/String[]/Object[]",
+      "defaultValue": "[\n    /**\n         * @property {Ext.dom.Element} inputEl\n         * The input Element for this Field. Only available after the field has been rendered.\n         */\n    'inputEl'\n]",
+      "description": "The canonical form of `{@link #cfg!childEls childEls}` is an object keyed by child's property name\nwith values that are objects with the following properties.\n\n- `{@link #cfg!itemId itemId}` - The id to combine with the Component's id that is the id of the\n  child element.\n- `{@link #cfg!id id}` - The id of the child element.\n- `leaf` - Set to `true` to ignore content when scanning for childEls. This\n should be set on things like the generated content for an `{@link Ext.view.View}`.\n- `select`: A selector that will be passed to {@link Ext.dom.Element#method-select}.\n- `selectNode`: A selector that will be passed to\n{@link Ext.dom.Element#method-selectNode}.\n\nFor example:\n\n     childEls: {\n         button: true,\n         buttonText: 'text',\n         buttonImage: {\n             itemId: 'image'\n         }\n     }\n\nThe above is translated into the following complete form:\n\n     childEls: {\n         button: {\n             name: 'button',\n             itemId: 'button'\n         },\n         buttonText: {\n             name: 'buttonText',\n             itemId: 'text'\n         },\n         buttonImage: {\n             name: 'buttonImage',\n             itemId: 'image'\n         }\n     }\n\nThe above can be provided as an array like so:\n\n     childEls: [\n         'button',\n         { name: 'buttonText', itemId: 'text' },\n         { name: 'buttonImage', itemId: 'image' }\n     }\n\nFor example, a Component which renders a title and body text:\n\n    @example\n    Ext.create('Ext.Component', {\n        renderTo: Ext.getBody(),\n        renderTpl: [\n            '<h1 id=\"{id}-title\" data-ref=\"title\">{title}</h1>',\n            '<p>{msg}</p>',\n        ],\n        renderData: {\n            title: \"Error\",\n            msg: \"Something went wrong\"\n        },\n        childEls: [\"title\"],\n        listeners: {\n            afterrender: function(cmp){\n                // After rendering the component will have a title property\n                cmp.title.setStyle({color: \"red\"});\n            }\n        }\n    });\n\n**Note:** `childEl`s in the {@link Ext.Component#cfg-renderTpl renderTpl}\nmust be referenced in a **data-ref** attribute.  Notice in the above example\nthat the \"title\" `childEl` is set in the `{@link #cfg!renderTpl renderTpl}` using\n**data-ref=\"title\"**.\n\nWhen using `select`, the property will be an instance of {@link Ext.CompositeElement}.\nIn all other cases, the property will be an {@link Ext.dom.Element} or `null`\nif not found.\n\nCare should be taken when using `select` or `selectNode` to find child elements.\nThe following issues should be considered:\n\n- Performance: using selectors can be 10x slower than id lookup.\n- Over-selecting: selectors are applied after the DOM elements for all children\n  have been rendered, so selectors can match elements from child components\n  (including nested versions of the same component) accidentally.\n\nThis above issues are most important when using `select` since it returns multiple\nelements.\n"
+    },
+    {
+      "name": "cls",
+      "type": "String/String[]",
+      "defaultValue": "''",
+      "description": "An optional extra CSS class that will be added to this component's Element.\nThe value can be a string, a list of strings separated by spaces, or an array of strings.\nThis can be useful for adding customized styles to the component or any of its children\nusing standard CSS rules.\n"
+    },
+    {
+      "name": "columnWidth",
+      "type": "Number",
+      "description": "Defines the column width inside {@link Ext.layout.container.Column column layout}.\n\nThe columnWidth property is always evaluated as a percentage and must be a decimal value\ngreater than 0 and less than 1 (e.g., .25). See the description at the top of\n{@link Ext.layout.container.Column column layout} for additional usage details when combining\nwidth and columnWidth configs within the layout.\n"
+    },
+    {
+      "name": "componentCls",
+      "type": "String",
+      "description": "CSS Class to be added to a components root level element to give distinction to it\nvia styling.\n"
+    },
+    {
+      "name": "componentLayout",
+      "type": "String/Object",
+      "defaultValue": "'autocomponent'",
+      "description": "The sizing and positioning of a Component's internal Elements is the responsibility\nof the Component's layout manager which sizes a Component's internal structure in response\nto the Component being sized.\n\nGenerally, developers will not use this configuration as all provided Components which need\ntheir internal elements sizing (Such as {@link Ext.form.field.Base input fields}) come with\ntheir own componentLayout managers.\n\nThe {@link Ext.layout.container.Auto default layout manager} will be used on instances of the\nbase Ext.Component class which simply sizes the Component's encapsulating element to the\nheight and width specified in the {@link #setSize} method.\n"
+    },
+    {
+      "name": "constrain",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "True to constrain this Components within its containing element, false to allow it to fall\noutside of its containing element. By default this Component will be rendered to\n`document.body`. To render and constrain this Component within another element specify\n{@link Ext.Component#renderTo renderTo}.\n"
+    },
+    {
+      "name": "constraintInsets",
+      "type": "Object/String",
+      "description": "An object or a string (in TRBL order) specifying insets from the configured\n{@link #constrainTo constrain region} within which this component must be constrained\nwhen positioning or sizing. Example:\n\n    constraintInsets: '10 10 10 10' // Constrain with 10px insets from parent\n"
+    },
+    {
+      "name": "constrainTo",
+      "type": "Ext.util.Region/Ext.dom.Element",
+      "description": "A {@link Ext.util.Region Region} (or an element from which a Region measurement will be read)\nwhich is used to constrain the component. Only applies when the component is floating.\n"
+    },
+    {
+      "name": "contentEl",
+      "type": "String",
+      "description": "Specify an existing HTML element, or the `{@link #cfg!id id}` of an existing HTML element to use as the\ncontent for this component.\n\nThis config option is used to take an existing HTML element and place it in the layout\nelement of a new component (it simply moves the specified DOM element _after the Component\nis rendered_ to use as the content.\n\n**Notes:**\n\nThe specified HTML element is appended to the layout element of the component _after any\nconfigured {@link #html HTML} has been inserted_, and so the document will not contain\nthis element at the time the {@link #event-render} event is fired.\n\nThe specified HTML element used will not participate in any\n**`{@link Ext.container.Container#layout layout}`** scheme that the Component may use.\nIt is just HTML. Layouts operate on child\n**`{@link Ext.container.Container#cfg-items items}`**.\n\nAdd either the `x-hidden` or the `x-hidden-display` CSS class to prevent a brief flicker\nof the content before it is rendered to the panel.\n"
+    },
+    {
+      "name": "controller",
+      "type": "String/Object/Ext.app.ViewController",
+      "defaultValue": "null",
+      "description": "A string alias, a configuration object or an instance of a `ViewController` for\nthis container. Sample usage:\n\n    Ext.define('MyApp.UserController', {\n        alias: 'controller.user'\n    });\n\n    Ext.define('UserContainer', {\n        extend: 'Ext.container.container',\n        controller: 'user'\n    });\n    // Or\n    Ext.define('UserContainer', {\n        extend: 'Ext.container.container',\n        controller: {\n            type: 'user',\n            someConfig: true\n        }\n    });\n\n    // Can also instance at runtime\n    var ctrl = new MyApp.UserController();\n    var view = new UserContainer({\n        controller: ctrl\n    });\n"
+    },
+    {
+      "name": "data",
+      "type": "Object",
+      "defaultValue": "null",
+      "description": "The initial set of data to apply to the `{@link #tpl}` to update the content\narea of the Component.\n"
+    },
+    {
+      "name": "defaultAlign",
+      "type": "String",
+      "defaultValue": "'c-c'",
+      "description": "The default {@link Ext.util.Positionable#getAlignToXY Ext.dom.Element#getAlignToXY} anchor\nposition value for this component relative to its {@link #alignTarget}\n(which defaults to its owning Container).\n\n_Only applicable if this component is {@link #cfg-floating}_\n\n*Used upon first show*.\n"
+    },
+    {
+      "name": "defaultListenerScope",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "If `true`, this component will be the default scope (this pointer) for events\nspecified with string names so that the scope can be dynamically resolved. The\ncomponent will automatically become the defaultListenerScope if a\n{@link #controller} is specified.\n\nSee the introductory docs for {@link Ext.container.Container} for some sample\nusages.\n\n**NOTE**: This value can only be reliably set at construction time. Setting it\nafter that time may not correctly rewire all of the potentially effected\nlisteners.\n"
+    },
+    {
+      "name": "dirtyCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'form-dirty'",
+      "description": "The CSS class to use when the field value {@link #isDirty is dirty}.\n"
+    },
+    {
+      "name": "disabled",
+      "type": "Boolean",
+      "description": "Not description available"
+    },
+    {
+      "name": "disabledCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'item-disabled'",
+      "description": "CSS class to add when the Component is disabled.\n"
+    },
+    {
+      "name": "dock",
+      "type": "'top'/'bottom'/'left'/'right'",
+      "description": "The side of the {@link Ext.panel.Panel panel} where this component is to be\ndocked when specified in the panel's\n{@link Ext.panel.Panel#dockedItems dockedItems} config.\n\nPossible values are:\n\n - top\n - bottom\n - left\n - right\n"
+    },
+    {
+      "name": "draggable",
+      "type": "Boolean/Object",
+      "defaultValue": "false",
+      "description": "Specify as true to make a {@link #cfg-floating} Component draggable using the Component's\nencapsulating element as the drag handle.\n\nThis may also be specified as a config object for the\n{@link Ext.util.ComponentDragger ComponentDragger} which is instantiated to perform dragging.\n\nFor example to create a Component which may only be dragged around using a certain internal\nelement as the drag handle, use the delegate option:\n\n    new Ext.Component({\n        constrain: true,\n        floating: true,\n        style: {\n            backgroundColor: '#fff',\n            border: '1px solid black'\n        },\n        html: '<h1 style=\"cursor:move\">The title</h1><p>The content</p>',\n        draggable: {\n            delegate: 'h1'\n        }\n    }).show();\n"
+    },
+    {
+      "name": "errorMsgCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'form-error-msg'",
+      "description": "The CSS class to be applied to the error message element.\n"
+    },
+    {
+      "name": "fieldBodyCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'form-display-field-body'",
+      "description": "An extra CSS class to be applied to the body content element in addition to\n{@link #baseBodyCls}.\n"
+    },
+    {
+      "name": "fieldCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'form-display-field'",
+      "description": "The default CSS class for the field input\n"
+    },
+    {
+      "name": "fieldLabel",
+      "type": "String",
+      "defaultValue": "undefined",
+      "description": "The label for the field. It gets appended with the {@link #labelSeparator}, and its position\nand sizing is determined by the {@link #labelAlign} and {@link #labelWidth} configs.\n"
+    },
+    {
+      "name": "fieldStyle",
+      "type": "String",
+      "description": "Optional CSS style(s) to be applied to the {@link #inputEl field input element}.\nShould be a valid argument to {@link Ext.dom.Element#applyStyles}. Defaults to undefined.\nSee also the {@link #setFieldStyle} method for changing the style after initialization.\n"
+    },
+    {
+      "name": "fieldSubTpl",
+      "type": "Ext.XTemplate",
+      "defaultValue": "[\n    '<div id=\"{id}\" data-ref=\"inputEl\" role=\"textbox\" aria-readonly=\"true\"',\n    ' aria-labelledby=\"{cmpId}-labelEl\" {inputAttrTpl}',\n    ' tabindex=\"<tpl if=\"tabIdx != null\">{tabIdx}<tpl else>-1</tpl>\"',\n    '<tpl if=\"fieldStyle\"> style=\"{fieldStyle}\"</tpl>',\n    ' class=\"{fieldCls} {fieldCls}-{ui}\">{value}</div>',\n    {\n        compiled: true,\n        disableFormats: true\n    }\n]",
+      "description": "The content of the field body is defined by this config option.\n"
+    },
+    {
+      "name": "fixed",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "Configure as `true` to have this Component fixed at its `X, Y` coordinates in the browser\nviewport, immune to scrolling the document.\n"
+    },
+    {
+      "name": "flex",
+      "type": "Number",
+      "description": "Flex may be applied to **child items** of a box layout\n({@link Ext.layout.container.VBox vbox} or {@link Ext.layout.container.HBox hbox}).\nEach child item with a flex property will fill space (horizontally in `hbox`, vertically\nin `vbox`) according to that item's **relative** flex value compared to the sum of all items\nwith a flex value specified.\n\nAny child items that have either a `{@link #cfg!flex flex}` of `0` or `undefined`\nwill not be 'flexed' (the initial size will not be changed).\n"
+    },
+    {
+      "name": "floating",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "Specify as true to float the Component outside of the document flow using CSS absolute\npositioning.\n\nComponents such as {@link Ext.window.Window Window}s and {@link Ext.menu.Menu Menu}s are\nfloating by default.\n\nFloating Components that are programmatically {@link Ext.Component#method-render rendered}\nwill register themselves with the global {@link Ext.WindowManager ZIndexManager}\n\n### Floating Components as child items of a Container\n\nA floating Component may be used as a child item of a Container. This just allows\nthe floating Component to seek a ZIndexManager by examining the ownerCt chain.\n\nWhen configured as floating, Components acquire, at render time, a\n{@link Ext.ZIndexManager ZIndexManager} which manages a stack of related floating Components.\nThe ZIndexManager sorts its stack according to an incrementing access counter and the\n{@link Ext.util.Floating#alwaysOnTop alwaysOnTop} config when the Component's\n{@link #toFront} method is called.\n\nThe ZIndexManager is found by traversing up the {@link #ownerCt} chain to find an ancestor\nwhich itself is floating. This is so that descendant floating Components of floating\n_Containers_ (Such as a ComboBox dropdown within a Window) can have its zIndex managed\nrelative to any siblings, but always **above** that floating ancestor Container.\n\nIf no floating ancestor is found, a floating Component registers itself with the default\n{@link Ext.WindowManager ZIndexManager}.\n\nFloating components _do not participate in the Container's layout_. Because of this,\nthey are not rendered until you explicitly {@link #method-show} them.\n\nAfter rendering, the ownerCt reference is deleted, and the {@link #floatParent} property\nis set to the found floating ancestor Container. If no floating ancestor Container was found\nthe {@link #floatParent} property will not be set.\n"
+    },
+    {
+      "name": "focusCls",
+      "type": "String",
+      "defaultValue": "'form-focus'",
+      "description": "The CSS class to use when the field receives focus\n"
+    },
+    {
+      "name": "focusOnToFront",
+      "type": "Boolean",
+      "defaultValue": "true",
+      "description": "Specifies whether the floated component should be automatically\n{@link Ext.Component#method-focus focused} when it is {@link #toFront brought to the front}.\n"
+    },
+    {
+      "name": "formatText",
+      "type": "String",
+      "description": "Helpful text describing acceptable format for field values. This text will be\nannounced by Assistive Technologies such as screen readers when the field is\nfocused.\n\nThis option is superseded by {@link #ariaHelp}.\n"
+    },
+    {
+      "name": "formBind",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "When inside FormPanel, any component configured with `formBind: true` will\nbe enabled/disabled depending on the validity state of the form.\nSee {@link Ext.form.Panel} for more information and example.\n"
+    },
+    {
+      "name": "formItemCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'form-item'",
+      "description": "A CSS class to be applied to the outermost element to denote that it is participating\nin the form field layout.\n"
+    },
+    {
+      "name": "frame",
+      "type": "Boolean",
+      "description": "Specify as `true` to have the Component inject framing elements within the Component\nat render time to provide a graphical rounded frame around the Component content.\n\nThis is only necessary when running on outdated, or non standard-compliant browsers\nsuch as Microsoft's Internet Explorer prior to version 9 which do not support rounded corners\nnatively.\n\nThe extra space taken up by this framing is available from the read only property\n{@link #frameSize}.\n"
+    },
+    {
+      "name": "height",
+      "type": "Number|String",
+      "description": "The height of this component. A numeric value will be interpreted as the number of\npixels; a string value will be treated as a CSS value with units.\n"
+    },
+    {
+      "name": "hidden",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "`true` to hide the component.\n"
+    },
+    {
+      "name": "hideEmptyLabel",
+      "type": "Boolean",
+      "defaultValue": "true",
+      "description": "When set to true, the label element ({@link #fieldLabel} and {@link #labelSeparator})\nwill be automatically hidden if the {@link #fieldLabel} is empty. Setting this to false\nwill cause the empty label element to be rendered and space to be reserved for it;\nthis is useful if you want a field without a label to line up with other labeled fields\nin the same form.\n\nIf you wish to unconditionall hide the label even if a non-empty fieldLabel is configured,\nthen set the {@link #hideLabel} config to true.\n"
+    },
+    {
+      "name": "hideLabel",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "Set to true to completely hide the label element ({@link #fieldLabel} and\n{@link #labelSeparator}). Also see {@link #hideEmptyLabel}, which controls whether space\nwill be reserved for an empty fieldLabel.\n"
+    },
+    {
+      "name": "hideMode",
+      "type": "String",
+      "defaultValue": "'display'",
+      "description": "A String which specifies how this Component's encapsulating DOM element will be hidden.\nValues may be:\n\n  - `'display'` : The Component will be hidden using the `display: none` style.\n  - `'visibility'` : The Component will be hidden using the `visibility: hidden` style.\n  - `'offsets'` : The Component will be hidden by absolutely positioning it out of the\n    visible area of the document.\n    This is useful when a hidden Component must maintain measurable dimensions. Hiding using\n    `display` results in a Component having zero dimensions.\n"
+    },
+    {
+      "name": "html",
+      "type": "String/Object",
+      "defaultValue": "''",
+      "description": "An HTML fragment, or a {@link Ext.dom.Helper DomHelper} specification to use as the layout\nelement content. The HTML content is added after the component is rendered, so the document\nwill not contain this HTML at the time the {@link #event-render} event is fired. This content\nis inserted into the body _before_ any configured {@link #contentEl} is appended.\n"
+    },
+    {
+      "name": "htmlEncode",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "True to escape HTML in text when rendering it.\n"
+    },
+    {
+      "name": "id",
+      "type": "String",
+      "description": "The **unique** id of this component instance.\n\nUse of this config should be considered carefully as this value must be unique across\nall existing components. Components created with an `{@link #cfg!id id}` may be accessed globally\nusing {@link Ext#getCmp Ext.getCmp}.\n\nInstead of using assigned ids, consider a {@link #reference} config and\na {@link #cfg-controller ViewController} to respond to events and perform processing\nupon this Component.\n\nAlternatively, {@link #itemId} and {@link Ext.ComponentQuery ComponentQuery} can be\nused to perform selector-based searching for Components analogous to DOM querying.\nThe {@link Ext.container.Container Container} class contains several helpful\n{@link Ext.container.Container#down shortcut methods} to query its descendant\nComponents by selector.\n\nNote that this `{@link #cfg!id id}` will also be used as the element id for the containing HTML\nelement that is rendered to the page for this component. This allows you to write\nid-based CSS rules to style the specific instance of this component uniquely, and\nalso to select sub-elements using this component's `{@link #cfg!id id}` as the parent.\n\nDefaults to an {@link #getId auto-assigned id}.\n\n**Note**: Valid identifiers start with a letter or underscore and are followed by\n(optional) additional letters, underscores, digits or hyphens.\n"
+    },
+    {
+      "name": "inputAttrTpl",
+      "type": "String/Array/Ext.XTemplate",
+      "description": "An optional string or `XTemplate` configuration to insert in the field markup\ninside the input element (as attributes). If an `XTemplate` is used, the component's\n{@link #getSubTplData subTpl data} serves as the context.\n"
+    },
+    {
+      "name": "inputId",
+      "type": "String",
+      "description": "The id that will be given to the generated input DOM element. Defaults to an automatically\ngenerated id. If you configure this manually, you must make sure it is unique\nin the document.\n"
+    },
+    {
+      "name": "inputType",
+      "type": "String",
+      "description": "Not description available"
+    },
+    {
+      "name": "invalidCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'form-invalid'",
+      "description": "The CSS class to use when marking the component invalid.\n"
+    },
+    {
+      "name": "invalidText",
+      "type": "String",
+      "defaultValue": "'The value in this field is invalid'",
+      "description": "The error text to use when marking a field invalid and no message is provided\n"
+    },
+    {
+      "name": "isTextInput",
+      "type": "Boolean",
+      "defaultValue": "true",
+      "description": "`true` if this field renders as a text input.\n"
+    },
+    {
+      "name": "itemId",
+      "type": "String",
+      "description": "The **unique** id of this component instance within its container. See also the\n{@link #reference} config.\n\nAn `{@link #cfg!itemId itemId}` can be used as an alternative way to get a reference to a component\nwhen no object reference is available. Instead of using an `{@link #id}` with\n{@link Ext#getCmp getCmp}, use `{@link #cfg!itemId itemId}` with\n{@link Ext.container.Container#getComponent getComponent} which will retrieve `{@link #cfg!itemId itemId}`'s\nor {@link #id}'s. Since `{@link #cfg!itemId itemId}`'s are an index to the container's internal collection,\nthe `{@link #cfg!itemId itemId}` is scoped locally to the container -- avoiding potential conflicts with\n{@link Ext.ComponentManager}, which requires a **unique** {@link #id} value.\n\n    var c = new Ext.panel.Panel({ //\n        height: 300,\n        renderTo: document.body,\n        layout: 'auto',\n        items: [{\n            itemId: 'p1',\n            title: 'Panel 1',\n            height: 150\n        },{\n            itemId: 'p2',\n            title: 'Panel 2',\n            height: 150\n        }]\n    });\n\n    p1 = c.getComponent('p1'); // not the same as Ext.getCmp()\n    console.log(p1);\n    p2 = p1.ownerCt.getComponent('p2'); // reference via a sibling\n    console.log(p2);\n\nAlso see {@link #id}, `{@link Ext.container.Container#query}`,\n`{@link Ext.container.Container#down}` and `{@link Ext.container.Container#child}`.\n\n**Note**: Valid identifiers start with a letter or underscore and are followed by\n(optional) additional letters, underscores, digits or hyphens.\n\n**Note**: to access the container of an item see {@link #ownerCt}.\n"
+    },
+    {
+      "name": "keyMap",
+      "type": "Object",
+      "defaultValue": "null",
+      "description": "An object containing handlers for keyboard events. The property names of this\nobject are the key name and any modifiers. The values of the properties are the\ndescriptors of how to handle each event.\n\nThe handler descriptor can be simply the handler function(either the\nliteral function or the method name), or it can be an object with these\nproperties:\n\n - `handler`: The function or its name to call to handle the event.\n - `scope`: The this pointer context (can be \"this\" or \"controller\").\n - `event`: An optional override of the key event to which to listen.\n\n**Important:** Calls to `setKeyMap` do not replace the entire `{@link #cfg!keyMap keyMap}` but\ninstead update the provided mappings. That is, unless `null` is passed as the\nvalue of the `{@link #cfg!keyMap keyMap}` which will clear the `{@link #cfg!keyMap keyMap}` of all entries.\n"
+    },
+    {
+      "name": "keyMapEnabled",
+      "type": "Boolean",
+      "defaultValue": "null",
+      "description": "Enables or disables processing keys in the `{@link #cfg!keyMap keyMap}`. This value starts as\n`null` and if it is `null` when `{@link #method!initKeyMap initKeyMap}` is called, it will automatically\nbe set to `true`. Since `{@link #method!initKeyMap initKeyMap}` is called by `{@link Ext.Component}` at the\nproper time, this is not something application code normally handles.\n"
+    },
+    {
+      "name": "keyMapTarget",
+      "type": "String",
+      "defaultValue": "'el'",
+      "description": "The name of the member that should be used to listen for keydown/keypress events.\nThis is intended to be controlled at the class level not per instance.\n"
+    },
+    {
+      "name": "labelableRenderTpl",
+      "type": "String/String[]/Ext.XTemplate",
+      "defaultValue": "[\n    '{beforeLabelTpl}',\n    '<label id=\"{id}-labelEl\" data-ref=\"labelEl\" class=\"{labelCls} {labelCls}-{ui} {labelClsExtra} ',\n    '{childElCls} {unselectableCls}\" style=\"{labelStyle}\"',\n    '<tpl if=\"inputId && !skipLabelForAttribute\"> for=\"{inputId}\"</tpl>',\n    ' {labelAttrTpl}>',\n    '<span class=\"{labelInnerCls} {labelInnerCls}-{ui}\" style=\"{labelInnerStyle}\">',\n    '{beforeLabelTextTpl}',\n    '<span id=\"{id}-labelTextEl\" data-ref=\"labelTextEl\" class=\"{labelTextCls}\">',\n    '<tpl if=\"fieldLabel\">{fieldLabel}',\n    '<tpl if=\"labelSeparator\">{labelSeparator}</tpl>',\n    '</tpl>',\n    '</span>',\n    '{afterLabelTextTpl}',\n    '</span>',\n    '</label>',\n    '{afterLabelTpl}',\n    '<div id=\"{id}-bodyEl\" data-ref=\"bodyEl\" role=\"presentation\"',\n    ' class=\"{baseBodyCls} {baseBodyCls}-{ui}<tpl if=\"fieldBodyCls\">',\n    ' {fieldBodyCls} {fieldBodyCls}-{ui}</tpl> {growCls} {extraFieldBodyCls}\"',\n    '<tpl if=\"bodyStyle\"> style=\"{bodyStyle}\"</tpl>>',\n    '{beforeBodyEl}',\n    '{beforeSubTpl}',\n    '{[values.$comp.getSubTplMarkup(values)]}',\n    '{afterSubTpl}',\n    '{afterBodyEl}',\n    // ARIA elements serve different purposes:\n    // - ariaHelpEl may contain optional hints about the field, such as\n    //   expected format. This text is static and usually does not change\n    //   once rendered. It is also optional.\n    // - ariaStatusEl is used to convey status of the field. Validation errors\n    //   are rendered here, as well as other information that might be helpful\n    //   to Assistive Technology users exploring the app in browse mode.\n    // - ariaErrorEl is used for announcing dynamic changes in the field state,\n    //   so that AT users receive updates while in forms mode.\n    //\n    // Both ariaHelpEl and ariaStatusEl are referenced by the field's input element\n    // via aria-describedby.\n    '<tpl if=\"renderAriaElements\">',\n    '<tpl if=\"ariaHelp\">',\n    '<span id=\"{id}-ariaHelpEl\" data-ref=\"ariaHelpEl\"',\n    ' class=\"' + Ext.baseCSSPrefix + 'hidden-offsets\">',\n    '{ariaHelp}',\n    '</span>',\n    '</tpl>',\n    '<span id=\"{id}-ariaStatusEl\" data-ref=\"ariaStatusEl\" aria-hidden=\"true\"',\n    ' class=\"' + Ext.baseCSSPrefix + 'hidden-offsets\">',\n    '{ariaStatus}',\n    '</span>',\n    '<span id=\"{id}-ariaErrorEl\" data-ref=\"ariaErrorEl\" aria-hidden=\"true\" aria-live=\"assertive\"',\n    ' class=\"' + Ext.baseCSSPrefix + 'hidden-clip\">',\n    '</span>',\n    '</tpl>',\n    '</div>',\n    '<tpl if=\"renderError\">',\n    '<div id=\"{id}-errorWrapEl\" data-ref=\"errorWrapEl\" class=\"{errorWrapCls} {errorWrapCls}-{ui}',\n    ' {errorWrapExtraCls}\" style=\"{errorWrapStyle}\">',\n    '<div role=\"presentation\" id=\"{id}-errorEl\" data-ref=\"errorEl\" ',\n    'class=\"{errorMsgCls} {invalidMsgCls} {invalidMsgCls}-{ui}\" ',\n    'data-anchorTarget=\"{tipAnchorTarget}\">',\n    '</div>',\n    '</div>',\n    '</tpl>',\n    {\n        disableFormats: true\n    }\n]",
+      "description": "The rendering template for the field decorations. Component classes using this mixin\nshould include logic to use this as their {@link Ext.Component#renderTpl renderTpl},\nand implement the {@link #getSubTplMarkup} method to generate the field body content.\n"
+    },
+    {
+      "name": "labelAlign",
+      "type": "String",
+      "defaultValue": "'left'",
+      "description": "Controls the position and alignment of the {@link #fieldLabel}. Valid values are:\n\n  - \"left\" (the default) - The label is positioned to the left of the field, with its text\n    aligned to the left. Its width is determined by the {@link #labelWidth} config.\n  - \"top\" - The label is positioned above the field.\n  - \"right\" - The label is positioned to the left of the field, with its text aligned\n    to the right. Its width is determined by the {@link #labelWidth} config.\n"
+    },
+    {
+      "name": "labelAttrTpl",
+      "type": "String/Array/Ext.XTemplate",
+      "description": "An optional string or `XTemplate` configuration to insert in the field markup\ninside the label element (as attributes). If an `XTemplate` is used, the component's\n{@link Ext.Component#renderData render data} serves as the context.\n"
+    },
+    {
+      "name": "labelCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'form-item-label'",
+      "description": "The CSS class to be applied to the label element. This (single) CSS class is used\nto formulate the renderSelector and drives the field layout where it is concatenated\nwith a hyphen ('-') and {@link #labelAlign}. To add additional classes, use\n{@link #labelClsExtra}.\n"
+    },
+    {
+      "name": "labelClsExtra",
+      "type": "String",
+      "description": "An optional string of one or more additional CSS classes to add to the label element.\nDefaults to empty.\n"
+    },
+    {
+      "name": "labelPad",
+      "type": "Number",
+      "defaultValue": "5",
+      "description": "The amount of space in pixels between the {@link #fieldLabel} and the field body.\nThis defaults to `5` for compatibility with Ext JS 4, however, as of Ext JS 5\nthe space between the label and the body can optionally be determined by the theme\nusing the {@link #$form-label-horizontal-spacing} (for side-aligned labels) and\n{@link #$form-label-vertical-spacing} (for top-aligned labels) SASS variables.\nIn order for the stylesheet values as to take effect, you must use a labelPad value\nof `null`.\n"
+    },
+    {
+      "name": "labelSeparator",
+      "type": "String",
+      "defaultValue": "':'",
+      "description": "Character(s) to be inserted at the end of the {@link #fieldLabel label text}.\n\nSet to empty string to hide the separator completely.\n"
+    },
+    {
+      "name": "labelStyle",
+      "type": "String",
+      "description": "A CSS style specification string to apply directly to this field's label.\n"
+    },
+    {
+      "name": "labelWidth",
+      "type": "Number",
+      "defaultValue": "100",
+      "description": "The width of the {@link #fieldLabel} in pixels. Only applicable if {@link #labelAlign}\nis set to \"left\" or \"right\".\n"
+    },
+    {
+      "name": "liquidLayout",
+      "type": "Boolean",
+      "defaultValue": "true",
+      "description": "Components that achieve their internal layout results using solely CSS with no JS\nintervention must set this to true.  This allows the component to opt out of the\nlayout run when used inside certain container layouts such as {@link\nExt.layout.container.Form Form} and {@link Ext.layout.container.Auto Auto}\nresulting in a performance gain. The following components currently use liquid\nlayout (`liquidLayout: true`):\n\n- All Form Fields (subclasses of {@link Ext.form.field.Base})\n- {@link Ext.button.Button}\n\nIt is important to keep in mind that components using liquidLayout do not fire\nthe following events:\n\n- {@link #event-resize}\n- {@link #event-boxready}\n\nIn addition, liquidLayout components do not call the following template methods:\n\n- {@link #method!afterComponentLayout}\n- {@link #method!onBoxReady}\n- {@link #method!onResize}\n\nAny component that needs to fire these events or to have these methods called during\nits life cycle needs to set `{@link #cfg!liquidLayout liquidLayout}` to `false`.  The following example\ndemonstrates how to enable the resize event for a\n{@link Ext.form.field.TextArea TextArea Field}:\n\n    @example\n    var win = Ext.create({\n            xtype: 'window',\n            title: 'Resize This Window!',\n            height: 100,\n            width: 200,\n            layout: 'anchor',\n            items: [{\n                xtype: 'textarea',\n                anchor: '0 0',\n                liquidLayout: false // allows the textarea to fire \"resize\"\n            }]\n        }),\n        textfield = win.items.getAt(0);\n\n    win.show();\n\n    textfield.on('resize', function(textfield, width, height) {\n        Ext.Msg.alert('Text Field Resized', 'width: ' + width + ', height: ' + height);\n    });\n\nUse caution when setting `{@link #cfg!liquidLayout liquidLayout}` to `false` as it carries a performance penalty\nsince it means the layout system must perform expensive DOM reads to determine the\nComponent's size.\n"
+    },
+    {
+      "name": "listeners",
+      "type": "Object",
+      "description": "\nA config object containing one or more event handlers to be added to this object during\ninitialization. This should be a valid listeners config object as specified in the\n{@link Ext.util.Observable#addListener addListener} example for attaching\nmultiple handlers at once.\n\n**DOM events from Ext JS {@link Ext.Component Components}**\n\nWhile _some_ Ext JS Component classes export selected DOM events (e.g. \"click\",\n\"mouseover\" etc), this is usually only done when extra value can be added. For example\nthe {@link Ext.view.View DataView}'s **`{@link Ext.view.View#itemclick itemclick}`**\nevent passing the node clicked on. To access DOM events directly from a child element\nof a Component, we need to specify the `element` option to identify the Component\nproperty to add a DOM listener to:\n\n    new Ext.panel.Panel({\n        width: 400,\n        height: 200,\n        dockedItems: [{\n            xtype: 'toolbar'\n        }],\n        listeners: {\n            click: {\n                element: 'el', //bind to the underlying el property on the panel\n                fn: function(){ console.log('click el'); }\n            },\n            dblclick: {\n                element: 'body', //bind to the underlying body property on the panel\n                fn: function(){ console.log('dblclick body'); }\n            }\n        }\n    });\n"
+    },
+    {
+      "name": "liveDrag",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "True to drag the component itself.  Else a lightweight version of the component\nwill be shown (_using the component's ghost() method_).\n\n**Note:** This config is only relevant when used with dragging implemented via\n{@link Ext.util.ComponentDragger}.\n"
+    },
+    {
+      "name": "loader",
+      "type": "Ext.ComponentLoader/Object",
+      "description": "A configuration object or an instance of a {@link Ext.ComponentLoader} to load remote content\nfor this Component.\n\n    Ext.create('Ext.Component', {\n        loader: {\n            url: 'content.html',\n            autoLoad: true\n        },\n        renderTo: Ext.getBody()\n    });\n"
+    },
+    {
+      "name": "margin",
+      "type": "Number/String",
+      "description": "Specifies the margin for this component. The margin can be a single numeric value to apply\nto all sides or it can be a CSS style specification for each style,\nfor example: '10 5 3 10' (top, right, bottom, left).\n"
+    },
+    {
+      "name": "maskDefaults",
+      "type": "Object",
+      "description": "Default LoadMask configuration for {@link #method-setLoading}.\n"
+    },
+    {
+      "name": "maskElement",
+      "type": "String",
+      "defaultValue": "null",
+      "description": "Related to the {@link #cfg-childEls} configuration which specifies named properties\nwhich correspond to component sub-elements.\n\nThe name of the element property in this component to mask when masked by a LoadMask.\n\nDefaults to `null` to indicate that Components cannot by default contain a LoadMask,\nand that any LoadMask should be rendered into the document body.\n\nFor example, Panels use `\"el\"` to indicate that the whole panel should be masked.\nThis could be configured to be `\"body\"` so that only the body is masked and toolbars\nand the header are still mouse-accessible.\n"
+    },
+    {
+      "name": "maxHeight",
+      "type": "Number",
+      "defaultValue": "null",
+      "description": "The maximum value in pixels which this Component will set its height to.\n\n**Warning:** This will override any size management applied by layout managers.\n"
+    },
+    {
+      "name": "maxWidth",
+      "type": "Number",
+      "defaultValue": "null",
+      "description": "The maximum value in pixels which this Component will set its width to.\n\n**Warning:** This will override any size management applied by layout managers.\n"
+    },
+    {
+      "name": "minHeight",
+      "type": "Number",
+      "defaultValue": "null",
+      "description": "The minimum value in pixels which this Component will set its height to.\n\n**Warning:** This will override any size management applied by layout managers.\n"
+    },
+    {
+      "name": "minWidth",
+      "type": "Number",
+      "defaultValue": "null",
+      "description": "The minimum value in pixels which this Component will set its width to.\n\n**Warning:** This will override any size management applied by layout managers.\n"
+    },
+    {
+      "name": "modal",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "True to make the floated component modal and mask everything behind it when displayed,\nfalse to display it without restricting access to other UI elements.\n"
+    },
+    {
+      "name": "modelValidation",
+      "type": "Boolean",
+      "description": "This config enables binding to your `{@link Ext.data.Model#validators}`. This\nis only processed by form fields (e.g., `{@link Ext.form.field.Text}`) at present, but\nthis setting is inherited and so can be set on a parent container.\n\nWhen set to `true` by a component or not set by a component but inherited from\nan ancestor container, `{@link Ext.data.Validation}` records are used to automatically\nbind validation results for any form field to which a `value` is bound.\n\nWhile this config can be set arbitrarily high in the component hierarchy, doing\nso can create a lot overhead if most of your form fields do not actually rely on\n`validators` in your data model.\n\nUsing this setting for a form that is bound to an `{@link Ext.data.Model}` might look\nlike this:\n\n     {\n         xtype: 'panel',\n         modelValidation: true,\n         items: [{\n             xtype: 'textfield',\n             bind: '{theUser.firstName}'\n         },{\n             xtype: 'textfield',\n             bind: '{theUser.lastName}'\n         },{\n             xtype: 'textfield',\n             bind: '{theUser.phoneNumber}'\n         },{\n             xtype: 'textfield',\n             bind: '{theUser.email}'\n         }]\n     }\n\nNotice that \"validation\" is a pseudo-association defined for all entities. See\n`{@link Ext.data.Model#getValidation}` for further details.\n"
+    },
+    {
+      "name": "msgTarget",
+      "type": "String",
+      "defaultValue": "'qtip'",
+      "description": "The location where the error message text should display. Must be one of the following\nvalues:\n\n  - `qtip` Display a quick tip containing the message when the user hovers over the field.\n    This is the default.\n\n    **{@link Ext.tip.QuickTipManager#init} must have been called for this setting to work.**\n\n  - `title` Display the message in a default browser title attribute popup.\n  - `under` Add a block div beneath the field containing the error message.\n  - `side` Add an error icon to the right of the field, displaying the message in a popup\n    on hover.\n  - `none` Don't display any error message. This might be useful if you are implementing\n    custom error display.\n  - `[element id]` Add the error message directly to the innerHTML of the specified element.\n"
+    },
+    {
+      "name": "name",
+      "type": "String",
+      "description": "The name of the field. This is used as the parameter name when including the field value\nin a {@link Ext.form.Basic#submit form submit()}. If no name is configured, it falls back\nto the {@link #inputId}. To prevent the field from being included in the form submit,\nset {@link #submitValue} to false.\n"
+    },
+    {
+      "name": "nameable",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "Set to `true` for this component's `name` property to be tracked by its containing\n`nameHolder`.\n"
+    },
+    {
+      "name": "overCls",
+      "type": "String",
+      "defaultValue": "''",
+      "description": "An optional extra CSS class that will be added to this component's Element when the mouse\nmoves over the Element, and removed when the mouse moves out. This can be useful for adding\ncustomized 'active' or 'hover' styles to the component or any of its children using standard\nCSS rules.\n"
+    },
+    {
+      "name": "overflowX",
+      "type": "String",
+      "description": "Possible values are:\n\n - `'auto'` to enable automatic horizontal scrollbar (Style overflow-x: 'auto').\n - `'scroll'` to always enable horizontal scrollbar (Style overflow-x: 'scroll').\n\nThe default is overflow-x: 'hidden'. This should not be combined with {@link #autoScroll}.\n"
+    },
+    {
+      "name": "overflowY",
+      "type": "String",
+      "description": "Possible values are:\n\n - `'auto'` to enable automatic vertical scrollbar (Style overflow-y: 'auto').\n - `'scroll'` to always enable vertical scrollbar (Style overflow-y: 'scroll').\n\nThe default is overflow-y: 'hidden'. This should not be combined with {@link #autoScroll}.\n"
+    },
+    {
+      "name": "padding",
+      "type": "Number/String",
+      "description": "Specifies the padding for this component. The padding can be a single numeric value to apply\nto all sides or it can be a CSS style specification for each style,\nfor example: '10 5 3 10' (top, right, bottom, left).\n"
+    },
+    {
+      "name": "plugins",
+      "type": "Array/Ext.enums.Plugin/Object/Ext.plugin.Abstract",
+      "description": "This config describes one or more plugin config objects used to create plugin\ninstances for this component.\n\nPlugins are a way to bundle and reuse custom functionality. Plugins should extend\n`{@link Ext.plugin.Abstract}` but technically the only requirement for a valid plugin\nis that it contain an `init` method that accepts a reference to its owner. Once\na plugin is created, the owner will call the `init` method, passing a reference\nto itself. Each plugin can then call methods or respond to events on its owner\nas needed to provide its functionality.\n\nThis config's value can take several different forms.\n\nThe value can be a single string with the plugin's {@link Ext.enums.Plugin alias}:\n\n    plugins: 'cellediting',\n\nThe preferred form for multiple plugins or to configure plugins is the keyed-object\nform (new in version 6.5):\n\n     plugins: {\n         gridviewdragdrop: true,\n         cellediting: {\n             clicksToEdit: 1\n         }\n     },\n\nThe keys are `{@link #cfg!id id}`'s as well as the default type alias.\n\nThe `{@link #cfg!plugins plugins}` config can also be an array of plugin aliases:\n\n    plugins: [ 'cellediting', 'gridviewdragdrop' ],\n\nAn array can also contain elements that are config objects with a `ptype` property\nholding the type alias:\n\n     plugins: ['gridviewdragdrop', {\n         ptype: 'cellediting',\n         clicksToEdit: 1\n     }],\n"
+    },
+    {
+      "name": "preventMark",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "true to disable displaying any {@link #setActiveError error message} set on this object.\n"
+    },
+    {
+      "name": "publishes",
+      "type": "String/String[]/Object",
+      "defaultValue": "['rawValue', 'value', 'dirty']",
+      "description": "One or more names of config properties that this component should publish\nto its ViewModel. Generally speaking, only properties defined in a class config\nblock (including ancestor config blocks and mixins) are eligible for publishing\nto the viewModel. Some components override this and publish their most useful\nconfigs by default.\n\n**Note:** We'll discuss publishing properties **not** found in the config block below.\n\nValues determined to be invalid by component (often form fields and model validations)\nwill not be published to the ViewModel.\n\nThis config uses the `{@link #cfg-reference}` to determine the name of the data\nobject to place in the `ViewModel`. If `{@link #cfg!reference reference}` is not set then this config\nis ignored.\n\nBy using this config and `{@link #cfg-reference}` you can bind configs between\ncomponents. For example:\n\n     ...\n         items: [{\n             xtype: 'textfield',\n             reference: 'somefield',  // component's name in the ViewModel\n             publishes: 'value' // value is not published by default\n         },{\n             ...\n         },{\n             xtype: 'displayfield',\n             bind: 'You have entered \"{somefield.value}\"'\n         }]\n     ...\n\nClasses must provide this config as an Object:\n\n     Ext.define('App.foo.Bar', {\n         publishes: {\n             foo: true,\n             bar: true\n         }\n     });\n\nThis is required for the config system to properly merge values from derived\nclasses.\n\nFor instances this value can be specified as a value as show above or an array\nor object as follows:\n\n     {\n         xtype: 'textfield',\n         reference: 'somefield',\n         publishes: [\n             'value',\n             'rawValue',\n             'dirty'\n         ]\n     }\n\n     // This achieves the same result as the above array form.\n     {\n         xtype: 'textfield',\n         reference: 'somefield',\n         publishes: {\n             value: true,\n             rawValue: true,\n             dirty: true\n         }\n     }\n\nIn some cases, users may want to publish a property to the viewModel that is not found\nin a class  config block. In these situations, you may utilize {@link #publishState}\nif the property has a  setter method. Let's use\n{@link Ext.form.Labelable#setFieldLabel setFieldLabel} as an example:\n\n      setFieldLabel: function(fieldLabel) {\n          this.callParent(arguments);\n          this.publishState('fieldLabel', fieldLabel);\n      }\n\nWith the above chunk of code, fieldLabel may now be published to the viewModel.\n"
+    },
+    {
+      "name": "readOnly",
+      "type": "Boolean",
+      "defaultValue": "true",
+      "description": "true to mark the field as readOnly in HTML.\n"
+    },
+    {
+      "name": "readOnlyCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'form-readonly'",
+      "description": "The CSS class applied to the component's main element when it is {@link #readOnly}.\n"
+    },
+    {
+      "name": "reference",
+      "type": "String",
+      "defaultValue": "null",
+      "description": "Specifies a name for this component inside its component hierarchy. This name\nmust be unique within its {@link Ext.container.Container#referenceHolder view}\nor its {@link Ext.app.ViewController ViewController}. See the documentation in\n{@link Ext.container.Container} for more information about references.\n\n**Note**: Valid identifiers start with a letter or underscore and are followed\nby zero or more additional letters, underscores or digits. References are case\nsensitive.\n"
+    },
+    {
+      "name": "region",
+      "type": "\"north\"/\"south\"/\"east\"/\"west\"/\"center\"",
+      "defaultValue": "undefined",
+      "description": "Defines the region inside {@link Ext.layout.container.Border border layout}.\n\nPossible values:\n\n- north - Positions component at top.\n- south - Positions component at bottom.\n- east - Positions component at right.\n- west - Positions component at left.\n- center - Positions component at the remaining space.\n  There **must** be a component with `region: \"center\"` in every border layout.\n"
+    },
+    {
+      "name": "renderConfig",
+      "type": "Object",
+      "description": "renderConfig wraps configs that do not get applied until after the component is\nrendered. Unlike normal config system properties, renderConfigs use a special\nsetter method to store values on the instance instead of running the apply and\nupdate methods if it is called before the component is rendered. Then, after the\ncomponent has been rendered, these values are processed by the normal apply and\nupdate method for the config.\n\nThis means that calling the get method for the config prior to render will return\nwhatever raw value has been set, while calling the getter after render will return\nthe value after processing by the config's apply method. If this distinction needs\nto be made, it is the caller's responsibility to check for the rendered state and\nhandle such intermediate config values.\n"
+    },
+    {
+      "name": "renderData",
+      "type": "Object",
+      "description": "\nThe data used by {@link #renderTpl} in addition to the following property values\nof the component:\n\n- id\n- ui\n- uiCls\n- baseCls\n- componentCls\n- frame\n\nSee {@link #renderSelectors} and {@link #cfg-childEls} for usage examples.\n"
+    },
+    {
+      "name": "renderer",
+      "type": "Function/String",
+      "description": "A function to transform the raw value for display in the field.\n\n    Ext.create('Ext.form.Panel', {\n        renderTo: document.body,\n        width: 175,\n        bodyPadding: 10,\n        title: 'Final Score',\n        items: [{\n            xtype: 'displayfield',\n            fieldLabel: 'Grade',\n            name: 'final_grade',\n            value: 68,\n            renderer: function (value, field) {\n                var color = (value < 70) ? 'red' : 'black';\n                return '<span style=\"color:' + color + ';\">' + value + '</span>';\n            }\n        }]\n    });\n"
+    },
+    {
+      "name": "renderSelectors",
+      "type": "Object",
+      "description": "An object containing properties specifying CSS selectors which identify child elements\ncreated by the render process.\n\nAfter the Component's internal structure is rendered according to the {@link #renderTpl},\nthis object is iterated through, and the found Elements are added as properties\nto the Component using the `renderSelector` property name.\n\nFor example, a Component which renders a title and description into its element:\n\n     Ext.create('Ext.Component', {\n         renderTo: Ext.getBody(),\n         renderTpl: [\n             '<h1 class=\"title\">{title}</h1>',\n             '<p>{desc}</p>'\n         ],\n         renderData: {\n             title: \"Error\",\n             desc: \"Something went wrong\"\n         },\n         renderSelectors: {\n             titleEl: 'h1.title',\n             descEl: 'p'\n         },\n         listeners: {\n             afterrender: function(cmp){\n                 // After rendering the component will have a titleEl and descEl properties\n                 cmp.titleEl.setStyle({color: \"red\"});\n             }\n         }\n     });\n\nThe use of `{@link #cfg!renderSelectors renderSelectors}` is deprecated (for performance reasons). The above\ncode should be refactored into something like this:\n\n     Ext.create('Ext.Component', {\n         renderTo: Ext.getBody(),\n         renderTpl: [\n             '<h1 class=\"title\" id=\"{id}-titleEl\" data-ref=\"titleEl\">{title}</h1>',\n             '<p id=\"{id}-descEl\" data-ref=\"descEl\">{desc}</p>'\n         ],\n         renderData: {\n             title: \"Error\",\n             desc: \"Something went wrong\"\n         },\n         childEls: [\n             'titleEl',\n             'descEl'\n         ]\n     });\n\nTo use `{@link #cfg!childEls childEls}` yet retain the use of selectors (which remains as expensive as\n`{@link #cfg!renderSelectors renderSelectors}`):\n\n     Ext.create('Ext.Component', {\n         renderTo: Ext.getBody(),\n         renderTpl: [\n             '<h1 class=\"title\">{title}</h1>',\n             '<p>{desc}</p>'\n         ],\n         renderData: {\n             title: \"Error\",\n             desc: \"Something went wrong\"\n         },\n         childEls: {\n             titleEl: { selectNode: 'h1.title' },\n             descEl: { selectNode: 'p' }\n         }\n     });\n"
+    },
+    {
+      "name": "renderTo",
+      "type": "String/HTMLElement/Ext.dom.Element",
+      "description": "Specify the `{@link #cfg!id id}` of the element, a DOM element or an existing Element that this component\nwill be rendered into.\n\n**Notes:**\n\nDo *not* use this option if the Component is to be a child item of a\n{@link Ext.container.Container Container}. It is the responsibility of the\n{@link Ext.container.Container Container}'s\n{@link Ext.container.Container#layout layout manager} to render and manage its child items.\n\nWhen using this config, a call to `render()` is not required.\n\nSee also: {@link #method-render}.\n"
+    },
+    {
+      "name": "renderTpl",
+      "type": "Ext.XTemplate/String/String[]",
+      "defaultValue": "'{%this.renderContent(out,values)%}'",
+      "description": "An {@link Ext.XTemplate XTemplate} used to create the internal structure inside\nthis Component's encapsulating {@link #getEl Element}.\n\nYou do not normally need to specify this. For the base classes {@link Ext.Component} and\n{@link Ext.container.Container}, this defaults to **`null`** which means that they will be\ninitially rendered with no internal structure; they render their {@link #getEl Element}\nempty. The more specialized classes with complex DOM structures provide their own template\ndefinitions.\n\nThis is intended to allow the developer to create application-specific utility Components\nwith customized internal structure.\n\nUpon rendering, any created child elements may be automatically imported into object\nproperties using the {@link #renderSelectors} and {@link #cfg-childEls} options.\n"
+    },
+    {
+      "name": "resizable",
+      "type": "Boolean/Object",
+      "description": "Specify as `true` to apply a {@link Ext.resizer.Resizer Resizer} to this Component\nafter rendering.\n\nMay also be specified as a config object to be passed to the constructor of\n{@link Ext.resizer.Resizer Resizer} to override any defaults. By default the Component\npasses its minimum and maximum size, and uses `{@link Ext.resizer.Resizer#dynamic}: false`\n"
+    },
+    {
+      "name": "resizeHandles",
+      "type": "String",
+      "defaultValue": "'all'",
+      "description": "A valid {@link Ext.resizer.Resizer} handles config string. Only applies when\nresizable = true.\n"
+    },
+    {
+      "name": "saveDelay",
+      "type": "Number",
+      "defaultValue": "100",
+      "description": "A buffer to be applied if many state events are fired within a short period.\n"
+    },
+    {
+      "name": "scope",
+      "type": "Object",
+      "description": "The scope to execute the {@link #renderer} function. Defaults to this.\n"
+    },
+    {
+      "name": "scrollable",
+      "type": "Boolean/String/Object",
+      "defaultValue": "null",
+      "description": "Configuration options to make this Component scrollable. Acceptable values are:\n\n- `true` to enable auto scrolling.\n- `false` (or `null`) to disable scrolling - this is the default.\n- `x` or `horizontal` to enable horizontal scrolling only\n- `y` or `vertical` to enable vertical scrolling only\n\nAlso accepts a configuration object for a `{@link Ext.scroll.Scroller}` if\nif advanced configuration is needed.\n\nThe getter for this config returns the {@link Ext.scroll.Scroller Scroller}\ninstance.  You can use the Scroller API to read or manipulate the scroll position:\n\n    // scrolls the component to 5 on the x axis and 10 on the y axis\n    component.getScrollable().scrollTo(5, 10);\n"
+    },
+    {
+      "name": "session",
+      "type": "Boolean/Object/Ext.data.Session",
+      "defaultValue": "null",
+      "description": "If provided this creates a new `Session` instance for this component. If this\nis a `Container`, this will then be inherited by all child components.\n\nTo create a new session you can specify `true`:\n\n     Ext.create({\n         xtype: 'viewport',\n         session: true,\n\n         items: [{\n             ...\n         }]\n     });\n\nAlternatively, a config object can be provided:\n\n     Ext.create({\n         xtype: 'viewport',\n         session: {\n             ...\n         },\n\n         items: [{\n             ...\n         }]\n     });\n"
+    },
+    {
+      "name": "shadow",
+      "type": "String/Boolean",
+      "defaultValue": "'sides'",
+      "description": "Specifies whether the floating component should be given a shadow. Set to true\nto automatically create an {@link Ext.Shadow}, or a string indicating the shadow's display\n{@link Ext.Shadow#mode}. Set to false to disable the shadow.\n"
+    },
+    {
+      "name": "shadowOffset",
+      "type": "Number",
+      "description": "Number of pixels to offset the shadow.\n"
+    },
+    {
+      "name": "shareableName",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "Set to `true` to allow this component's `name` to be shared by other items in the\nsame `nameHolder`. Such items will be returned in an array from `lookupName`.\n"
+    },
+    {
+      "name": "shim",
+      "type": "Boolean",
+      "description": "`true` to enable an iframe shim for this Component to keep\nwindowed objects from showing through.\n"
+    },
+    {
+      "name": "shrinkWrap",
+      "type": "Boolean/Number",
+      "defaultValue": "true",
+      "description": "\nThe possible values for shrinkWrap are:\n\n  - 0 (or `false`): Neither width nor height depend on content.\n  - 1: Width depends on content (shrink wraps), but height does not.\n  - 2: Height depends on content (shrink wraps), but width does not.\n  - 3 (or `true`): Both width and height depend on content (shrink wrap).\n\nIn CSS terms, shrink-wrap width is analogous to an inline-block element as opposed\nto a block-level element.\n"
+    },
+    {
+      "name": "stateEvents",
+      "type": "String[]",
+      "description": "An array of events that, when fired, should trigger this object to\nsave its state. `{@link #cfg!stateEvents stateEvents}` defaults to the `{@link #cfg!stateEvents stateEvents}` associated with the\ncomponent you are using.  Any events you statically set will be appended to that list.\n`{@link #cfg!stateEvents stateEvents}` may be any type of event supported by this object, including\nbrowser or custom events (e.g., `['click', 'customerchange']`).\n\nSee `{@link #stateful}` for an explanation of saving and\nrestoring object state.\nBy default the following stateEvents are added:\n\n - {@link #event-resize}\n"
+    },
+    {
+      "name": "stateful",
+      "type": "Boolean/Object",
+      "defaultValue": "false",
+      "description": "A flag which causes the object to attempt to restore the state of\ninternal properties from a saved state on startup. The object must have\na {@link #stateId} for state to be managed.\n\nAuto-generated ids are not guaranteed to be stable across page loads and\ncannot be relied upon to save and restore the same state for a object.\n\nFor state saving to work, the state manager's provider must have been\nset to an implementation of {@link Ext.state.Provider} which overrides the\n{@link Ext.state.Provider#set set} and {@link Ext.state.Provider#get get}\nmethods to save and recall name/value pairs. A built-in implementation,\n{@link Ext.state.CookieProvider} is available.\n\nTo set the state provider for the current page:\n\n    Ext.state.Manager.setProvider(new Ext.state.CookieProvider({\n        expires: new Date(new Date().getTime()+(1000*60*60*24*7)), // 7 days from now\n    }));\n\nA stateful object attempts to save state when one of the events\nlisted in the {@link #stateEvents} configuration fires.\n\nTo save state, a stateful object first serializes its state by\ncalling *{@link #getState}*.\n\nThe Component base class implements {@link #getState} to save its width and\nheight within the state only if they were initially configured, and have\nchanged from the configured value.\n\nThe Panel class saves its collapsed state in addition to that.\n\nThe Grid class saves its column state and store state (sorters and filters and grouper)\nin addition to its superclass state.\n\nIf there is more application state to be save, the developer must provide\nan implementation which first calls the superclass method to inherit the above behaviour,\nand then injects new properties into the returned object.\n\nThe value yielded by `{@link #method!getState getState}` is passed to {@link Ext.state.Manager#set}\nwhich uses the configured {@link Ext.state.Provider} to save the object\nkeyed by the {@link #stateId}.\n\nDuring construction, a stateful object attempts to *restore* its state by calling\n{@link Ext.state.Manager#get} passing the {@link #stateId}\n\nThe resulting object is passed to {@link #applyState}*. The default implementation of\n{@link #applyState} simply copies properties into the object, but a developer may\noverride this to support restoration of more complex application state.\n\nYou can perform extra processing on state save and restore by attaching\nhandlers to the {@link #beforestaterestore}, {@link #staterestore},\n{@link #beforestatesave} and {@link #statesave} events. In some simple cases,\npassing an object for the `{@link #cfg!stateful stateful}` config may suffice. If an object is\nprovided, the properties of that object are used to include or exclude stateful\nproperties returned by `{@link #method!getState getState}`. For example:\n\n     stateful: {\n         height: false, // never persist the height\n         width: true    // always persist the width\n     }\n\nThe above is roughly equivalent to the following:\n\n     getState: function () {\n         var state = this.callParent();\n\n         delete state.height;\n         state.width = this.width;\n\n         return state;\n     }\n"
+    },
+    {
+      "name": "stateId",
+      "type": "String",
+      "description": "The unique id for this object to use for state management purposes.\n\nSee {@link #stateful} for an explanation of saving and restoring state.\n"
+    },
+    {
+      "name": "style",
+      "type": "String/Object",
+      "description": "A custom style specification to be applied to this component's Element.\nShould be a valid argument to {@link Ext.dom.Element#applyStyles}.\n\n    new Ext.panel.Panel({\n        title: 'Some Title',\n        renderTo: Ext.getBody(),\n        width: 400, height: 300,\n        layout: 'form',\n        items: [{\n            xtype: 'textarea',\n            style: {\n                width: '95%',\n                marginBottom: '10px'\n            }\n        },\n        new Ext.button.Button({\n            text: 'Send',\n            minWidth: '100',\n            style: {\n                marginBottom: '10px'\n            }\n        })\n        ]\n    });\n"
+    },
+    {
+      "name": "submitValue",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "Setting this to false will prevent the field from being\n{@link Ext.form.Basic#submit submitted} even when it is not disabled.\n"
+    },
+    {
+      "name": "tabIndex",
+      "type": "Number",
+      "description": "\nSets a DOM tabIndex for this field. tabIndex may be set to `-1` in order to remove\nthe field from the tab rotation.\n\n**Note:** tabIndex only applies to fields that are rendered.  It does not effect\nfields built via applyTo\n"
+    },
+    {
+      "name": "toFrontOnShow",
+      "type": "Boolean",
+      "defaultValue": "true",
+      "description": "True to automatically call {@link #toFront} when the {@link #method-show} method is called\non an already visible, floating component.\n"
+    },
+    {
+      "name": "touchAction",
+      "type": "Object",
+      "defaultValue": "null",
+      "description": "\nEmulates the behavior of the CSS\n[touch-action](https://www.w3.org/TR/pointerevents/#the-touch-action-css-property)\nproperty in a cross-browser compatible manner.\n\nKeys in this object are touch action names, and values are `false` to disable\na touch action or `true` to enable it.  Accepted keys are:\n\n- `panX`\n- `panY`\n- `pinchZoom`\n- `doubleTapZoom`\n\nAll touch actions are enabled (`true`) by default, so it is usually only necessary\nto specify which touch actions to disable.  For example, the following disables\nonly horizontal scrolling and pinch-to-zoom on the component's main element:\n\n    touchAction: {\n        panX: false,\n        pinchZoom: false\n    }\n\nTouch actions can be specified on child elements using the child element name,\nfor example:\n\n    // disables horizontal scrolling on the main element, and double-tap-zoom\n    // on the child element named \"body\"\n    touchAction: {\n        panY: false\n        body: {\n            doubleTapZoom: false\n        }\n    }\n\nThe primary motivation for setting the touch-action of an element is to prevent\nthe browser's default handling of a gesture such as pinch-to-zoom, or\ndrag-to-scroll, so that the application can implement its own handling of that\ngesture on the element.  Suppose, for example, a component has a custom drag\nhandler on its element and wishes to prevent horizontal scrolling of its container\nwhile it is being dragged:\n\n    Ext.create('Ext.Component', {\n        touchAction: {\n            panX: false\n        },\n        listeners: {\n            drag: function(e) {\n                // implement drag logic\n            }\n        }\n    });\n"
+    },
+    {
+      "name": "tpl",
+      "type": "Ext.XTemplate/Ext.Template/String/String[]",
+      "description": "An {@link Ext.Template}, {@link Ext.XTemplate} or an array of strings to form\nan Ext.XTemplate. Used in conjunction with the `{@link #data}` and `{@link #tplWriteMode}`\nconfigurations.\n"
+    },
+    {
+      "name": "tplWriteMode",
+      "type": "String",
+      "defaultValue": "'overwrite'",
+      "description": "The Ext.(X)Template method to use when updating the content area of the Component.\nSee `{@link Ext.XTemplate#overwrite}` for information on default mode.\n"
+    },
+    {
+      "name": "twoWayBindable",
+      "type": "String/String[]/Object",
+      "defaultValue": "null",
+      "description": "This object holds a map of `config` properties that will update their binding\nas they are modified. For example, `value` is a key added by form fields. The\nform of this config is the same as `{@link #cfg!publishes}`.\n\nThis config is defined so that updaters are not created and added for all\nbound properties since most cannot be modified by the end-user and hence are\nnot appropriate for two-way binding.\n"
+    },
+    {
+      "name": "ui",
+      "type": "String",
+      "defaultValue": "'default'",
+      "description": "A UI style for a component.\n"
+    },
+    {
+      "name": "uiCls",
+      "type": "String[]",
+      "defaultValue": "[]",
+      "description": "An array of of `classNames` which are currently applied to this component.\n"
+    },
+    {
+      "name": "userCls",
+      "type": "String/String[]",
+      "defaultValue": "null",
+      "description": "One or more CSS classes to add to the component's primary element. This config\nis intended solely for use by the component instantiator (the \"user\"), not by\nderived classes.\n\nFor example:\n\n     items: [{\n         xtype: 'button',\n         userCls: 'my-button'\n     ...\n     }]\n"
+    },
+    {
+      "name": "validateOnBlur",
+      "type": "Boolean",
+      "defaultValue": "true",
+      "description": "Whether the field should validate when it loses focus. This will cause fields to be validated\nas the user steps through the fields in the form regardless of whether they are making\nchanges to those fields along the way. See also {@link #validateOnChange}.\n"
+    },
+    {
+      "name": "validateOnChange",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "Specifies whether this field should be validated immediately whenever a change in its value\nis detected. If the validation results in a change in the field's validity, a\n{@link #validitychange} event will be fired. This allows the field to show feedback\nabout the validity of its contents immediately as the user is typing.\n\nWhen set to false, feedback will not be immediate. However the form will still be validated\nbefore submitting if the clientValidation option to {@link Ext.form.Basic#doAction}\nis enabled, or if the field or form are validated manually.\n\nSee also {@link Ext.form.field.Base#checkChangeEvents} for controlling how changes\nto the field's value are detected.\n"
+    },
+    {
+      "name": "validateOnFocusLeave",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "description": "Set to `true` to validate the field\nwhen focus leaves the field's component hierarchy entirely.\n\nThe difference between  {@link #validateOnBlur} and this option is that the former\nwill happen when field's _input element_ blurs. In complex fields such as ComboBox\nor Date focus may leave the input element to the drop-down picker, which will cause\n{@link #validateOnBlur} to happen prematurely.\n\nUsing this option is recommended for accessible applications. The default value\nis `false` for backwards compatibility; this option and {@link #validateOnBlur}\nare mutually exclusive.\n"
+    },
+    {
+      "name": "validation",
+      "type": "Boolean/String",
+      "defaultValue": "null",
+      "description": "This property, when a `String`, contributes its value to the error state of this\ninstance as reported by `{@link #method!getErrors getErrors}`.\n"
+    },
+    {
+      "name": "validationField",
+      "type": "Ext.data.Field",
+      "defaultValue": "null",
+      "description": "When binding is used with a model, this maps to the underlying\n{@link Ext.data.field.Field} if it is available. This can be used to validate the value\nagainst the model field without needing to push the value back into the model.\n"
+    },
+    {
+      "name": "value",
+      "type": "Object",
+      "description": "A value to initialize this field with.\n"
+    },
+    {
+      "name": "valuePublishEvent",
+      "type": "String[]/String",
+      "defaultValue": "'change'",
+      "description": "The event name(s) to use to publish the {@link #value}\n{@link Ext.form.field.Base#bind} for this field.\n"
+    },
+    {
+      "name": "viewModel",
+      "type": "String/Object/Ext.app.ViewModel",
+      "defaultValue": "null",
+      "description": "The `ViewModel` is a data provider for this component and its children. The\ndata contained in the `ViewModel` is typically used by adding `{@link #cfg!bind bind}` configs\nto the components that want present or edit this data.\n\nWhen set, the `ViewModel` is created and links to any inherited `{@link #cfg!viewModel viewModel}`\ninstance from an ancestor container as the \"parent\". The `ViewModel` hierarchy,\nonce established, only supports creation or destruction of children. The\nparent of a `ViewModel` cannot be changed on the fly.\n\nIf this is a root-level `ViewModel`, the data model connection is made to this\ncomponent's associated `{@link Ext.data.Session Data Session}`. This is\ndetermined by calling `getInheritedSession`.\n"
+    },
+    {
+      "name": "weight",
+      "type": "Number",
+      "defaultValue": "null",
+      "description": "A value to control how Components are laid out in a\n{@link Ext.layout.container.Border Border} layout or as docked items.\n\nIn a Border layout, this can control how the regions (not the center) region lay out\nif the west or east take full height or if the north or south region take full width.\nAlso look at the {@link Ext.layout.container.Border#regionWeights} on the Border layout.\nAn example to show how you can take control of this is:\n\n    Ext.create('Ext.container.Viewport', {\n        layout      : 'border',\n        defaultType : 'panel',\n        items       : [\n            {\n                region : 'north',\n                title  : 'North',\n                height : 100\n            },\n            {\n                region : 'south',\n                title  : 'South',\n                height : 100,\n                weight : -25\n            },\n            {\n                region : 'west',\n                title  : 'West',\n                width  : 200,\n                weight : 15\n            },\n            {\n                region : 'east',\n                title  : 'East',\n                width  : 200\n            },\n            {\n                region : 'center',\n                title  : 'center'\n            }\n        ]\n    });\n\nIf docked items, the weight will order how the items are laid out. Here is an example\nto put a {@link Ext.toolbar.Toolbar} above a {@link Ext.panel.Panel}'s header:\n\n    Ext.create('Ext.panel.Panel', {\n        renderTo    : document.body,\n        width       : 300,\n        height      : 300,\n        title       : 'Panel',\n        html        : 'Panel Body',\n        dockedItems : [\n            {\n                xtype : 'toolbar',\n                items : [\n                    {\n                        text : 'Save'\n                    }\n                ]\n            },\n            {\n                xtype  : 'toolbar',\n                weight : -10,\n                items  : [\n                    {\n                        text : 'Remove'\n                    }\n                ]\n            }\n        ]\n    });\n"
+    },
+    {
+      "name": "width",
+      "type": "Number|String",
+      "description": "The width of this component. A numeric value will be interpreted as the number of\npixels; a string value will be treated as a CSS value with units.\n"
+    },
+    {
+      "name": "xtype",
+      "type": "Ext.enums.Widget",
+      "description": "**Note:** Only applies to {@link Ext.Component} derived classes when used as\na config in {@link Ext#define Ext.define}.\n\nThis property provides a shorter alternative to creating objects than using a full\nclass name. Using `{@link #cfg!xtype xtype}` is the most common way to define component instances,\nespecially in a container. For example, the items in a form containing text fields\ncould be created explicitly like so:\n\n     items: [\n         Ext.create('Ext.form.field.Text', {\n             fieldLabel: 'Foo'\n         }),\n         Ext.create('Ext.form.field.Text', {\n             fieldLabel: 'Bar'\n         }),\n         Ext.create('Ext.form.field.Number', {\n             fieldLabel: 'Num'\n         })\n     ]\n\nBut by using `{@link #cfg!xtype xtype}`, the above becomes:\n\n     items: [\n         {\n             xtype: 'textfield',\n             fieldLabel: 'Foo'\n         },\n         {\n             xtype: 'textfield',\n             fieldLabel: 'Bar'\n         },\n         {\n             xtype: 'numberfield',\n             fieldLabel: 'Num'\n         }\n     ]\n\nWhen the `{@link #cfg!xtype xtype}` is common to many items, {@link Ext.container.Container#defaultType}\nis another way to specify the `{@link #cfg!xtype xtype}` for all items that don't have an explicit `{@link #cfg!xtype xtype}`:\n\n     defaultType: 'textfield',\n     items: [\n         { fieldLabel: 'Foo' },\n         { fieldLabel: 'Bar' },\n         { fieldLabel: 'Num', xtype: 'numberfield' }\n     ]\n\nEach member of the `items` array is now just a \"configuration object\". These objects\nare used to create and configure component instances. A configuration object can be\nmanually used to instantiate a component using {@link Ext#widget}:\n\n     var text1 = Ext.create('Ext.form.field.Text', {\n         fieldLabel: 'Foo'\n     });\n\n     // or alternatively:\n\n     var text1 = Ext.widget({\n         xtype: 'textfield',\n         fieldLabel: 'Foo'\n     });\n\nThis conversion of configuration objects into instantiated components is done when\na container is created as part of its {Ext.container.AbstractContainer#initComponent}\nprocess. As part of the same process, the `items` array is converted from its raw\narray form into a {@link Ext.util.MixedCollection} instance.\n\nYou can define your own `{@link #cfg!xtype xtype}` on a custom {@link Ext.Component component} by specifying\nthe `{@link #cfg!xtype xtype}` property in {@link Ext#define}. For example:\n\n    Ext.define('MyApp.PressMeButton', {\n        extend: 'Ext.button.Button',\n        xtype: 'pressmebutton',\n        text: 'Press Me'\n    });\n\nCare should be taken when naming an `{@link #cfg!xtype xtype}` in a custom component because there is\na single, shared scope for all xtypes. Third part components should consider using\na prefix to avoid collisions.\n\n    Ext.define('Foo.form.CoolButton', {\n        extend: 'Ext.button.Button',\n        xtype: 'ux-coolbutton',\n        text: 'Cool!'\n    });\n\nSee {@link Ext.enums.Widget} for list of all available xtypes.\n"
+    }
+  ],
+  "methods": [
+    {
+      "name": "_addDeclaredListeners",
+      "returnType": "Array",
+      "params": [
+        {
+          "name": "listeners",
+          "type": "Array"
+        }
+      ]
+    },
+    {
+      "name": "_fixReference"
+    },
+    {
+      "name": "addAfterListener"
+    },
+    {
+      "name": "addBeforeListener"
+    },
+    {
+      "name": "addChildEl",
+      "params": [
+        {
+          "name": "childEl"
+        }
+      ]
+    },
+    {
+      "name": "addClass",
+      "returnType": "String/String[]",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "addCls",
+      "returnType": "String/String[]",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "addClsWithUI",
+      "params": [
+        {
+          "name": "classes",
+          "type": "String/String[]"
+        },
+        {
+          "name": "skip",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "addDelegatedListener",
+      "params": [
+        {
+          "name": "eventName"
+        },
+        {
+          "name": "fn"
+        },
+        {
+          "name": "scope"
+        },
+        {
+          "name": "options"
+        },
+        {
+          "name": "order"
+        },
+        {
+          "name": "caller"
+        },
+        {
+          "name": "manager"
+        }
+      ]
+    },
+    {
+      "name": "addDeprecations",
+      "params": [
+        {
+          "name": "deprecations"
+        }
+      ]
+    },
+    {
+      "name": "addListener",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        },
+        {
+          "name": "order",
+          "type": "String"
+        },
+        {
+          "name": "caller"
+        }
+      ]
+    },
+    {
+      "name": "addManagedListener",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.util.Observable/Ext.dom.Element"
+        },
+        {
+          "name": "ename",
+          "type": "Object/String"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        },
+        {
+          "name": "noDestroy",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "addPlugin",
+      "params": [
+        {
+          "name": "plugin"
+        }
+      ]
+    },
+    {
+      "name": "addPropertyToState",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "state",
+          "type": "Object"
+        },
+        {
+          "name": "propName",
+          "type": "String"
+        },
+        {
+          "name": "value",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "addStateEvents",
+      "params": [
+        {
+          "name": "events",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "addUIClsToElement",
+      "params": [
+        {
+          "name": "uiCls",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "addUIToElement"
+    },
+    {
+      "name": "adjustForConstraints",
+      "params": [
+        {
+          "name": "xy"
+        },
+        {
+          "name": "parent"
+        }
+      ]
+    },
+    {
+      "name": "adjustPosition",
+      "params": [
+        {
+          "name": "x"
+        },
+        {
+          "name": "y"
+        }
+      ]
+    },
+    {
+      "name": "afterClassMixedIn",
+      "params": [
+        {
+          "name": "targetClass",
+          "type": "Ext.Class"
+        }
+      ]
+    },
+    {
+      "name": "afterComponentLayout",
+      "params": [
+        {
+          "name": "width",
+          "type": "Number"
+        },
+        {
+          "name": "height",
+          "type": "Number"
+        },
+        {
+          "name": "oldWidth",
+          "type": "Number/undefined"
+        },
+        {
+          "name": "oldHeight",
+          "type": "Number/undefined"
+        }
+      ]
+    },
+    {
+      "name": "afterHide",
+      "params": [
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "afterRender"
+    },
+    {
+      "name": "afterSetPosition",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "afterShow",
+      "params": [
+        {
+          "name": "animateTarget",
+          "type": "String/Ext.dom.Element"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "alignTo",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "element",
+          "type": "Ext.util.Positionable/HTMLElement/String"
+        },
+        {
+          "name": "position",
+          "type": "String"
+        },
+        {
+          "name": "offsets",
+          "type": "Number[]"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "anchorTo",
+      "returnType": "Function",
+      "params": [
+        {
+          "name": "anchorToEl",
+          "type": "Ext.util.Positionable/HTMLElement/String"
+        },
+        {
+          "name": "alignment",
+          "type": "String"
+        },
+        {
+          "name": "offsets",
+          "type": "Number[]"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        },
+        {
+          "name": "monitorScroll",
+          "type": "Boolean/Number"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        }
+      ]
+    },
+    {
+      "name": "anim",
+      "params": [
+        {
+          "name": "config"
+        }
+      ]
+    },
+    {
+      "name": "animate",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "animObj",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "applyBind",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "binds",
+          "type": "String/Object"
+        },
+        {
+          "name": "currentBindings",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "applyRenderSelectors"
+    },
+    {
+      "name": "applySession",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "session",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "applyState",
+      "params": [
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "applyViewModel",
+      "returnType": "String/Object/Ext.app.ViewModel",
+      "params": [
+        {
+          "name": "viewModel",
+          "type": "String/Object/Ext.app.ViewModel"
+        }
+      ]
+    },
+    {
+      "name": "attachChildEls",
+      "params": [
+        {
+          "name": "el"
+        },
+        {
+          "name": "owner"
+        }
+      ]
+    },
+    {
+      "name": "batchChanges",
+      "params": [
+        {
+          "name": "fn",
+          "type": "Function"
+        }
+      ]
+    },
+    {
+      "name": "beforeBlur",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "beforeDestroy"
+    },
+    {
+      "name": "beforeFocus",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "beforeLayout"
+    },
+    {
+      "name": "beforeRender"
+    },
+    {
+      "name": "beforeReset"
+    },
+    {
+      "name": "beforeSetPosition",
+      "params": [
+        {
+          "name": "x"
+        },
+        {
+          "name": "y"
+        },
+        {
+          "name": "animate"
+        }
+      ]
+    },
+    {
+      "name": "beforeShow"
+    },
+    {
+      "name": "blur"
+    },
+    {
+      "name": "bubble",
+      "returnType": "Array",
+      "params": [
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "args",
+          "type": "Array"
+        }
+      ]
+    },
+    {
+      "name": "cacheRefEls",
+      "params": [
+        {
+          "name": "el"
+        }
+      ]
+    },
+    {
+      "name": "calculateAnchorXY",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "anchor",
+          "type": "String"
+        },
+        {
+          "name": "extraX",
+          "type": "Number"
+        },
+        {
+          "name": "extraY",
+          "type": "Number"
+        },
+        {
+          "name": "size",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "calculateConstrainedPosition",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "constrainTo",
+          "type": "String/HTMLElement/Ext.dom.Element/Ext.util.Region"
+        },
+        {
+          "name": "proposedPosition",
+          "type": "Number[]"
+        },
+        {
+          "name": "local",
+          "type": "Boolean"
+        },
+        {
+          "name": "proposedSize",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "callOverridden",
+      "returnType": "Array/Arguments",
+      "params": [
+        {
+          "name": "args",
+          "type": "Array/Arguments"
+        }
+      ]
+    },
+    {
+      "name": "callParent",
+      "returnType": "Array/Arguments",
+      "params": [
+        {
+          "name": "args",
+          "type": "Array/Arguments"
+        }
+      ]
+    },
+    {
+      "name": "callSuper",
+      "returnType": "Array/Arguments",
+      "params": [
+        {
+          "name": "args",
+          "type": "Array/Arguments"
+        }
+      ]
+    },
+    {
+      "name": "cancelFocus"
+    },
+    {
+      "name": "center",
+      "returnType": "Array/Arguments",
+      "params": []
+    },
+    {
+      "name": "changeConstraint",
+      "params": [
+        {
+          "name": "newValue"
+        },
+        {
+          "name": "oldValue"
+        },
+        {
+          "name": "constrainMethod"
+        },
+        {
+          "name": "styleName"
+        },
+        {
+          "name": "sizeName"
+        }
+      ]
+    },
+    {
+      "name": "checkChange"
+    },
+    {
+      "name": "checkDirty"
+    },
+    {
+      "name": "cleanupField"
+    },
+    {
+      "name": "clearClip"
+    },
+    {
+      "name": "clearDelegatedListeners"
+    },
+    {
+      "name": "clearInvalid"
+    },
+    {
+      "name": "clearListeners"
+    },
+    {
+      "name": "clearManagedListeners"
+    },
+    {
+      "name": "clipTo",
+      "params": [
+        {
+          "name": "clippingEl",
+          "type": "Ext.Component/Ext.Element/Ext.util.Region"
+        },
+        {
+          "name": "sides",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "clipToScroller",
+      "params": [
+        {
+          "name": "scroller"
+        }
+      ]
+    },
+    {
+      "name": "cloneConfig",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "overrides",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "completeEdit"
+    },
+    {
+      "name": "constrainBox",
+      "params": [
+        {
+          "name": "box"
+        }
+      ]
+    },
+    {
+      "name": "constructor",
+      "params": [
+        {
+          "name": "config",
+          "type": "Ext.dom.Element/String/Object"
+        }
+      ]
+    },
+    {
+      "name": "constructPlugin",
+      "params": [
+        {
+          "name": "plugin",
+          "type": "String/Object"
+        }
+      ]
+    },
+    {
+      "name": "constructPlugins"
+    },
+    {
+      "name": "convertPositionSpec",
+      "params": [
+        {
+          "name": "posSpec"
+        }
+      ]
+    },
+    {
+      "name": "createRelayer",
+      "returnType": "Array",
+      "params": [
+        {
+          "name": "newName",
+          "type": "String"
+        },
+        {
+          "name": "beginEnd",
+          "type": "Array"
+        }
+      ]
+    },
+    {
+      "name": "destroy"
+    },
+    {
+      "name": "destroyMembers",
+      "params": [
+        {
+          "name": "args",
+          "type": "String..."
+        }
+      ]
+    },
+    {
+      "name": "didValueChange",
+      "params": [
+        {
+          "name": "newVal"
+        },
+        {
+          "name": "oldVal"
+        }
+      ]
+    },
+    {
+      "name": "disable",
+      "params": [
+        {
+          "name": "silent",
+          "type": "Boolean"
+        },
+        {
+          "name": "fromParent"
+        }
+      ]
+    },
+    {
+      "name": "doApplyRenderTpl",
+      "params": [
+        {
+          "name": "out"
+        },
+        {
+          "name": "values"
+        }
+      ]
+    },
+    {
+      "name": "doAutoRender"
+    },
+    {
+      "name": "doComponentLayout",
+      "params": []
+    },
+    {
+      "name": "doConstrain",
+      "params": [
+        {
+          "name": "constrainTo",
+          "type": "String/HTMLElement/Ext.dom.Element/Ext.util.Region"
+        }
+      ]
+    },
+    {
+      "name": "doDestroy"
+    },
+    {
+      "name": "doFireDelegatedEvent",
+      "params": [
+        {
+          "name": "eventName"
+        },
+        {
+          "name": "args"
+        }
+      ]
+    },
+    {
+      "name": "doFireEvent",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "Array"
+        },
+        {
+          "name": "bubbles",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "enable",
+      "params": [
+        {
+          "name": "silent",
+          "type": "Boolean"
+        },
+        {
+          "name": "fromParent"
+        }
+      ]
+    },
+    {
+      "name": "enableBubble",
+      "params": [
+        {
+          "name": "eventNames",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "ensureAttachedToBody",
+      "params": [
+        {
+          "name": "runLayout",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "extractFileInput",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "findFocusTarget",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "findParentBy",
+      "returnType": "Function",
+      "params": [
+        {
+          "name": "fn",
+          "type": "Function"
+        }
+      ]
+    },
+    {
+      "name": "findParentByType",
+      "returnType": "String/Ext.Class",
+      "params": [
+        {
+          "name": "xtype",
+          "type": "String/Ext.Class"
+        }
+      ]
+    },
+    {
+      "name": "findPlugin",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "ptype",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "finishRender",
+      "params": [
+        {
+          "name": "containerIdx",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "fireAction",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "Array"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        },
+        {
+          "name": "order",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "fireEvent",
+      "returnType": "Object...",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "Object..."
+        }
+      ]
+    },
+    {
+      "name": "fireEventArgs",
+      "returnType": "Object[]",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "Object[]"
+        }
+      ]
+    },
+    {
+      "name": "fireEventedAction",
+      "returnType": "Array/Boolean",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "Array"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "fnArgs",
+          "type": "Array/Boolean"
+        }
+      ]
+    },
+    {
+      "name": "fireHierarchyEvent",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "fireKey",
+      "params": [
+        {
+          "name": "e"
+        },
+        {
+          "name": "eOpts"
+        }
+      ]
+    },
+    {
+      "name": "fitContainer",
+      "params": [
+        {
+          "name": "animate"
+        }
+      ]
+    },
+    {
+      "name": "focus",
+      "returnType": "Boolean/Number[]",
+      "params": [
+        {
+          "name": "selectText",
+          "type": "Boolean/Number[]"
+        }
+      ]
+    },
+    {
+      "name": "forceComponentLayout",
+      "params": [
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "getActiveAnimation",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "getActiveError",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "getActiveErrors",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "getAlignToXY",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "alignToEl",
+          "type": "Ext.util.Positionable/HTMLElement/String"
+        },
+        {
+          "name": "position",
+          "type": "String"
+        },
+        {
+          "name": "offsets",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "getAnchorToXY",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "el",
+          "type": "Ext.dom.Element"
+        },
+        {
+          "name": "anchor",
+          "type": "String"
+        },
+        {
+          "name": "local",
+          "type": "Boolean"
+        },
+        {
+          "name": "size",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "getAnchorXY",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "anchor",
+          "type": "String"
+        },
+        {
+          "name": "local",
+          "type": "Boolean"
+        },
+        {
+          "name": "size",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "getAnimationProps"
+    },
+    {
+      "name": "getAriaLabelEl",
+      "returnType": "Function/String/String[]",
+      "params": [
+        {
+          "name": "reference",
+          "type": "Function/String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "getAutoId"
+    },
+    {
+      "name": "getBorderPadding",
+      "returnType": "Function/String/String[]",
+      "params": []
+    },
+    {
+      "name": "getBox",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "contentBox",
+          "type": "Boolean"
+        },
+        {
+          "name": "local",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getBubbleParent",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getBubbleTarget"
+    },
+    {
+      "name": "getClientRegion",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getConfig",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "peek",
+          "type": "Boolean"
+        },
+        {
+          "name": "ifInitialized",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getConstrainRegion",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getConstrainVector",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "constrainTo",
+          "type": "Ext.util.Positionable/HTMLElement/String/Ext.util.Region"
+        },
+        {
+          "name": "proposedPosition",
+          "type": "Number[]"
+        },
+        {
+          "name": "proposedSize",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "getContentTarget"
+    },
+    {
+      "name": "getController",
+      "returnType": "Number[]",
+      "params": []
+    },
+    {
+      "name": "getCurrentConfig"
+    },
+    {
+      "name": "getDisplayValue"
+    },
+    {
+      "name": "getEl",
+      "returnType": "Number[]",
+      "params": []
+    },
+    {
+      "name": "getErrors",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "getFieldLabel",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "getFocusClsEl",
+      "returnType": "Ext.dom.Element",
+      "params": [
+        {
+          "name": "focusEl",
+          "type": "Ext.dom.Element"
+        }
+      ]
+    },
+    {
+      "name": "getFocusEl",
+      "returnType": "Ext.dom.Element",
+      "params": []
+    },
+    {
+      "name": "getFocusTask"
+    },
+    {
+      "name": "getFrameInfo",
+      "returnType": "Ext.dom.Element",
+      "params": []
+    },
+    {
+      "name": "getFrameTpl",
+      "params": [
+        {
+          "name": "table"
+        }
+      ]
+    },
+    {
+      "name": "getHeight",
+      "params": []
+    },
+    {
+      "name": "getId",
+      "params": []
+    },
+    {
+      "name": "getInherited",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "inner",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getInheritedConfig",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "property",
+          "type": "String"
+        },
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getInitialConfig",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "getInputId"
+    },
+    {
+      "name": "getInsertPosition",
+      "returnType": "String/Number/Ext.dom.Element/HTMLElement",
+      "params": [
+        {
+          "name": "position",
+          "type": "String/Number/Ext.dom.Element/HTMLElement"
+        }
+      ]
+    },
+    {
+      "name": "getItemId",
+      "returnType": "String/Number/Ext.dom.Element/HTMLElement",
+      "params": []
+    },
+    {
+      "name": "getLabelableRenderData",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "data",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "getLoader",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "getLocalX",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "getLocalXY",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "getLocalY",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "getMaskTarget"
+    },
+    {
+      "name": "getModelData",
+      "params": [
+        {
+          "name": "includeEmptyText",
+          "type": "Boolean"
+        },
+        {
+          "name": "isSubmitting"
+        }
+      ]
+    },
+    {
+      "name": "getName",
+      "params": []
+    },
+    {
+      "name": "getOffsetsTo",
+      "returnType": "Ext.util.Positionable/HTMLElement/String",
+      "params": [
+        {
+          "name": "offsetsTo",
+          "type": "Ext.util.Positionable/HTMLElement/String"
+        }
+      ]
+    },
+    {
+      "name": "getOverflowEl"
+    },
+    {
+      "name": "getOverflowStyle"
+    },
+    {
+      "name": "getPlugin",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "id",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "getPlugins"
+    },
+    {
+      "name": "getPosition",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "local",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getRawValue",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getRefOwner"
+    },
+    {
+      "name": "getRegion",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "contentBox",
+          "type": "Boolean"
+        },
+        {
+          "name": "local",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getScrollableClientRegion",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getScrollX",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getScrollY",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getSize",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "contentSize",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getSizeModel",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "ownerCtSizeModel"
+        }
+      ]
+    },
+    {
+      "name": "getState",
+      "params": []
+    },
+    {
+      "name": "getStateId",
+      "params": []
+    },
+    {
+      "name": "getStyleProxy",
+      "params": [
+        {
+          "name": "cls"
+        }
+      ]
+    },
+    {
+      "name": "getSubmitData"
+    },
+    {
+      "name": "getSubmitValue",
+      "params": []
+    },
+    {
+      "name": "getSubTplData",
+      "params": [
+        {
+          "name": "fieldData"
+        }
+      ]
+    },
+    {
+      "name": "getSubTplMarkup",
+      "params": [
+        {
+          "name": "fieldData"
+        }
+      ]
+    },
+    {
+      "name": "getTabIndex",
+      "params": []
+    },
+    {
+      "name": "getTargetEl"
+    },
+    {
+      "name": "getTdCls"
+    },
+    {
+      "name": "getTdType"
+    },
+    {
+      "name": "getTopAlignTarget",
+      "params": []
+    },
+    {
+      "name": "getTpl",
+      "params": [
+        {
+          "name": "name"
+        }
+      ]
+    },
+    {
+      "name": "getValue",
+      "params": []
+    },
+    {
+      "name": "getViewRegion",
+      "params": []
+    },
+    {
+      "name": "getWidth",
+      "params": []
+    },
+    {
+      "name": "getX",
+      "params": []
+    },
+    {
+      "name": "getXType",
+      "params": []
+    },
+    {
+      "name": "getXTypes",
+      "params": []
+    },
+    {
+      "name": "getXY",
+      "params": []
+    },
+    {
+      "name": "getY",
+      "params": []
+    },
+    {
+      "name": "handleBlurEvent",
+      "params": [
+        {
+          "name": "info"
+        }
+      ]
+    },
+    {
+      "name": "handleFocusEvent",
+      "params": [
+        {
+          "name": "info"
+        }
+      ]
+    },
+    {
+      "name": "hasActiveError",
+      "params": []
+    },
+    {
+      "name": "hasActiveFx",
+      "params": []
+    },
+    {
+      "name": "hasCls",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "className",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "hasConfig",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "hasListener",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "hasUICls",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "hasVisibleLabel",
+      "returnType": "String",
+      "params": []
+    },
+    {
+      "name": "hide",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "animateTarget",
+          "type": "String/Ext.dom.Element/Ext.Component"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "initBindable"
+    },
+    {
+      "name": "initComponent"
+    },
+    {
+      "name": "initConfig",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "instanceConfig",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "initDefaultName"
+    },
+    {
+      "name": "initEvents"
+    },
+    {
+      "name": "initField"
+    },
+    {
+      "name": "initFocusableElement",
+      "params": [
+        {
+          "name": "force"
+        }
+      ]
+    },
+    {
+      "name": "initFocusableEvents",
+      "params": [
+        {
+          "name": "force"
+        }
+      ]
+    },
+    {
+      "name": "initInheritedState",
+      "params": [
+        {
+          "name": "inheritedState"
+        }
+      ]
+    },
+    {
+      "name": "initKeyMap"
+    },
+    {
+      "name": "initLabelable"
+    },
+    {
+      "name": "initPadding",
+      "params": [
+        {
+          "name": "targetEl"
+        }
+      ]
+    },
+    {
+      "name": "initPlugin",
+      "params": [
+        {
+          "name": "plugin"
+        }
+      ]
+    },
+    {
+      "name": "initRenderData",
+      "params": []
+    },
+    {
+      "name": "initRenderTpl",
+      "params": []
+    },
+    {
+      "name": "initState"
+    },
+    {
+      "name": "initStyles",
+      "params": [
+        {
+          "name": "targetEl"
+        }
+      ]
+    },
+    {
+      "name": "initValue"
+    },
+    {
+      "name": "invalidateInheritedState"
+    },
+    {
+      "name": "is",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "isAncestor",
+      "returnType": "Ext.Component",
+      "params": [
+        {
+          "name": "possibleDescendant",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "isBlurring",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "isBound",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "isDescendantOf",
+      "returnType": "Ext.Component",
+      "params": [
+        {
+          "name": "ancestor",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "isDestructing",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isDirty",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isDisabled",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isDraggable",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isDroppable",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isEqual",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "value1",
+          "type": "Object"
+        },
+        {
+          "name": "value2",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "isEqualAsString",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "value1",
+          "type": "Object"
+        },
+        {
+          "name": "value2",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "isFileUpload",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "isFloating",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "isFocusable",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "deep",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "isFocusing",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "isHidden",
+      "params": []
+    },
+    {
+      "name": "isLayoutChild",
+      "returnType": "Ext.Component",
+      "params": [
+        {
+          "name": "ownerCandidate",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "isLayoutRoot",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isLayoutSuspended",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isMasked",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "deep",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "isSuspended",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "event",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "isSyncing",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "isValid",
+      "returnType": "String",
+      "params": []
+    },
+    {
+      "name": "isVisible",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "deep",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "isXType",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "xtype",
+          "type": "String"
+        },
+        {
+          "name": "shallow",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "lookupController",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "lookupNameHolder",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "lookupReferenceHolder",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "lookupSession",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "lookupTpl",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "lookupViewModel",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "markInvalid",
+      "params": [
+        {
+          "name": "errors",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "mask",
+      "params": [
+        {
+          "name": "msg",
+          "type": "String"
+        },
+        {
+          "name": "msgCls",
+          "type": "String"
+        },
+        {
+          "name": "elHeight",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "mon",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.util.Observable/Ext.dom.Element"
+        },
+        {
+          "name": "ename",
+          "type": "Object/String"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        },
+        {
+          "name": "noDestroy",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "move",
+      "params": [
+        {
+          "name": "direction",
+          "type": "String"
+        },
+        {
+          "name": "distance",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "moveFloatingDescendants",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "mun",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.util.Observable/Ext.dom.Element"
+        },
+        {
+          "name": "ename",
+          "type": "Object/String"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "nextNode",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        },
+        {
+          "name": "includeSelf"
+        }
+      ]
+    },
+    {
+      "name": "nextSibling",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "on",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        },
+        {
+          "name": "order",
+          "type": "String"
+        },
+        {
+          "name": "caller"
+        }
+      ]
+    },
+    {
+      "name": "onAdded",
+      "params": [
+        {
+          "name": "container",
+          "type": "Ext.container.Container"
+        },
+        {
+          "name": "pos",
+          "type": "Number"
+        },
+        {
+          "name": "instanced",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "onAfter",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/String[]/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onBefore",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/String[]/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onBlur",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "onBoxReady",
+      "params": [
+        {
+          "name": "width",
+          "type": "Number"
+        },
+        {
+          "name": "height",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onChange",
+      "params": [
+        {
+          "name": "newVal"
+        }
+      ]
+    },
+    {
+      "name": "onDestroy"
+    },
+    {
+      "name": "onDirtyChange",
+      "params": [
+        {
+          "name": "isDirty",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "onDisable"
+    },
+    {
+      "name": "onEnable"
+    },
+    {
+      "name": "onFieldMutation",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "onFocus",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "onFocusEnter",
+      "params": [
+        {
+          "name": "e",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onFocusLeave",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "onFocusMove",
+      "params": [
+        {
+          "name": "info",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onFocusTopmost"
+    },
+    {
+      "name": "onHide",
+      "params": [
+        {
+          "name": "animateTarget",
+          "type": "String/Ext.dom.Element/Ext.Component"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onInheritedAdd",
+      "params": [
+        {
+          "name": "parent"
+        },
+        {
+          "name": "instanced",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "onInheritedRemove",
+      "params": [
+        {
+          "name": "destroying",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "onMouseDown",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "onPosition",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onRemoved",
+      "params": [
+        {
+          "name": "destroying",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "onRender",
+      "params": [
+        {
+          "name": "parentNode",
+          "type": "Ext.dom.Element"
+        },
+        {
+          "name": "containerIdx",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onResize",
+      "params": [
+        {
+          "name": "width",
+          "type": "Number"
+        },
+        {
+          "name": "height",
+          "type": "Number"
+        },
+        {
+          "name": "oldWidth",
+          "type": "Number"
+        },
+        {
+          "name": "oldHeight",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onScrollEnd",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onScrollMove",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onScrollStart",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onShow",
+      "params": [
+        {
+          "name": "animateTarget",
+          "type": "String/Ext.dom.Element"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onShowComplete",
+      "params": [
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onStateChange"
+    },
+    {
+      "name": "onZIndexChange",
+      "params": [
+        {
+          "name": "isTopMost",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "owns",
+      "params": [
+        {
+          "name": "element"
+        }
+      ]
+    },
+    {
+      "name": "postBlur",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "postFocus",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "previousNode",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        },
+        {
+          "name": "includeSelf"
+        }
+      ]
+    },
+    {
+      "name": "previousSibling",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "processRawValue",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "publishState",
+      "params": [
+        {
+          "name": "property",
+          "type": "String"
+        },
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "publishValue"
+    },
+    {
+      "name": "rawToValue",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "rawValue",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "registerFloatingItem",
+      "params": [
+        {
+          "name": "cmp"
+        }
+      ]
+    },
+    {
+      "name": "relayEvents",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "origin",
+          "type": "Object"
+        },
+        {
+          "name": "events",
+          "type": "String[]/Object"
+        },
+        {
+          "name": "prefix",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "removeAfterListener"
+    },
+    {
+      "name": "removeAnchor",
+      "returnType": "String",
+      "params": []
+    },
+    {
+      "name": "removeBeforeListener"
+    },
+    {
+      "name": "removeClass",
+      "returnType": "String/String[]",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "removeCls",
+      "returnType": "String/String[]",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "removeClsWithUI",
+      "params": [
+        {
+          "name": "classes",
+          "type": "String/String[]"
+        },
+        {
+          "name": "skip",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "removeDelegatedListener",
+      "params": [
+        {
+          "name": "eventName"
+        },
+        {
+          "name": "fn"
+        },
+        {
+          "name": "scope"
+        }
+      ]
+    },
+    {
+      "name": "removeListener",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "eventOptions"
+        }
+      ]
+    },
+    {
+      "name": "removeManagedListener",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.util.Observable/Ext.dom.Element"
+        },
+        {
+          "name": "ename",
+          "type": "Object/String"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "removeManagedListenerItem",
+      "params": [
+        {
+          "name": "isClear",
+          "type": "Boolean"
+        },
+        {
+          "name": "managedListener",
+          "type": "Object"
+        },
+        {
+          "name": "item",
+          "type": "Object"
+        },
+        {
+          "name": "ename",
+          "type": "String"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "removeUIClsFromElement",
+      "params": [
+        {
+          "name": "uiCls",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "removeUIFromElement"
+    },
+    {
+      "name": "render",
+      "params": [
+        {
+          "name": "container",
+          "type": "Ext.dom.Element/HTMLElement/String"
+        },
+        {
+          "name": "position",
+          "type": "String/Number"
+        }
+      ]
+    },
+    {
+      "name": "renderActiveError"
+    },
+    {
+      "name": "reset"
+    },
+    {
+      "name": "resetOriginalValue"
+    },
+    {
+      "name": "resolveListenerScope",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "defaultScope",
+          "type": "Object"
+        },
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "resolveSatelliteListenerScope",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "satellite",
+          "type": "Ext.mixin.Observable"
+        },
+        {
+          "name": "defaultScope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "resumeEvent",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String..."
+        }
+      ]
+    },
+    {
+      "name": "resumeEvents",
+      "params": [
+        {
+          "name": "discardQueue",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "reverseTranslateXY",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "xy",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "revertFocus"
+    },
+    {
+      "name": "revertFocusTo",
+      "params": [
+        {
+          "name": "target"
+        }
+      ]
+    },
+    {
+      "name": "savePropsToState",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "propNames",
+          "type": "String/String[]"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "savePropToState",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "propName",
+          "type": "String"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        },
+        {
+          "name": "stateName",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "saveState"
+    },
+    {
+      "name": "scrollBy",
+      "params": [
+        {
+          "name": "deltaX",
+          "type": "Number/Number[]/Object"
+        },
+        {
+          "name": "deltaY",
+          "type": "Number/Boolean/Object"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "scrollTo",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "sequenceFx",
+      "returnType": "Boolean/Object",
+      "params": []
+    },
+    {
+      "name": "setActiveError",
+      "params": [
+        {
+          "name": "msg",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setActiveErrors",
+      "params": [
+        {
+          "name": "errors",
+          "type": "String[]"
+        }
+      ]
+    },
+    {
+      "name": "setAutoScroll",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "scroll",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setBorder",
+      "params": [
+        {
+          "name": "border",
+          "type": "String/Number"
+        },
+        {
+          "name": "targetEl"
+        }
+      ]
+    },
+    {
+      "name": "setBox",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "box",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setComponentLayout",
+      "params": [
+        {
+          "name": "layout"
+        }
+      ]
+    },
+    {
+      "name": "setConfig",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "name",
+          "type": "String/Object"
+        },
+        {
+          "name": "value",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setDisabled",
+      "params": [
+        {
+          "name": "disabled",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setDock",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "dock",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setDocked",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "dock",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setError",
+      "params": [
+        {
+          "name": "error",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setFieldDefaults",
+      "params": [
+        {
+          "name": "defaults",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setFieldLabel",
+      "params": [
+        {
+          "name": "label",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setFieldStyle",
+      "params": [
+        {
+          "name": "style",
+          "type": "String/Object/Function"
+        }
+      ]
+    },
+    {
+      "name": "setFlex",
+      "params": [
+        {
+          "name": "flex",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setHeight",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "height",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setHidden",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "hidden",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setHtml",
+      "params": [
+        {
+          "name": "html",
+          "type": "String/Object"
+        },
+        {
+          "name": "loadScripts",
+          "type": "Boolean"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scriptScope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setListeners",
+      "params": [
+        {
+          "name": "listeners",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setLoading",
+      "params": [
+        {
+          "name": "load",
+          "type": "Boolean/Object/String"
+        },
+        {
+          "name": "targetEl"
+        }
+      ]
+    },
+    {
+      "name": "setLocalX",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setLocalXY",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Array"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setLocalY",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setMargin",
+      "params": [
+        {
+          "name": "margin",
+          "type": "Number/String"
+        },
+        {
+          "name": "preventLayout"
+        }
+      ]
+    },
+    {
+      "name": "setMasked",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "isMasked",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setOverflowXY",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "overflowX",
+          "type": "String"
+        },
+        {
+          "name": "overflowY",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setPagePosition",
+      "returnType": "Boolean/Object",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Number[]"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "setPosition",
+      "returnType": "Boolean/Object",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Number[]/Object"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "setRawValue",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setReadOnly",
+      "params": [
+        {
+          "name": "readOnly",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setScrollX",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "setScrollY",
+      "params": [
+        {
+          "name": "y",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "setSize",
+      "returnType": "Number/String",
+      "params": [
+        {
+          "name": "width",
+          "type": "Number/String/Object"
+        },
+        {
+          "name": "height",
+          "type": "Number/String"
+        }
+      ]
+    },
+    {
+      "name": "setStyle",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "property",
+          "type": "String/Object"
+        },
+        {
+          "name": "value",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setTabIndex",
+      "params": [
+        {
+          "name": "newTabIndex",
+          "type": "Number"
+        },
+        {
+          "name": "focusEl",
+          "type": "HTMLElement"
+        }
+      ]
+    },
+    {
+      "name": "setUI",
+      "params": [
+        {
+          "name": "ui",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setupFramingTpl",
+      "params": [
+        {
+          "name": "frameTpl"
+        }
+      ]
+    },
+    {
+      "name": "setValidationField",
+      "params": [
+        {
+          "name": "value"
+        },
+        {
+          "name": "record"
+        }
+      ]
+    },
+    {
+      "name": "setValue",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setVisible",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "visible",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setWidth",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "width",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setX",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setXY",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "pos",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "setY",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setZIndex",
+      "params": [
+        {
+          "name": "index"
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "animateTarget",
+          "type": "String/Ext.dom.Element"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "showAt",
+      "returnType": "Boolean/Object",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Number[]"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "showBy",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "component",
+          "type": "Ext.Component/Ext.dom.Element"
+        },
+        {
+          "name": "position",
+          "type": "String"
+        },
+        {
+          "name": "offset",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "statics",
+      "returnType": "Number[]",
+      "params": []
+    },
+    {
+      "name": "stopAnimation",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "suppressEvent",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "stopFx",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "suspendEvent",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String..."
+        }
+      ]
+    },
+    {
+      "name": "suspendEvents",
+      "params": [
+        {
+          "name": "queueSuspended",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "syncFx",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "syncHidden"
+    },
+    {
+      "name": "toBack",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "toFront",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "preventFocus",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "toggleCls",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "className",
+          "type": "String"
+        },
+        {
+          "name": "state",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "toggleInvalidCls",
+      "params": [
+        {
+          "name": "hasError",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "transformRawValue",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "translatePoints",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Array"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "translateXY",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Array"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "trimLabelSeparator",
+      "returnType": "Number",
+      "params": []
+    },
+    {
+      "name": "un",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "eventOptions"
+        }
+      ]
+    },
+    {
+      "name": "unAfter",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/String[]/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "unBefore",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/String[]/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "unlink",
+      "returnType": "String[]",
+      "params": [
+        {
+          "name": "names",
+          "type": "String[]"
+        }
+      ]
+    },
+    {
+      "name": "unmask"
+    },
+    {
+      "name": "unsetActiveError"
+    },
+    {
+      "name": "up",
+      "returnType": "String/Number/Ext.Component",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String/Ext.Component"
+        },
+        {
+          "name": "limit",
+          "type": "String/Number/Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "params": [
+        {
+          "name": "htmlOrData",
+          "type": "String/Object"
+        },
+        {
+          "name": "loadScripts",
+          "type": "Boolean"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scriptScope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "updateBox",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "box",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "updateFrame"
+    },
+    {
+      "name": "updateLayout",
+      "params": [
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "updateSession",
+      "params": [
+        {
+          "name": "session",
+          "type": "Ext.data.Session"
+        }
+      ]
+    },
+    {
+      "name": "updateViewModel",
+      "params": [
+        {
+          "name": "viewModel",
+          "type": "Ext.app.ViewModel"
+        },
+        {
+          "name": "oldViewModel",
+          "type": "Ext.app.ViewModel"
+        }
+      ]
+    },
+    {
+      "name": "validate",
+      "returnType": "Ext.app.ViewModel",
+      "params": []
+    },
+    {
+      "name": "validateValue",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "valueToRaw",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "watchConfig",
+      "params": [
+        {
+          "name": "name"
+        },
+        {
+          "name": "fn"
+        },
+        {
+          "name": "scope"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "activate",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "added",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "container",
+          "type": "Ext.container.Container"
+        },
+        {
+          "name": "pos",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "afterlayoutanimation",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "afterrender",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforeactivate",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforedeactivate",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforedestroy",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforehide",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforerender",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforeshow",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforestaterestore",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.state.Stateful"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "beforestatesave",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.state.Stateful"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "blur",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "event",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "boxready",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "width",
+          "type": "Number"
+        },
+        {
+          "name": "height",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "change",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.form.field.Field"
+        },
+        {
+          "name": "newValue",
+          "type": "Object"
+        },
+        {
+          "name": "oldValue",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "deactivate",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "destroy",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "dirtychange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.form.field.Field"
+        },
+        {
+          "name": "isDirty",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "disable",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "enable",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "errorchange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.form.Labelable"
+        },
+        {
+          "name": "error",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "focus",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component/Ext.Widget"
+        },
+        {
+          "name": "event",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "focusenter",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "event",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "focusleave",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "event",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "hide",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "move",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "removed",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "ownerCt",
+          "type": "Ext.container.Container"
+        }
+      ]
+    },
+    {
+      "name": "render",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "resize",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "width",
+          "type": "Number"
+        },
+        {
+          "name": "height",
+          "type": "Number"
+        },
+        {
+          "name": "oldWidth",
+          "type": "Number"
+        },
+        {
+          "name": "oldHeight",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "specialkey",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.form.field.Base"
+        },
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "staterestore",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.state.Stateful"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "statesave",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.state.Stateful"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "validitychange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.form.field.Field"
+        },
+        {
+          "name": "isValid",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "writeablechange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.form.field.Base"
+        },
+        {
+          "name": "Read",
+          "type": "Boolean"
+        }
+      ]
+    }
+  ]
+}

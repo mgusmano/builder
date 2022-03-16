@@ -1,0 +1,5664 @@
+{
+  "xtype": "panel",
+  "name": "Ext.Panel",
+  "extends": "Ext.Container",
+  "numConfigs": 177,
+  "numMethods": 425,
+  "numEvents": 53,
+  "primaryCollection":"items",
+  "primatyCollectionBaseType":"Ext.Component",
+  "configs": [
+    {
+      "name": "actions",
+      "type": "Object",
+      "defaultValue": "null"
+    },
+    {
+      "name": "activeChildTabIndex",
+      "type": "Number",
+      "defaultValue": "0"
+    },
+    {
+      "name": "activeCounter",
+      "type": "Number",
+      "defaultValue": "0"
+    },
+    {
+      "name": "activeItem",
+      "type": "String/Number"
+    },
+    {
+      "name": "alignOnScroll",
+      "type": "Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "alignTarget",
+      "type": "String",
+      "defaultValue": "null"
+    },
+    {
+      "name": "allowFocusingDisabledChildren",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "alwaysOnTop",
+      "type": "Boolean/Number",
+      "defaultValue": "false"
+    },
+    {
+      "name": "anchor",
+      "type": "String"
+    },
+    {
+      "name": "anchorSize",
+      "type": "Number/Object"
+    },
+    {
+      "name": "animateShadow",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "animCollapse",
+      "type": "Boolean/Number",
+      "defaultValue": "Ext.enableFx"
+    },
+    {
+      "name": "ariaAttributes",
+      "type": "Object",
+      "defaultValue": "null"
+    },
+    {
+      "name": "ariaDescribedBy",
+      "type": "String"
+    },
+    {
+      "name": "ariaLabel",
+      "type": "String"
+    },
+    {
+      "name": "ariaLabelledBy",
+      "type": "String"
+    },
+    {
+      "name": "autoDestroy",
+      "type": "Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "autoEl",
+      "type": "String/Object"
+    },
+    {
+      "name": "autoRender",
+      "type": "Boolean/String/HTMLElement/Ext.dom.Element",
+      "defaultValue": "false"
+    },
+    {
+      "name": "autoScroll",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "autoShow",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "baseCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'panel'"
+    },
+    {
+      "name": "bbar",
+      "type": "Object/Object[]",
+      "defaultValue": "null"
+    },
+    {
+      "name": "bind",
+      "type": "Object/String",
+      "defaultValue": "null"
+    },
+    {
+      "name": "bodyBorder",
+      "type": "Boolean"
+    },
+    {
+      "name": "bodyCls",
+      "type": "String/String[]"
+    },
+    {
+      "name": "bodyPadding",
+      "type": "Number/String",
+      "defaultValue": "undefined"
+    },
+    {
+      "name": "bodyStyle",
+      "type": "String/Object/Function"
+    },
+    {
+      "name": "border",
+      "type": "Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "bubbleEvents",
+      "type": "String[]"
+    },
+    {
+      "name": "buttonAlign",
+      "type": "String"
+    },
+    {
+      "name": "buttons",
+      "type": "Object[]",
+      "defaultValue": "null"
+    },
+    {
+      "name": "childEls",
+      "type": "Object/String[]/Object[]",
+      "defaultValue": "[\n    'bodyWrap',\n    'body'\n]"
+    },
+    {
+      "name": "closable",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "closeAction",
+      "type": "String",
+      "defaultValue": "'destroy'"
+    },
+    {
+      "name": "closeToolText",
+      "type": "String",
+      "defaultValue": "'Close panel'"
+    },
+    {
+      "name": "cls",
+      "type": "String/String[]",
+      "defaultValue": "''"
+    },
+    {
+      "name": "collapsed",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "collapsedCls",
+      "type": "String",
+      "defaultValue": "'collapsed'"
+    },
+    {
+      "name": "collapseDirection",
+      "type": "String"
+    },
+    {
+      "name": "collapseFirst",
+      "type": "Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "collapseMode",
+      "type": "String"
+    },
+    {
+      "name": "collapseToolText",
+      "type": "String",
+      "defaultValue": "'Collapse panel'"
+    },
+    {
+      "name": "collapsible",
+      "type": "Boolean",
+      "defaultValue": "undefined"
+    },
+    {
+      "name": "columnWidth",
+      "type": "Number"
+    },
+    {
+      "name": "componentCls",
+      "type": "String"
+    },
+    {
+      "name": "componentLayout",
+      "type": "String/Object",
+      "defaultValue": "'dock'"
+    },
+    {
+      "name": "constrain",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "constrainHeader",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "constraintInsets",
+      "type": "Object/String"
+    },
+    {
+      "name": "constrainTo",
+      "type": "Ext.util.Region/Ext.dom.Element"
+    },
+    {
+      "name": "contentEl",
+      "type": "String"
+    },
+    {
+      "name": "controller",
+      "type": "String/Object/Ext.app.ViewController",
+      "defaultValue": "null"
+    },
+    {
+      "name": "data",
+      "type": "Object",
+      "defaultValue": "null"
+    },
+    {
+      "name": "defaultAlign",
+      "type": "String",
+      "defaultValue": "'c-c'"
+    },
+    {
+      "name": "defaultButton",
+      "type": "String"
+    },
+    {
+      "name": "defaultButtonTarget",
+      "type": "String"
+    },
+    {
+      "name": "defaultDockWeights",
+      "type": "Object",
+      "defaultValue": "{\n    top: {\n        render: 1,\n        visual: 1\n    },\n    left: {\n        render: 3,\n        visual: 5\n    },\n    right: {\n        render: 5,\n        visual: 7\n    },\n    bottom: {\n        render: 7,\n        visual: 3\n    }\n}"
+    },
+    {
+      "name": "defaultFocus",
+      "type": "String"
+    },
+    {
+      "name": "defaultListenerScope",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "defaults",
+      "type": "Object/Function"
+    },
+    {
+      "name": "defaultType",
+      "type": "String",
+      "defaultValue": "'panel'"
+    },
+    {
+      "name": "detachOnRemove",
+      "type": "Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "disabled",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "disabledCls",
+      "type": "String",
+      "defaultValue": "Ext.baseCSSPrefix + 'item-disabled'"
+    },
+    {
+      "name": "dock",
+      "type": "'top'/'bottom'/'left'/'right'"
+    },
+    {
+      "name": "dockedItems",
+      "type": "Object/Object[]",
+      "defaultValue": "null"
+    },
+    {
+      "name": "draggable",
+      "type": "Boolean/Object",
+      "defaultValue": "false"
+    },
+    {
+      "name": "expandToolText",
+      "type": "String",
+      "defaultValue": "'Expand panel'"
+    },
+    {
+      "name": "fbar",
+      "type": "Object/Object[]",
+      "defaultValue": "null"
+    },
+    {
+      "name": "fixed",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "flex",
+      "type": "Number"
+    },
+    {
+      "name": "floatable",
+      "type": "Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "floating",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "focusableContainer",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "focusCls",
+      "type": "String",
+      "defaultValue": "'x-focused'"
+    },
+    {
+      "name": "focusOnToFront",
+      "type": "Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "formBind",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "frame",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "frameHeader",
+      "type": "Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "glyph",
+      "type": "Number/String",
+      "defaultValue": "null"
+    },
+    {
+      "name": "header",
+      "type": "Boolean/Object"
+    },
+    {
+      "name": "headerOverCls",
+      "type": "String"
+    },
+    {
+      "name": "headerPosition",
+      "type": "'top'/'bottom'/'left'/'right'",
+      "defaultValue": "'top'"
+    },
+    {
+      "name": "height",
+      "type": "Number|String"
+    },
+    {
+      "name": "hidden",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "hideCollapseTool",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "hideMode",
+      "type": "String",
+      "defaultValue": "'display'"
+    },
+    {
+      "name": "html",
+      "type": "String/Object",
+      "defaultValue": "''"
+    },
+    {
+      "name": "icon",
+      "type": "String",
+      "defaultValue": "null"
+    },
+    {
+      "name": "iconAlign",
+      "type": "'top'/'right'/'bottom'/'left'",
+      "defaultValue": "'left'"
+    },
+    {
+      "name": "iconCls",
+      "type": "String",
+      "defaultValue": "null"
+    },
+    {
+      "name": "id",
+      "type": "String"
+    },
+    {
+      "name": "inactiveChildTabIndex",
+      "type": "Number",
+      "defaultValue": "-1"
+    },
+    {
+      "name": "itemId",
+      "type": "String"
+    },
+    {
+      "name": "items",
+      "type": "Object/Object[]",
+      "defaultValue": "undefined"
+    },
+    {
+      "name": "keyMap",
+      "type": "Object",
+      "defaultValue": "null"
+    },
+    {
+      "name": "keyMapEnabled",
+      "type": "Boolean",
+      "defaultValue": "null"
+    },
+    {
+      "name": "keyMapTarget",
+      "type": "String",
+      "defaultValue": "'el'"
+    },
+    {
+      "name": "layout",
+      "type": "Ext.enums.Layout/Object",
+      "defaultValue": "'auto'"
+    },
+    {
+      "name": "lbar",
+      "type": "Object/Object[]",
+      "defaultValue": "null"
+    },
+    {
+      "name": "liquidLayout",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "listeners",
+      "type": "Object"
+    },
+    {
+      "name": "liveDrag",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "loader",
+      "type": "Ext.ComponentLoader/Object"
+    },
+    {
+      "name": "maintainTitlePosition",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "manageHeight",
+      "type": "Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "margin",
+      "type": "Number/String"
+    },
+    {
+      "name": "maskDefaults",
+      "type": "Object"
+    },
+    {
+      "name": "maskElement",
+      "type": "String",
+      "defaultValue": "'el'"
+    },
+    {
+      "name": "maxHeight",
+      "type": "Number",
+      "defaultValue": "null"
+    },
+    {
+      "name": "maxWidth",
+      "type": "Number",
+      "defaultValue": "null"
+    },
+    {
+      "name": "minButtonWidth",
+      "type": "Number",
+      "defaultValue": "75"
+    },
+    {
+      "name": "minHeight",
+      "type": "Number",
+      "defaultValue": "null"
+    },
+    {
+      "name": "minWidth",
+      "type": "Number",
+      "defaultValue": "null"
+    },
+    {
+      "name": "modal",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "modelValidation",
+      "type": "Boolean"
+    },
+    {
+      "name": "nameable",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "nameHolder",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "overCls",
+      "type": "String",
+      "defaultValue": "''"
+    },
+    {
+      "name": "overflowX",
+      "type": "String"
+    },
+    {
+      "name": "overflowY",
+      "type": "String"
+    },
+    {
+      "name": "overlapHeader",
+      "type": "Boolean"
+    },
+    {
+      "name": "padding",
+      "type": "Number/String"
+    },
+    {
+      "name": "placeholder",
+      "type": "Ext.Component/Object"
+    },
+    {
+      "name": "placeholderCollapseHideMode",
+      "type": "Number",
+      "defaultValue": "Ext.Element.VISIBILITY"
+    },
+    {
+      "name": "plugins",
+      "type": "Array/Ext.enums.Plugin/Object/Ext.plugin.Abstract"
+    },
+    {
+      "name": "preventHeader",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "publishes",
+      "type": "String/String[]/Object",
+      "defaultValue": "null"
+    },
+    {
+      "name": "rbar",
+      "type": "Object/Object[]",
+      "defaultValue": "null"
+    },
+    {
+      "name": "reference",
+      "type": "String",
+      "defaultValue": "null"
+    },
+    {
+      "name": "referenceHolder",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "region",
+      "type": "\"north\"/\"south\"/\"east\"/\"west\"/\"center\"",
+      "defaultValue": "undefined"
+    },
+    {
+      "name": "renderConfig",
+      "type": "Object"
+    },
+    {
+      "name": "renderData",
+      "type": "Object"
+    },
+    {
+      "name": "renderSelectors",
+      "type": "Object"
+    },
+    {
+      "name": "renderTo",
+      "type": "String/HTMLElement/Ext.dom.Element"
+    },
+    {
+      "name": "renderTpl",
+      "type": "Ext.XTemplate/String/String[]",
+      "defaultValue": "[\n    // headingEl can also be inserted in updateHeader\n    '<tpl if=\"headingText\">',\n    '<div id=\"{id}-headingEl\" data-ref=\"headingEl\" role=\"heading\"',\n    ' class=\"',\n    Ext.baseCSSPrefix,\n    'hidden-clip\" style=\"height:0\">',\n    '{headingText}',\n    '</div>',\n    '</tpl>',\n    '<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, \\'before\\'); %}</tpl>',\n    '<div id=\"{id}-bodyWrap\" data-ref=\"bodyWrap\" class=\"{baseCls}-bodyWrap\"',\n    '<tpl if=\"bodyWrapAriaAttributes\">',\n    '<tpl foreach=\"bodyWrapAriaAttributes\"> {$}=\"{.}\"</tpl>',\n    '<tpl else>',\n    ' role=\"presentation\"',\n    '</tpl>',\n    '>',\n    // If this Panel is framed, the framing template renders the docked items round the frame\n    '{% this.renderDockedItems(out,values,0); %}',\n    '<div id=\"{id}-body\" data-ref=\"body\" class=\"{baseCls}-body<tpl if=\"bodyCls\"> {bodyCls}</tpl>',\n    ' {baseCls}-body-{ui}<tpl if=\"uiCls\">',\n    '<tpl for=\"uiCls\"> {parent.baseCls}-body-{parent.ui}-{.}</tpl>',\n    '</tpl>{childElCls}\"',\n    '<tpl if=\"bodyAriaAttributes\">',\n    '<tpl foreach=\"bodyAriaAttributes\"> {$}=\"{.}\"</tpl>',\n    '<tpl else>',\n    ' role=\"presentation\"',\n    '</tpl>',\n    '<tpl if=\"bodyStyle\"> style=\"{bodyStyle}\"</tpl>>',\n    '{%this.renderContainer(out,values);%}',\n    '</div>',\n    '{% this.renderDockedItems(out,values,1); %}',\n    '</div>',\n    '<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, \\'after\\'); %}</tpl>'\n]"
+    },
+    {
+      "name": "resetFocusPosition",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "resizable",
+      "type": "Boolean/Object"
+    },
+    {
+      "name": "resizeHandles",
+      "type": "String",
+      "defaultValue": "'all'"
+    },
+    {
+      "name": "saveDelay",
+      "type": "Number",
+      "defaultValue": "100"
+    },
+    {
+      "name": "scrollable",
+      "type": "Boolean/String/Object",
+      "defaultValue": "null"
+    },
+    {
+      "name": "session",
+      "type": "Boolean/Object/Ext.data.Session",
+      "defaultValue": "null"
+    },
+    {
+      "name": "shadow",
+      "type": "String/Boolean",
+      "defaultValue": "'sides'"
+    },
+    {
+      "name": "shadowOffset",
+      "type": "Number"
+    },
+    {
+      "name": "shareableName",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "shim",
+      "type": "Boolean"
+    },
+    {
+      "name": "shrinkWrap",
+      "type": "Boolean/Number",
+      "defaultValue": "2"
+    },
+    {
+      "name": "shrinkWrapDock",
+      "type": "Boolean/Number",
+      "defaultValue": "false"
+    },
+    {
+      "name": "simpleDrag",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "stateEvents",
+      "type": "String[]"
+    },
+    {
+      "name": "stateful",
+      "type": "Boolean/Object",
+      "defaultValue": "false"
+    },
+    {
+      "name": "stateId",
+      "type": "String"
+    },
+    {
+      "name": "style",
+      "type": "String/Object"
+    },
+    {
+      "name": "suspendLayout",
+      "type": "Boolean",
+      "defaultValue": "false"
+    },
+    {
+      "name": "tabGuard",
+      "type": "Boolean"
+    },
+    {
+      "name": "tabIndex",
+      "type": "Number"
+    },
+    {
+      "name": "tbar",
+      "type": "Object/Object[]",
+      "defaultValue": "null"
+    },
+    {
+      "name": "title",
+      "type": "String/Ext.panel.Title",
+      "defaultValue": "null"
+    },
+    {
+      "name": "titleAlign",
+      "type": "'left'/'center'/'right'",
+      "defaultValue": "'left'"
+    },
+    {
+      "name": "titleCollapse",
+      "type": "Boolean",
+      "defaultValue": "undefined"
+    },
+    {
+      "name": "titlePosition",
+      "type": "Number",
+      "defaultValue": "0"
+    },
+    {
+      "name": "titleRotation",
+      "type": "'default'/0/1/2",
+      "defaultValue": "'default'"
+    },
+    {
+      "name": "toFrontOnShow",
+      "type": "Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "tools",
+      "type": "Object[]/Ext.panel.Tool[]"
+    },
+    {
+      "name": "touchAction",
+      "type": "Object",
+      "defaultValue": "null"
+    },
+    {
+      "name": "tpl",
+      "type": "Ext.XTemplate/Ext.Template/String/String[]"
+    },
+    {
+      "name": "tplWriteMode",
+      "type": "String",
+      "defaultValue": "'overwrite'"
+    },
+    {
+      "name": "twoWayBindable",
+      "type": "String/String[]/Object",
+      "defaultValue": "null"
+    },
+    {
+      "name": "ui",
+      "type": "String",
+      "defaultValue": "'default'"
+    },
+    {
+      "name": "uiCls",
+      "type": "String[]",
+      "defaultValue": "[]"
+    },
+    {
+      "name": "userCls",
+      "type": "String/String[]",
+      "defaultValue": "null"
+    },
+    {
+      "name": "viewModel",
+      "type": "String/Object/Ext.app.ViewModel",
+      "defaultValue": "null"
+    },
+    {
+      "name": "weight",
+      "type": "Number",
+      "defaultValue": "null"
+    },
+    {
+      "name": "width",
+      "type": "Number|String"
+    },
+    {
+      "name": "xtype",
+      "type": "Ext.enums.Widget"
+    }
+  ],
+  "methods": [
+    {
+      "name": "_addDeclaredListeners",
+      "returnType": "Array",
+      "params": [
+        {
+          "name": "listeners",
+          "type": "Array"
+        }
+      ]
+    },
+    {
+      "name": "_fixReference"
+    },
+    {
+      "name": "add",
+      "returnType": "Ext.Component[]|Object[]/Ext.Component.../Object...",
+      "params": [
+        {
+          "name": "component",
+          "type": "Ext.Component[]|Object[]/Ext.Component.../Object..."
+        }
+      ]
+    },
+    {
+      "name": "addAfterListener"
+    },
+    {
+      "name": "addBeforeListener"
+    },
+    {
+      "name": "addBodyCls",
+      "returnType": "String/String[]",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "addChildEl",
+      "params": [
+        {
+          "name": "childEl"
+        }
+      ]
+    },
+    {
+      "name": "addClass",
+      "returnType": "String/String[]",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "addCls",
+      "returnType": "String/String[]",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "addClsWithUI",
+      "params": [
+        {
+          "name": "classes",
+          "type": "String/String[]"
+        },
+        {
+          "name": "skip",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "addDelegatedListener",
+      "params": [
+        {
+          "name": "eventName"
+        },
+        {
+          "name": "fn"
+        },
+        {
+          "name": "scope"
+        },
+        {
+          "name": "options"
+        },
+        {
+          "name": "order"
+        },
+        {
+          "name": "caller"
+        },
+        {
+          "name": "manager"
+        }
+      ]
+    },
+    {
+      "name": "addDeprecations",
+      "params": [
+        {
+          "name": "deprecations"
+        }
+      ]
+    },
+    {
+      "name": "addDocked",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "items",
+          "type": "Object/Object[]"
+        },
+        {
+          "name": "pos",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "addListener",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        },
+        {
+          "name": "order",
+          "type": "String"
+        },
+        {
+          "name": "caller"
+        }
+      ]
+    },
+    {
+      "name": "addManagedListener",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.util.Observable/Ext.dom.Element"
+        },
+        {
+          "name": "ename",
+          "type": "Object/String"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        },
+        {
+          "name": "noDestroy",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "addPlugin",
+      "params": [
+        {
+          "name": "plugin"
+        }
+      ]
+    },
+    {
+      "name": "addPropertyToState",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "state",
+          "type": "Object"
+        },
+        {
+          "name": "propName",
+          "type": "String"
+        },
+        {
+          "name": "value",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "addStateEvents",
+      "params": [
+        {
+          "name": "events",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "addTool",
+      "params": [
+        {
+          "name": "tools",
+          "type": "Object/Object[]/Ext.panel.Tool/Ext.panel.Tool[]"
+        }
+      ]
+    },
+    {
+      "name": "addTools"
+    },
+    {
+      "name": "addUIClsToElement",
+      "params": [
+        {
+          "name": "cls"
+        }
+      ]
+    },
+    {
+      "name": "addUIToElement"
+    },
+    {
+      "name": "adjustForConstraints",
+      "params": [
+        {
+          "name": "xy"
+        },
+        {
+          "name": "parent"
+        }
+      ]
+    },
+    {
+      "name": "adjustPosition",
+      "params": [
+        {
+          "name": "x"
+        },
+        {
+          "name": "y"
+        }
+      ]
+    },
+    {
+      "name": "afterClassMixedIn",
+      "params": [
+        {
+          "name": "targetClass",
+          "type": "Ext.Class"
+        }
+      ]
+    },
+    {
+      "name": "afterCollapse",
+      "params": [
+        {
+          "name": "animated",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "afterComponentLayout",
+      "params": [
+        {
+          "name": "width",
+          "type": "Number"
+        },
+        {
+          "name": "height",
+          "type": "Number"
+        },
+        {
+          "name": "oldWidth",
+          "type": "Number/undefined"
+        },
+        {
+          "name": "oldHeight",
+          "type": "Number/undefined"
+        }
+      ]
+    },
+    {
+      "name": "afterExpand",
+      "params": [
+        {
+          "name": "animated",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "afterHide",
+      "params": [
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "afterLayout",
+      "params": [
+        {
+          "name": "layout",
+          "type": "Ext.layout.container.Container"
+        }
+      ]
+    },
+    {
+      "name": "afterRender"
+    },
+    {
+      "name": "afterSetPosition",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "afterShow",
+      "params": [
+        {
+          "name": "animateTarget",
+          "type": "String/Ext.dom.Element"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "alignTo",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "element",
+          "type": "Ext.util.Positionable/HTMLElement/String"
+        },
+        {
+          "name": "position",
+          "type": "String"
+        },
+        {
+          "name": "offsets",
+          "type": "Number[]"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "anchorTo",
+      "returnType": "Function",
+      "params": [
+        {
+          "name": "anchorToEl",
+          "type": "Ext.util.Positionable/HTMLElement/String"
+        },
+        {
+          "name": "alignment",
+          "type": "String"
+        },
+        {
+          "name": "offsets",
+          "type": "Number[]"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        },
+        {
+          "name": "monitorScroll",
+          "type": "Boolean/Number"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        }
+      ]
+    },
+    {
+      "name": "anim",
+      "params": [
+        {
+          "name": "config"
+        }
+      ]
+    },
+    {
+      "name": "animate",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "animObj",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "applyBind",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "binds",
+          "type": "String/Object"
+        },
+        {
+          "name": "currentBindings",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "applyDefaults",
+      "params": [
+        {
+          "name": "config"
+        }
+      ]
+    },
+    {
+      "name": "applyRenderSelectors"
+    },
+    {
+      "name": "applySession",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "session",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "applyState",
+      "params": [
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "applyViewModel",
+      "returnType": "String/Object/Ext.app.ViewModel",
+      "params": [
+        {
+          "name": "viewModel",
+          "type": "String/Object/Ext.app.ViewModel"
+        }
+      ]
+    },
+    {
+      "name": "attachChildEls",
+      "params": [
+        {
+          "name": "el"
+        },
+        {
+          "name": "owner"
+        }
+      ]
+    },
+    {
+      "name": "attachNameRef",
+      "params": [
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "attachReference",
+      "params": [
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforeBlur",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "beforeDestroy"
+    },
+    {
+      "name": "beforeFocus",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "beforeLayout"
+    },
+    {
+      "name": "beforeRender"
+    },
+    {
+      "name": "beforeSetPosition",
+      "params": [
+        {
+          "name": "x"
+        },
+        {
+          "name": "y"
+        },
+        {
+          "name": "animate"
+        }
+      ]
+    },
+    {
+      "name": "beforeShow"
+    },
+    {
+      "name": "beginCollapse"
+    },
+    {
+      "name": "blur"
+    },
+    {
+      "name": "bubble",
+      "returnType": "Array",
+      "params": [
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "args",
+          "type": "Array"
+        }
+      ]
+    },
+    {
+      "name": "cacheRefEls",
+      "params": [
+        {
+          "name": "el"
+        }
+      ]
+    },
+    {
+      "name": "calculateAnchorXY",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "anchor",
+          "type": "String"
+        },
+        {
+          "name": "extraX",
+          "type": "Number"
+        },
+        {
+          "name": "extraY",
+          "type": "Number"
+        },
+        {
+          "name": "size",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "calculateConstrainedPosition",
+      "params": [
+        {
+          "name": "constrainTo"
+        },
+        {
+          "name": "proposedPosition"
+        },
+        {
+          "name": "local"
+        },
+        {
+          "name": "proposedSize"
+        }
+      ]
+    },
+    {
+      "name": "callOverridden",
+      "returnType": "Array/Arguments",
+      "params": [
+        {
+          "name": "args",
+          "type": "Array/Arguments"
+        }
+      ]
+    },
+    {
+      "name": "callParent",
+      "returnType": "Array/Arguments",
+      "params": [
+        {
+          "name": "args",
+          "type": "Array/Arguments"
+        }
+      ]
+    },
+    {
+      "name": "callSuper",
+      "returnType": "Array/Arguments",
+      "params": [
+        {
+          "name": "args",
+          "type": "Array/Arguments"
+        }
+      ]
+    },
+    {
+      "name": "cancelFocus"
+    },
+    {
+      "name": "cascade",
+      "returnType": "Array",
+      "params": [
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "origArgs",
+          "type": "Array"
+        }
+      ]
+    },
+    {
+      "name": "center",
+      "returnType": "Array",
+      "params": []
+    },
+    {
+      "name": "changeConstraint",
+      "params": [
+        {
+          "name": "newValue"
+        },
+        {
+          "name": "oldValue"
+        },
+        {
+          "name": "constrainMethod"
+        },
+        {
+          "name": "styleName"
+        },
+        {
+          "name": "sizeName"
+        }
+      ]
+    },
+    {
+      "name": "child",
+      "returnType": "String/Ext.Component",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String/Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "clearClip"
+    },
+    {
+      "name": "clearDelegatedListeners"
+    },
+    {
+      "name": "clearListeners"
+    },
+    {
+      "name": "clearManagedListeners"
+    },
+    {
+      "name": "clipTo",
+      "params": [
+        {
+          "name": "clippingEl",
+          "type": "Ext.Component/Ext.Element/Ext.util.Region"
+        },
+        {
+          "name": "sides",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "clipToScroller",
+      "params": [
+        {
+          "name": "scroller"
+        }
+      ]
+    },
+    {
+      "name": "cloneConfig",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "overrides",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "close"
+    },
+    {
+      "name": "collapse",
+      "returnType": "Boolean/Number",
+      "params": [
+        {
+          "name": "direction",
+          "type": "String"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Number"
+        }
+      ]
+    },
+    {
+      "name": "constrainBox",
+      "params": [
+        {
+          "name": "box"
+        }
+      ]
+    },
+    {
+      "name": "constructor",
+      "params": [
+        {
+          "name": "config",
+          "type": "Ext.dom.Element/String/Object"
+        }
+      ]
+    },
+    {
+      "name": "constructPlugin",
+      "params": [
+        {
+          "name": "plugin",
+          "type": "String/Object"
+        }
+      ]
+    },
+    {
+      "name": "constructPlugins"
+    },
+    {
+      "name": "contains",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "comp",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "deep",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "convertCollapseDir",
+      "params": [
+        {
+          "name": "collapseDir"
+        }
+      ]
+    },
+    {
+      "name": "convertPositionSpec",
+      "params": [
+        {
+          "name": "posSpec"
+        }
+      ]
+    },
+    {
+      "name": "createRelayer",
+      "returnType": "Array",
+      "params": [
+        {
+          "name": "newName",
+          "type": "String"
+        },
+        {
+          "name": "beginEnd",
+          "type": "Array"
+        }
+      ]
+    },
+    {
+      "name": "destroy"
+    },
+    {
+      "name": "destroyMembers",
+      "params": [
+        {
+          "name": "args",
+          "type": "String..."
+        }
+      ]
+    },
+    {
+      "name": "disable",
+      "params": [
+        {
+          "name": "silent"
+        },
+        {
+          "name": "fromParent"
+        }
+      ]
+    },
+    {
+      "name": "doApplyRenderTpl",
+      "params": [
+        {
+          "name": "out"
+        },
+        {
+          "name": "values"
+        }
+      ]
+    },
+    {
+      "name": "doAutoRender"
+    },
+    {
+      "name": "doClose"
+    },
+    {
+      "name": "doComponentLayout",
+      "params": []
+    },
+    {
+      "name": "doConstrain",
+      "params": [
+        {
+          "name": "constrainTo",
+          "type": "String/HTMLElement/Ext.dom.Element/Ext.util.Region"
+        }
+      ]
+    },
+    {
+      "name": "doDestroy"
+    },
+    {
+      "name": "doFireDelegatedEvent",
+      "params": [
+        {
+          "name": "eventName"
+        },
+        {
+          "name": "args"
+        }
+      ]
+    },
+    {
+      "name": "doFireEvent",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "Array"
+        },
+        {
+          "name": "bubbles",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "doRemove",
+      "params": [
+        {
+          "name": "component"
+        },
+        {
+          "name": "flags"
+        }
+      ]
+    },
+    {
+      "name": "down",
+      "returnType": "String/Ext.Component",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String/Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "enable",
+      "params": [
+        {
+          "name": "silent"
+        },
+        {
+          "name": "fromParent"
+        }
+      ]
+    },
+    {
+      "name": "enableBubble",
+      "params": [
+        {
+          "name": "eventNames",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "ensureAttachedToBody",
+      "params": [
+        {
+          "name": "runLayout",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "expand",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "animate",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "findFocusTarget",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "findParentBy",
+      "returnType": "Function",
+      "params": [
+        {
+          "name": "fn",
+          "type": "Function"
+        }
+      ]
+    },
+    {
+      "name": "findParentByType",
+      "returnType": "String/Ext.Class",
+      "params": [
+        {
+          "name": "xtype",
+          "type": "String/Ext.Class"
+        }
+      ]
+    },
+    {
+      "name": "findPlugin",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "ptype",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "finishRender",
+      "params": [
+        {
+          "name": "containerIdx",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "fireAction",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "Array"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        },
+        {
+          "name": "order",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "fireEvent",
+      "returnType": "Object...",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "Object..."
+        }
+      ]
+    },
+    {
+      "name": "fireEventArgs",
+      "returnType": "Object[]",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "Object[]"
+        }
+      ]
+    },
+    {
+      "name": "fireEventedAction",
+      "returnType": "Array/Boolean",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "args",
+          "type": "Array"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "fnArgs",
+          "type": "Array/Boolean"
+        }
+      ]
+    },
+    {
+      "name": "fireHierarchyEvent",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "fitContainer",
+      "params": [
+        {
+          "name": "animate"
+        }
+      ]
+    },
+    {
+      "name": "focus",
+      "returnType": "Boolean/Number[]",
+      "params": [
+        {
+          "name": "selectText",
+          "type": "Boolean/Number[]"
+        }
+      ]
+    },
+    {
+      "name": "forceComponentLayout",
+      "params": [
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "getAction",
+      "params": [
+        {
+          "name": "name"
+        }
+      ]
+    },
+    {
+      "name": "getActiveAnimation",
+      "params": []
+    },
+    {
+      "name": "getAlignToXY",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "alignToEl",
+          "type": "Ext.util.Positionable/HTMLElement/String"
+        },
+        {
+          "name": "position",
+          "type": "String"
+        },
+        {
+          "name": "offsets",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "getAnchorToXY",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "el",
+          "type": "Ext.dom.Element"
+        },
+        {
+          "name": "anchor",
+          "type": "String"
+        },
+        {
+          "name": "local",
+          "type": "Boolean"
+        },
+        {
+          "name": "size",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "getAnchorXY",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "anchor",
+          "type": "String"
+        },
+        {
+          "name": "local",
+          "type": "Boolean"
+        },
+        {
+          "name": "size",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "getAnimationProps"
+    },
+    {
+      "name": "getAriaLabelEl",
+      "returnType": "Function/String/String[]",
+      "params": [
+        {
+          "name": "reference",
+          "type": "Function/String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "getAutoId"
+    },
+    {
+      "name": "getBorderPadding",
+      "returnType": "Function/String/String[]",
+      "params": []
+    },
+    {
+      "name": "getBox",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "contentBox",
+          "type": "Boolean"
+        },
+        {
+          "name": "local",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getBubbleParent",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getBubbleTarget"
+    },
+    {
+      "name": "getChildByElement",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "el",
+          "type": "Ext.dom.Element/HTMLElement/String"
+        },
+        {
+          "name": "deep",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getChildItemsToDisable",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getClientRegion",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getCollapsed",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getComponent",
+      "returnType": "String/Number",
+      "params": [
+        {
+          "name": "comp",
+          "type": "String/Number"
+        }
+      ]
+    },
+    {
+      "name": "getConfig",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "peek",
+          "type": "Boolean"
+        },
+        {
+          "name": "ifInitialized",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getConstrainRegion",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getConstrainVector",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "constrainTo",
+          "type": "Ext.util.Positionable/HTMLElement/String/Ext.util.Region"
+        },
+        {
+          "name": "proposedPosition",
+          "type": "Number[]"
+        },
+        {
+          "name": "proposedSize",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "getContentTarget"
+    },
+    {
+      "name": "getController",
+      "returnType": "Number[]",
+      "params": []
+    },
+    {
+      "name": "getCurrentConfig"
+    },
+    {
+      "name": "getDefaultContentTarget"
+    },
+    {
+      "name": "getDefaultFocus"
+    },
+    {
+      "name": "getDockedComponent",
+      "returnType": "String/Number",
+      "params": [
+        {
+          "name": "comp",
+          "type": "String/Number"
+        }
+      ]
+    },
+    {
+      "name": "getDockedItems",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        },
+        {
+          "name": "beforeBody",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getEl",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getFocusClsEl",
+      "returnType": "Ext.dom.Element",
+      "params": [
+        {
+          "name": "focusEl",
+          "type": "Ext.dom.Element"
+        }
+      ]
+    },
+    {
+      "name": "getFocusEl",
+      "returnType": "Ext.dom.Element",
+      "params": []
+    },
+    {
+      "name": "getFocusTask"
+    },
+    {
+      "name": "getFrameInfo",
+      "returnType": "Ext.dom.Element",
+      "params": []
+    },
+    {
+      "name": "getFrameTpl",
+      "params": [
+        {
+          "name": "table"
+        }
+      ]
+    },
+    {
+      "name": "getHeader",
+      "params": []
+    },
+    {
+      "name": "getHeaderCollapsedClasses",
+      "params": [
+        {
+          "name": "header"
+        }
+      ]
+    },
+    {
+      "name": "getHeight",
+      "params": []
+    },
+    {
+      "name": "getId",
+      "params": []
+    },
+    {
+      "name": "getInherited",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "inner",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getInheritedConfig",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "property",
+          "type": "String"
+        },
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getInitialConfig",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "getInsertPosition",
+      "returnType": "String/Number/Ext.dom.Element/HTMLElement",
+      "params": [
+        {
+          "name": "position",
+          "type": "String/Number/Ext.dom.Element/HTMLElement"
+        }
+      ]
+    },
+    {
+      "name": "getItemId",
+      "returnType": "String/Number/Ext.dom.Element/HTMLElement",
+      "params": []
+    },
+    {
+      "name": "getLayout",
+      "returnType": "String/Number/Ext.dom.Element/HTMLElement",
+      "params": []
+    },
+    {
+      "name": "getLoader",
+      "returnType": "String/Number/Ext.dom.Element/HTMLElement",
+      "params": []
+    },
+    {
+      "name": "getLocalX",
+      "returnType": "String/Number/Ext.dom.Element/HTMLElement",
+      "params": []
+    },
+    {
+      "name": "getLocalXY",
+      "returnType": "String/Number/Ext.dom.Element/HTMLElement",
+      "params": []
+    },
+    {
+      "name": "getLocalY",
+      "returnType": "String/Number/Ext.dom.Element/HTMLElement",
+      "params": []
+    },
+    {
+      "name": "getMaskTarget"
+    },
+    {
+      "name": "getMemento",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "getNamedItems",
+      "returnType": "String",
+      "params": []
+    },
+    {
+      "name": "getOffsetsTo",
+      "returnType": "Ext.util.Positionable/HTMLElement/String",
+      "params": [
+        {
+          "name": "offsetsTo",
+          "type": "Ext.util.Positionable/HTMLElement/String"
+        }
+      ]
+    },
+    {
+      "name": "getOverflowEl"
+    },
+    {
+      "name": "getOverflowStyle"
+    },
+    {
+      "name": "getPlugin",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "id",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "getPlugins"
+    },
+    {
+      "name": "getPosition",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "local",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getReferences",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getRefItems",
+      "params": [
+        {
+          "name": "deep"
+        }
+      ]
+    },
+    {
+      "name": "getRefOwner"
+    },
+    {
+      "name": "getRegion",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "contentBox",
+          "type": "Boolean"
+        },
+        {
+          "name": "local",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getScrollableClientRegion",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getScrollX",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getScrollY",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "getSize",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "contentSize",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "getSizeModel",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "ownerCtSizeModel"
+        }
+      ]
+    },
+    {
+      "name": "getState",
+      "params": []
+    },
+    {
+      "name": "getStateId",
+      "params": []
+    },
+    {
+      "name": "getStyleProxy",
+      "params": [
+        {
+          "name": "cls"
+        }
+      ]
+    },
+    {
+      "name": "getTabIndex",
+      "params": []
+    },
+    {
+      "name": "getTargetEl"
+    },
+    {
+      "name": "getTdCls"
+    },
+    {
+      "name": "getTdType"
+    },
+    {
+      "name": "getTopAlignTarget",
+      "params": []
+    },
+    {
+      "name": "getTpl",
+      "params": [
+        {
+          "name": "name"
+        }
+      ]
+    },
+    {
+      "name": "getViewRegion",
+      "params": []
+    },
+    {
+      "name": "getWidth",
+      "params": []
+    },
+    {
+      "name": "getX",
+      "params": []
+    },
+    {
+      "name": "getXType",
+      "params": []
+    },
+    {
+      "name": "getXTypes",
+      "params": []
+    },
+    {
+      "name": "getXY",
+      "params": []
+    },
+    {
+      "name": "getY",
+      "params": []
+    },
+    {
+      "name": "ghost",
+      "params": [
+        {
+          "name": "cls"
+        }
+      ]
+    },
+    {
+      "name": "ghostTools"
+    },
+    {
+      "name": "handleBlurEvent",
+      "params": [
+        {
+          "name": "info"
+        }
+      ]
+    },
+    {
+      "name": "handleFocusEvent",
+      "params": [
+        {
+          "name": "info"
+        }
+      ]
+    },
+    {
+      "name": "hasActiveFx",
+      "params": []
+    },
+    {
+      "name": "hasCls",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "className",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "hasConfig",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "hasListener",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "hasUICls",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "hide",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "animateTarget",
+          "type": "String/Ext.dom.Element/Ext.Component"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "initBindable"
+    },
+    {
+      "name": "initBodyStyles",
+      "returnType": "Object",
+      "params": []
+    },
+    {
+      "name": "initComponent"
+    },
+    {
+      "name": "initConfig",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "instanceConfig",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "initDockingItems"
+    },
+    {
+      "name": "initDraggable"
+    },
+    {
+      "name": "initEvents"
+    },
+    {
+      "name": "initFocusableElement",
+      "params": [
+        {
+          "name": "force"
+        }
+      ]
+    },
+    {
+      "name": "initFocusableEvents",
+      "params": [
+        {
+          "name": "force"
+        }
+      ]
+    },
+    {
+      "name": "initInheritedState",
+      "params": [
+        {
+          "name": "inheritedState"
+        },
+        {
+          "name": "inheritedStateInner"
+        }
+      ]
+    },
+    {
+      "name": "initItems"
+    },
+    {
+      "name": "initKeyMap"
+    },
+    {
+      "name": "initPadding",
+      "params": [
+        {
+          "name": "targetEl"
+        }
+      ]
+    },
+    {
+      "name": "initPlugin",
+      "params": [
+        {
+          "name": "plugin"
+        }
+      ]
+    },
+    {
+      "name": "initRenderData",
+      "params": []
+    },
+    {
+      "name": "initRenderTpl",
+      "params": []
+    },
+    {
+      "name": "initSimpleDraggable"
+    },
+    {
+      "name": "initState"
+    },
+    {
+      "name": "initStyles",
+      "params": [
+        {
+          "name": "targetEl"
+        }
+      ]
+    },
+    {
+      "name": "initTools"
+    },
+    {
+      "name": "insert",
+      "returnType": "Ext.Component/Object/Ext.Component[]/Object[]",
+      "params": [
+        {
+          "name": "index",
+          "type": "Number"
+        },
+        {
+          "name": "component",
+          "type": "Ext.Component/Object/Ext.Component[]/Object[]"
+        }
+      ]
+    },
+    {
+      "name": "insertDocked",
+      "params": [
+        {
+          "name": "pos",
+          "type": "Number"
+        },
+        {
+          "name": "items",
+          "type": "Object/Object[]"
+        }
+      ]
+    },
+    {
+      "name": "invalidateInheritedState"
+    },
+    {
+      "name": "is",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "isAncestor",
+      "returnType": "Ext.Component",
+      "params": [
+        {
+          "name": "possibleDescendant",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "isBlurring",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "isBound",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "isDescendantOf",
+      "returnType": "Ext.Component",
+      "params": [
+        {
+          "name": "ancestor",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "isDestructing",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isDisabled",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isDraggable",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isDroppable",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isFloating",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isFocusable",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "deep",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "isFocusing",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "isHidden",
+      "params": []
+    },
+    {
+      "name": "isLayoutChild",
+      "returnType": "Ext.Component",
+      "params": [
+        {
+          "name": "ownerCandidate",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "isLayoutRoot",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isLayoutSuspended",
+      "returnType": "Ext.Component",
+      "params": []
+    },
+    {
+      "name": "isMasked",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "deep",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "isSuspended",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "event",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "isSyncing",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "isVisible",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "deep",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "isXType",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "xtype",
+          "type": "String"
+        },
+        {
+          "name": "shallow",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "lookup",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "ref",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "lookupComponent",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "comp",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "lookupController",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "lookupName",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "lookupNameHolder",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "lookupReference",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "ref",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "lookupReferenceHolder",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "lookupSession",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "lookupTpl",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "lookupViewModel",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "mask",
+      "params": [
+        {
+          "name": "msg",
+          "type": "String"
+        },
+        {
+          "name": "msgCls",
+          "type": "String"
+        },
+        {
+          "name": "elHeight",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "mon",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.util.Observable/Ext.dom.Element"
+        },
+        {
+          "name": "ename",
+          "type": "Object/String"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        },
+        {
+          "name": "noDestroy",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "move",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "fromIdx",
+          "type": "Number/Ext.Component"
+        },
+        {
+          "name": "toIdx",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "moveAfter",
+      "returnType": "Ext.Component",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.Component/Ext.Component[]"
+        },
+        {
+          "name": "after",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "moveBefore",
+      "returnType": "Ext.Component",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.Component/Ext.Component[]"
+        },
+        {
+          "name": "before",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "moveDocked",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "side",
+          "type": "'top'/'right'/'bottom'/'left'"
+        }
+      ]
+    },
+    {
+      "name": "moveFloatingDescendants",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "mun",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.util.Observable/Ext.dom.Element"
+        },
+        {
+          "name": "ename",
+          "type": "Object/String"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "nextChild",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "child",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "selector",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "nextNode",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        },
+        {
+          "name": "includeSelf"
+        }
+      ]
+    },
+    {
+      "name": "nextSibling",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "on",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        },
+        {
+          "name": "order",
+          "type": "String"
+        },
+        {
+          "name": "caller"
+        }
+      ]
+    },
+    {
+      "name": "onAdd",
+      "params": [
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "position",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onAdded",
+      "params": [
+        {
+          "name": "container",
+          "type": "Ext.container.Container"
+        },
+        {
+          "name": "pos",
+          "type": "Number"
+        },
+        {
+          "name": "instanced",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "onAfter",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/String[]/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onBefore",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/String[]/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onBeforeAdd",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "onBlur",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "onBoxReady",
+      "params": [
+        {
+          "name": "width",
+          "type": "Number"
+        },
+        {
+          "name": "height",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onDestroy"
+    },
+    {
+      "name": "onDisable"
+    },
+    {
+      "name": "onDockedAdd",
+      "params": [
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "onDockedRemove",
+      "params": [
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "onEnable"
+    },
+    {
+      "name": "onFocus",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "onFocusEnter",
+      "params": [
+        {
+          "name": "e",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onFocusLeave",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "onFocusMove",
+      "params": [
+        {
+          "name": "info",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onFocusTopmost"
+    },
+    {
+      "name": "onHide",
+      "params": [
+        {
+          "name": "animateTarget",
+          "type": "String/Ext.dom.Element/Ext.Component"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onInheritedAdd",
+      "params": [
+        {
+          "name": "parent"
+        },
+        {
+          "name": "instanced",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "onInheritedRemove",
+      "params": [
+        {
+          "name": "destroying",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "onMouseDown",
+      "params": [
+        {
+          "name": "e"
+        }
+      ]
+    },
+    {
+      "name": "onPosition",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onRemove",
+      "params": [
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "isDestroying",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "onRemoved",
+      "params": [
+        {
+          "name": "destroying",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "onRender",
+      "params": [
+        {
+          "name": "parentNode",
+          "type": "Ext.dom.Element"
+        },
+        {
+          "name": "containerIdx",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onResize",
+      "params": [
+        {
+          "name": "width",
+          "type": "Number"
+        },
+        {
+          "name": "height",
+          "type": "Number"
+        },
+        {
+          "name": "oldWidth",
+          "type": "Number"
+        },
+        {
+          "name": "oldHeight",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onScrollEnd",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onScrollMove",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onScrollStart",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "onShow",
+      "params": [
+        {
+          "name": "animateTarget",
+          "type": "String/Ext.dom.Element"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onShowComplete",
+      "params": [
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "onStateChange"
+    },
+    {
+      "name": "onZIndexChange",
+      "params": [
+        {
+          "name": "isTopMost",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "owns",
+      "params": [
+        {
+          "name": "element"
+        }
+      ]
+    },
+    {
+      "name": "postBlur",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "postFocus",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "prepareItems",
+      "params": [
+        {
+          "name": "items"
+        },
+        {
+          "name": "applyDefaults"
+        }
+      ]
+    },
+    {
+      "name": "prevChild",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "child",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "selector",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "previousNode",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        },
+        {
+          "name": "includeSelf"
+        }
+      ]
+    },
+    {
+      "name": "previousSibling",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "processFocusableContainerKeyEvent",
+      "returnType": "Ext.util.Event",
+      "params": [
+        {
+          "name": "e",
+          "type": "Ext.util.Event"
+        }
+      ]
+    },
+    {
+      "name": "publishState",
+      "params": [
+        {
+          "name": "property",
+          "type": "String"
+        },
+        {
+          "name": "value",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "query",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "queryBy",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "queryById",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "id",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "registerFloatingItem",
+      "params": [
+        {
+          "name": "cmp"
+        }
+      ]
+    },
+    {
+      "name": "relayEvents",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "origin",
+          "type": "Object"
+        },
+        {
+          "name": "events",
+          "type": "String[]/Object"
+        },
+        {
+          "name": "prefix",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "remove",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "component",
+          "type": "Ext.Component/String"
+        },
+        {
+          "name": "autoDestroy",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "removeAfterListener"
+    },
+    {
+      "name": "removeAll",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "autoDestroy",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "removeAnchor",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "removeBeforeListener"
+    },
+    {
+      "name": "removeBodyCls",
+      "returnType": "String/String[]",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "removeClass",
+      "returnType": "String/String[]",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "removeCls",
+      "returnType": "String/String[]",
+      "params": [
+        {
+          "name": "cls",
+          "type": "String/String[]"
+        }
+      ]
+    },
+    {
+      "name": "removeClsWithUI",
+      "params": [
+        {
+          "name": "classes",
+          "type": "String/String[]"
+        },
+        {
+          "name": "skip",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "removeDelegatedListener",
+      "params": [
+        {
+          "name": "eventName"
+        },
+        {
+          "name": "fn"
+        },
+        {
+          "name": "scope"
+        }
+      ]
+    },
+    {
+      "name": "removeDocked",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "flags",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "removeListener",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "eventOptions"
+        }
+      ]
+    },
+    {
+      "name": "removeManagedListener",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.util.Observable/Ext.dom.Element"
+        },
+        {
+          "name": "ename",
+          "type": "Object/String"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "removeManagedListenerItem",
+      "params": [
+        {
+          "name": "isClear",
+          "type": "Boolean"
+        },
+        {
+          "name": "managedListener",
+          "type": "Object"
+        },
+        {
+          "name": "item",
+          "type": "Object"
+        },
+        {
+          "name": "ename",
+          "type": "String"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "removeUIClsFromElement",
+      "params": [
+        {
+          "name": "uiCls",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "removeUIFromElement"
+    },
+    {
+      "name": "render",
+      "params": [
+        {
+          "name": "container",
+          "type": "Ext.dom.Element/HTMLElement/String"
+        },
+        {
+          "name": "position",
+          "type": "String/Number"
+        }
+      ]
+    },
+    {
+      "name": "resolveListenerScope",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "defaultScope",
+          "type": "Object"
+        },
+        {
+          "name": "skipThis",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "resolveSatelliteListenerScope",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "satellite",
+          "type": "Ext.mixin.Observable"
+        },
+        {
+          "name": "defaultScope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "resumeEvent",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String..."
+        }
+      ]
+    },
+    {
+      "name": "resumeEvents",
+      "params": [
+        {
+          "name": "discardQueue",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "reverseTranslateXY",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "xy",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "revertFocus"
+    },
+    {
+      "name": "revertFocusTo",
+      "params": [
+        {
+          "name": "target"
+        }
+      ]
+    },
+    {
+      "name": "savePropsToState",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "propNames",
+          "type": "String/String[]"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "savePropToState",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "propName",
+          "type": "String"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        },
+        {
+          "name": "stateName",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "saveState"
+    },
+    {
+      "name": "scrollBy",
+      "params": [
+        {
+          "name": "deltaX",
+          "type": "Number/Number[]/Object"
+        },
+        {
+          "name": "deltaY",
+          "type": "Number/Boolean/Object"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "scrollTo",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "sequenceFx",
+      "returnType": "Boolean/Object",
+      "params": []
+    },
+    {
+      "name": "setActiveItem",
+      "returnType": "Ext.Component/Number/String",
+      "params": [
+        {
+          "name": "item",
+          "type": "Ext.Component/Number/String"
+        }
+      ]
+    },
+    {
+      "name": "setAutoScroll",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "scroll",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setBodyStyle",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "style",
+          "type": "Mixed"
+        },
+        {
+          "name": "value",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setBorder",
+      "params": [
+        {
+          "name": "border",
+          "type": "String/Number"
+        },
+        {
+          "name": "targetEl"
+        }
+      ]
+    },
+    {
+      "name": "setBox",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "box",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setCollapsed",
+      "params": [
+        {
+          "name": "collapsed",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setComponentLayout",
+      "params": [
+        {
+          "name": "layout"
+        }
+      ]
+    },
+    {
+      "name": "setConfig",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "name",
+          "type": "String/Object"
+        },
+        {
+          "name": "value",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setDisabled",
+      "params": [
+        {
+          "name": "disabled",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setDock",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "dock",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setDocked",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "dock",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setDockedItemsVisibility",
+      "params": [
+        {
+          "name": "els",
+          "type": "Ext.dom.CompositeElement"
+        },
+        {
+          "name": "show",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setFlex",
+      "params": [
+        {
+          "name": "flex",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setHeight",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "height",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setHidden",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "hidden",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setHtml",
+      "params": [
+        {
+          "name": "html",
+          "type": "String/Object"
+        },
+        {
+          "name": "loadScripts",
+          "type": "Boolean"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scriptScope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setLayout",
+      "params": [
+        {
+          "name": "configuration",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setListeners",
+      "params": [
+        {
+          "name": "listeners",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "setLoading",
+      "params": [
+        {
+          "name": "load",
+          "type": "Boolean/Object/String"
+        },
+        {
+          "name": "targetEl"
+        }
+      ]
+    },
+    {
+      "name": "setLocalX",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setLocalXY",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Array"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setLocalY",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setMargin",
+      "params": [
+        {
+          "name": "margin",
+          "type": "Number/String"
+        },
+        {
+          "name": "preventLayout"
+        }
+      ]
+    },
+    {
+      "name": "setMasked",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "isMasked",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setOverflowXY",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "overflowX",
+          "type": "String"
+        },
+        {
+          "name": "overflowY",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setPagePosition",
+      "returnType": "Boolean/Object",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Number[]"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "setPosition",
+      "returnType": "Boolean/Object",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Number[]/Object"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "setScrollX",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "setScrollY",
+      "params": [
+        {
+          "name": "y",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "setSize",
+      "returnType": "Number/String",
+      "params": [
+        {
+          "name": "width",
+          "type": "Number/String/Object"
+        },
+        {
+          "name": "height",
+          "type": "Number/String"
+        }
+      ]
+    },
+    {
+      "name": "setStyle",
+      "returnType": "String",
+      "params": [
+        {
+          "name": "property",
+          "type": "String/Object"
+        },
+        {
+          "name": "value",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setTabIndex",
+      "params": [
+        {
+          "name": "newTabIndex",
+          "type": "Number"
+        },
+        {
+          "name": "focusEl",
+          "type": "HTMLElement"
+        }
+      ]
+    },
+    {
+      "name": "setTitle",
+      "params": [
+        {
+          "name": "title",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setUI",
+      "params": [
+        {
+          "name": "ui",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "setupFramingTpl",
+      "params": [
+        {
+          "name": "frameTpl"
+        }
+      ]
+    },
+    {
+      "name": "setVisible",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "visible",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "setWidth",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "width",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setX",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setXY",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "pos",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "setY",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "setZIndex",
+      "params": [
+        {
+          "name": "index"
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "animateTarget",
+          "type": "String/Ext.dom.Element"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "showAt",
+      "returnType": "Boolean/Object",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Number[]"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean/Object"
+        }
+      ]
+    },
+    {
+      "name": "showBy",
+      "returnType": "Number[]",
+      "params": [
+        {
+          "name": "component",
+          "type": "Ext.Component/Ext.dom.Element"
+        },
+        {
+          "name": "position",
+          "type": "String"
+        },
+        {
+          "name": "offset",
+          "type": "Number[]"
+        }
+      ]
+    },
+    {
+      "name": "slideOutFloatedPanelBegin"
+    },
+    {
+      "name": "slideOutFloatedPanelEnd",
+      "params": [
+        {
+          "name": "suppressEvents"
+        }
+      ]
+    },
+    {
+      "name": "statics",
+      "params": []
+    },
+    {
+      "name": "stopAnimation",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "suppressEvent",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "stopFx",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "suspendEvent",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String..."
+        }
+      ]
+    },
+    {
+      "name": "suspendEvents",
+      "params": [
+        {
+          "name": "queueSuspended",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "syncFx",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "syncHidden"
+    },
+    {
+      "name": "toBack",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "toFront",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "preventFocus",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "toggleCls",
+      "returnType": "Boolean",
+      "params": [
+        {
+          "name": "className",
+          "type": "String"
+        },
+        {
+          "name": "state",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "toggleCollapse",
+      "returnType": "Boolean",
+      "params": []
+    },
+    {
+      "name": "translatePoints",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Array"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "translateXY",
+      "returnType": "Number",
+      "params": [
+        {
+          "name": "x",
+          "type": "Number/Array"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "un",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "eventOptions"
+        }
+      ]
+    },
+    {
+      "name": "unAfter",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/String[]/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "unBefore",
+      "params": [
+        {
+          "name": "eventName",
+          "type": "String/String[]/Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function/String"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "unghost",
+      "params": [
+        {
+          "name": "show"
+        },
+        {
+          "name": "matchPosition"
+        },
+        {
+          "name": "focus"
+        }
+      ]
+    },
+    {
+      "name": "unlink",
+      "returnType": "String[]",
+      "params": [
+        {
+          "name": "names",
+          "type": "String[]"
+        }
+      ]
+    },
+    {
+      "name": "unmask"
+    },
+    {
+      "name": "up",
+      "returnType": "String/Number/Ext.Component",
+      "params": [
+        {
+          "name": "selector",
+          "type": "String/Ext.Component"
+        },
+        {
+          "name": "limit",
+          "type": "String/Number/Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "params": [
+        {
+          "name": "htmlOrData",
+          "type": "String/Object"
+        },
+        {
+          "name": "loadScripts",
+          "type": "Boolean"
+        },
+        {
+          "name": "callback",
+          "type": "Function"
+        },
+        {
+          "name": "scriptScope",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "updateBox",
+      "returnType": "Object",
+      "params": [
+        {
+          "name": "box",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "updateFrame"
+    },
+    {
+      "name": "updateHeader",
+      "params": [
+        {
+          "name": "force",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "updateLayout",
+      "params": [
+        {
+          "name": "options",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "updateSession",
+      "params": [
+        {
+          "name": "session",
+          "type": "Ext.data.Session"
+        }
+      ]
+    },
+    {
+      "name": "updateViewModel",
+      "params": [
+        {
+          "name": "viewModel",
+          "type": "Ext.app.ViewModel"
+        },
+        {
+          "name": "oldViewModel",
+          "type": "Ext.app.ViewModel"
+        }
+      ]
+    },
+    {
+      "name": "visitPostOrder",
+      "params": [
+        {
+          "name": "selector",
+          "type": "Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "extraArgs",
+          "type": "Array"
+        }
+      ]
+    },
+    {
+      "name": "visitPreOrder",
+      "params": [
+        {
+          "name": "selector",
+          "type": "Object"
+        },
+        {
+          "name": "fn",
+          "type": "Function"
+        },
+        {
+          "name": "scope",
+          "type": "Object"
+        },
+        {
+          "name": "extraArgs",
+          "type": "Array"
+        }
+      ]
+    },
+    {
+      "name": "watchConfig",
+      "params": [
+        {
+          "name": "name"
+        },
+        {
+          "name": "fn"
+        },
+        {
+          "name": "scope"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "activate",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "add",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.container.Container"
+        },
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "index",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "added",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "container",
+          "type": "Ext.container.Container"
+        },
+        {
+          "name": "pos",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "afterlayout",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.container.Container"
+        },
+        {
+          "name": "layout",
+          "type": "Ext.layout.container.Container"
+        }
+      ]
+    },
+    {
+      "name": "afterlayoutanimation",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "afterrender",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforeactivate",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforeadd",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.container.Container"
+        },
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "index",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "beforeclose",
+      "params": [
+        {
+          "name": "panel",
+          "type": "Ext.panel.Panel"
+        }
+      ]
+    },
+    {
+      "name": "beforecollapse",
+      "params": [
+        {
+          "name": "p",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "direction",
+          "type": "String"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "beforedeactivate",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforedestroy",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforeexpand",
+      "params": [
+        {
+          "name": "p",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "animate",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "beforehide",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforeremove",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.container.Container"
+        },
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforerender",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforeshow",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "beforestaterestore",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.state.Stateful"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "beforestatesave",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.state.Stateful"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "blur",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "event",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "boxready",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "width",
+          "type": "Number"
+        },
+        {
+          "name": "height",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "childmove",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.container.Container"
+        },
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "prevIndex",
+          "type": "Number"
+        },
+        {
+          "name": "newIndex",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "close",
+      "params": [
+        {
+          "name": "panel",
+          "type": "Ext.panel.Panel"
+        }
+      ]
+    },
+    {
+      "name": "collapse",
+      "params": [
+        {
+          "name": "p",
+          "type": "Ext.panel.Panel"
+        }
+      ]
+    },
+    {
+      "name": "deactivate",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "destroy",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "disable",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "dockedadd",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "index",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "dockedremove",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "enable",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "expand",
+      "params": [
+        {
+          "name": "p",
+          "type": "Ext.panel.Panel"
+        }
+      ]
+    },
+    {
+      "name": "float"
+    },
+    {
+      "name": "focus",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component/Ext.Widget"
+        },
+        {
+          "name": "event",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "focusenter",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "event",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "focusleave",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "event",
+          "type": "Ext.event.Event"
+        }
+      ]
+    },
+    {
+      "name": "glyphchange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "newGlyph",
+          "type": "Number/String"
+        },
+        {
+          "name": "oldGlyph",
+          "type": "Number/String"
+        }
+      ]
+    },
+    {
+      "name": "hide",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "iconalignchange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "newIconAlign",
+          "type": "String"
+        },
+        {
+          "name": "oldIconAlign",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "iconchange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "newIcon",
+          "type": "String"
+        },
+        {
+          "name": "oldIcon",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "iconclschange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "newIconCls",
+          "type": "String"
+        },
+        {
+          "name": "oldIconCls",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "move",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "x",
+          "type": "Number"
+        },
+        {
+          "name": "y",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "remove",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.container.Container"
+        },
+        {
+          "name": "component",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "removed",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "ownerCt",
+          "type": "Ext.container.Container"
+        }
+      ]
+    },
+    {
+      "name": "render",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "resize",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        },
+        {
+          "name": "width",
+          "type": "Number"
+        },
+        {
+          "name": "height",
+          "type": "Number"
+        },
+        {
+          "name": "oldWidth",
+          "type": "Number"
+        },
+        {
+          "name": "oldHeight",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.Component"
+        }
+      ]
+    },
+    {
+      "name": "staterestore",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.state.Stateful"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "statesave",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.state.Stateful"
+        },
+        {
+          "name": "state",
+          "type": "Object"
+        }
+      ]
+    },
+    {
+      "name": "titlealignchange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "newTitleAlign",
+          "type": "String"
+        },
+        {
+          "name": "oldTitleAlign",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "titlechange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "newTitle",
+          "type": "String"
+        },
+        {
+          "name": "oldTitle",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "titlepositionchange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "newTitlePosition",
+          "type": "String"
+        },
+        {
+          "name": "oldTitlePosition",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "titlerotationchange",
+      "params": [
+        {
+          "name": "this",
+          "type": "Ext.panel.Panel"
+        },
+        {
+          "name": "newTitleRotation",
+          "type": "String"
+        },
+        {
+          "name": "oldTitleRotation",
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "unfloat"
+    }
+  ]
+}

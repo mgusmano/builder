@@ -1,0 +1,143 @@
+[
+    {
+      "type": "button",
+      "text": "Button",
+      "compoentChild": [
+        {
+          "text": "Button",
+          "groupField": "Standard",
+          "xtype":"button",
+          "defaultConfig":{"xtype":"button","text":"Button"}
+        }
+      ]
+    },
+    {
+      "type": "forms",
+      "text": "Forms",
+      "compoentChild": [
+        {
+          "text": "Text Field",
+          "xtype":"textfield",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "textfield","labelAlign":"top","name": "name","label": "Name"}
+        },
+        {
+          "text": "Number Field",
+          "xtype":"numberfield",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "numberfield","labelAlign":"top","name": "name","label": "NUmber Name"}
+        },
+        {
+          "text": "Display Field",
+          "xtype":"displayfield",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "displayfield","labelAlign":"top","name": "name","label": "Dispay Field"}
+        },
+        {
+          "text": "Radio Field",
+          "xtype":"radiofield",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "radiofield","name": "name","label": "Radio Field"}
+        },
+        {
+          "text": "Checkbox field",
+          "xtype":"checkboxfield",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "checkboxfield","name": "name","label": "Checkbox Field"}
+        },
+        {
+          "text": "Textarea field",
+          "xtype":"textareafield",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "textareafield","name": "name","label": "Textarea Field"}
+        },
+        {
+          "text": "Datepicker field",
+          "xtype":"datepickerfield",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "datepickerfield","name": "datefield","label": "Date Field"}
+        },
+        {
+          "text": "Password field",
+          "xtype":"passwordfield",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "passwordfield","name": "datefield","label": "Password Field"}
+        },
+        {
+          "text": "Form Panel",
+          "xtype":"formpanel",
+          "groupField": "panel",
+          "defaultConfig":{"xtype": "formpanel","title": "Form Panel"}
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "text": "Grid",
+      "compoentChild": [
+        {
+          "text": "Grid",
+          "xtype":"grid",
+          "groupField": "Columns",
+          "defaultConfig":{ 
+            "xtype":"grid",
+            "title": "Grid",
+            "width": "100%",
+            "height":300,
+            "store": {
+              "fields": ["name", "email", "phone"],
+              "data": [{
+                  "name": "Lisa",
+                  "email": "lisa@simpsons.com",
+                  "phone": "555-111-1224"
+              }, {
+                  "name": "Bart",
+                  "email": "bart@simpsons.com",
+                  "phone": "555-222-1234"
+              }]
+            },
+            "columns": [{
+              "text": "Name",
+              "dataIndex": "name"
+              },{
+                "text": "Email",
+                "dataIndex": "email"
+            },{
+              "text": "Phone",
+              "dataIndex": "phone"
+            }] 
+          }
+        },
+        {
+          "text": "Column",
+          "xtype":"gridcolumn",
+          "groupField": "Columns",
+          "defaultConfig":{"xtype":"gridcolumn","text":"column1"}
+        },
+        {
+          "text": "Boolean Column",
+          "xtype":"booleancolumn",
+          "groupField": "Columns",
+          "defaultConfig":{"xtype":"booleancolumn","text":"column1"}
+        },
+        {
+          "text": "Check Column",
+          "xtype":"checkcolumn",
+          "groupField": "Columns",
+          "defaultConfig":{"xtype":"checkcolumn","text":"column1"}
+        },
+        {
+          "text": "Paging Toolbar",
+          "xtype":"pagingtoolbar",
+          "groupField": "Tools",
+          "defaultConfig":{"type": "pagingtoolbar", "dock": "bottom"}
+        },
+        {
+          "text": "CellEditing",
+          "xtype":"gridcellediting",
+          "groupField": "panel",
+          "defaultConfig":{"type": "gridcellediting"}
+        }
+      ]
+    }
+  ]
