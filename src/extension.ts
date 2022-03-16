@@ -46,6 +46,13 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
+  context.subscriptions.push(
+		vscode.commands.registerCommand('builder.ViewGenOnFolder', (uri:vscode.Uri) => {
+			const scaffold = new ViewScaffold(context);
+      scaffold.generate(uri.fsPath);
+		})
+	);
+
   console.log('Congratulations, your extension "builder" is now registered!');
 }
 

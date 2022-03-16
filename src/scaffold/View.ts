@@ -16,9 +16,11 @@ export class ViewScaffold {
     this.channel = vscode.window.createOutputChannel("Scaffold");
   }
   // Validate path and check if view already exists.
-  private validateWs(w: string, name: string) {
+  private validateWs(w: string, name: string, appendPath: boolean = true) {
     try {
-      const dir  = path.join(w, "app", "desktop", "src", "view");
+      const dir  = appendPath 
+      ? path.join(w, "app", "desktop", "src", "view")
+      : w;
       const appFolderExists = fs.existsSync(dir);
       if (!appFolderExists) {
         vscode.window.showErrorMessage(`Cannot find ${dir} in ${w}`);
@@ -36,8 +38,10 @@ export class ViewScaffold {
   }
 
   // Generates the necessary files.
-  private scaffold(w: string, name: string) {
-    const dir  = path.join(w, "app", "desktop", "src", "view", name);
+  private scaffold(w: string, name: string, appendPath: boolean = true) {
+    const dir  = appendPath 
+    ? path.join(w, "app", "desktop", "src", "view", name)
+    : path.join(w, name);
     const fileName = name.charAt(0).toUpperCase() + name.slice(1);
     try {
       fs.mkdirSync(`${dir}`);
@@ -52,8 +56,9 @@ export class ViewScaffold {
     }
   }
 
-  public async generate() {
-    let wp = vscode.workspace.workspaceFolders![0].uri.fsPath;
+  public async generate(fPath ?: string) {
+    let wp = fPath ? fPath : vscode.workspace.workspaceFolders![0].uri.fsPath;
+    const appendPath = fPath ? false : true;
     const name = await vscode.window.showInputBox({
       value: 'sample',
       ignoreFocusOut: true,
@@ -67,9 +72,9 @@ export class ViewScaffold {
       vscode.window.showInformationMessage("Name is required. Cancelling...");
       return;
     }
-    const result = this.validateWs(wp, name);
+    const result = this.validateWs(wp, name, appendPath);
     if (!result.valid) { return; };
-    this.scaffold(wp, name);
-    vscode.window.showInformationMessage(`Scaffolding new view in ${wp}/app/view`);
+    this.scaffold(wp, name, appendPath);
+    vscode.window.showInformationMessage(`Scaffolding new view in ${wp}`);
   }
 }

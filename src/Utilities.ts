@@ -2,9 +2,8 @@ import * as vscode from "vscode";
 import { Uri, Webview } from "vscode";
 import * as path from "path";
 import { spawn } from "child_process";
-import { isNullOrUndefined } from "util";
-//import * as fs from "fs";
-
+import { writeFileSync } from "fs";
+import * as dirMap from 'directory-tree';
 export class Utilities {
 
   private static getUriSingle(webview: vscode.Webview, extensionPath: string, file: string) {
@@ -51,4 +50,38 @@ export class Utilities {
         });
     });
   }
+
+ static treeParser (tree: dirMap.DirectoryTree, map: any, parent: string|null = null) {
+    if (tree && tree.type === "directory" && !map[tree.name]) {
+        if (parent !== 'view') {
+          map[tree.name] = [];
+        }
+        if (tree.children) {
+            tree.children.forEach((child: dirMap.DirectoryTree) => {
+                if (child.type === "file" && child.extension === '.js') {
+                    parent === 'view'
+                    ? map[parent].push(child.path)
+                    : map[tree.name].push(child.path);
+                } else {
+                  Utilities.treeParser(child, map, parent === 'view' ? 'view' : tree.name);
+                };
+            });
+        }
+    }
+};
+
+static async linker(base: string){
+    try {
+       return new Promise((resolve, reject) => {
+            const tree: dirMap.DirectoryTree = dirMap(base, {
+                attributes: ["size", "type", "extension"]
+            });
+            const map = {};
+            Utilities.treeParser(tree, map);
+            resolve(map);
+       });
+    } catch (error) {
+        console.log(error);
+    }
+};
 }

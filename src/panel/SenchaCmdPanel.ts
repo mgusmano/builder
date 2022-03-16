@@ -229,6 +229,18 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
     }
   }
 
+  private async createCache(basePath: string): Promise<any>{
+   try {
+      const cacheDir = path.join(basePath, '.cache');
+      const pathExists = fs.existsSync(cacheDir);
+      if(!pathExists) {fs.mkdirSync(cacheDir);}
+      return cacheDir;
+   } catch (error) {
+     console.log(error);
+   }
+   return null;
+  }
+
   /**
    * @description Launches the ext-gen process and writes the output to
    * the vscode output channel "sencha".
@@ -236,7 +248,8 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
    * @param message webview message object.
    * @returns Promise execution code.
    */
-  private generateApp(message: any, ctx: vscode.ExtensionContext) {
+
+  private async generateApp(message: any, ctx: vscode.ExtensionContext) {
     const executable = path.join(
       ctx.extensionPath,
       "node_modules",
@@ -285,10 +298,21 @@ private PanelViewContents = `Ext.define('myApp.view.MainPanelView', {
       "--branch",
       branch];
     }
-      let sencha = vscode.window.createOutputChannel("Sencha");
-    return  Utilities.invokeCmd("node", args, {
+    let sencha = vscode.window.createOutputChannel("Sencha");
+    try {
+      const resp = await Utilities.invokeCmd("node", args, {
       cwd: `${message.applicationPath}`
     }, sencha);
+    const appPath = path.join(message.applicationPath, message.applicationName);
+    const appFolderPath = path.join(appPath, 'app');
+    const cacheDir = await this.createCache(appPath);
+    const map = await Utilities.linker(appFolderPath);
+    fs.writeFileSync(path.join(cacheDir, 'fileLinks.json'), JSON.stringify(map));
+    return resp;
+    } catch (error: any) {
+      vscode.window.showErrorMessage(`Error: ${error.mesage}.`);
+    }
+   
   }
 
   public dispose() {
